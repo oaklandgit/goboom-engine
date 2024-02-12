@@ -7,22 +7,35 @@ func main() {
 	rl.InitWindow(800, 450, "SpaceMiner")
 	rl.SetTargetFPS(60)
 
-	planet := NewGameObject("Planet",
-		WithPosition(400, 200),
-		WithScale(0.4, 0.4),
-	)
-	planet.NewSprite(
-		rl.LoadTexture("assets/planet.png"),
-		WithColor(rl.Blue),
-		WithOpacity(0.5))
+	planets := []*GameObj{
+		createPlanet(
+			"Planet Claire",
+			400, 200,
+			0.4,
+			rl.Blue,
+			1,
+		),
+		createPlanet(
+			"Prime Beta Z",
+			100, 300,
+			0.2,
+			rl.Red,
+			0.2,
+		),
+	
+	}
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 
-		for _, comp := range planet.Components {
-			comp.Draw()
-			comp.Update()
+		for _, p := range planets {
+
+			for _, comp := range p.Components {
+				comp.Draw()
+				comp.Update()
+			}
+
 		}
 		
 		rl.EndDrawing()
