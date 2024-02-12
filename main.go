@@ -11,17 +11,23 @@ func main() {
 	..........
 	..........
 	🪐.........
-	.........🌎
+	........🌔🌎
 	..🔴.......
 	..........
 	`
+
+	earth := createPlanet("Earth", 0, 0, 2, 180, 0.3, rl.Blue, 1)
+	moon := createMoon("Moon", earth, 1.3, 0, 0.08, 112, rl.White, 0.5)
 
 	var level1MapTable = map[rune]func() *GameObj{
 	'🪐': func() *GameObj {
 		return createPlanet("Saturn", 0, 0, 1, 0, 0.1, rl.Yellow, 1)
 	},
 	'🌎': func() *GameObj {
-		return createPlanet("Earth", 0, 0, 2, 180, 0.3, rl.Blue, 1)
+		return earth
+	},
+	'🌔': func() *GameObj {
+		return moon
 	},
 	'🔴': func() *GameObj {
 		return createPlanet("Mars", 0, 0, 3, 0, 0.2, rl.Red, 1)
