@@ -10,21 +10,21 @@ func main() {
 	var level1Map = `
 	..........
 	..........
-	...m......
-	.........e
-	..v.......
+	🪐.........
+	.........🌎
+	..🔴.......
 	..........
 	`
 
 	var level1MapTable = map[rune]func() *GameObj{
-	'm': func() *GameObj {
-		return createPlanet("Mars", 0, 0, 1, 0, 0.1, rl.Red, 1)
+	'🪐': func() *GameObj {
+		return createPlanet("Saturn", 0, 0, 1, 0, 0.1, rl.Yellow, 1)
 	},
-	'e': func() *GameObj {
+	'🌎': func() *GameObj {
 		return createPlanet("Earth", 0, 0, 2, 180, 0.3, rl.Blue, 1)
 	},
-	'v': func() *GameObj {
-		return createPlanet("Venus", 0, 0, 3, 0, 0.2, rl.Yellow, 1)
+	'🔴': func() *GameObj {
+		return createPlanet("Mars", 0, 0, 3, 0, 0.2, rl.Red, 1)
 	},
 }
 
