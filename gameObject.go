@@ -10,6 +10,7 @@ type GameObj struct {
 	Origin rl.Vector2
 	Scale	rl.Vector2
 	Components []Component
+	Parent *GameObj
 	Children []*GameObj
 }
 
@@ -65,6 +66,10 @@ func NewGameObject(name string, opts ...GameObjOption) *GameObj {
 }
 
 func (o *GameObj) AddChildren(children ...*GameObj) {
+	for _, c := range children {
+		c.Parent = o
+	}
+
 	o.Children = append(o.Children, children...)
 }
 
