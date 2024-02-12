@@ -11,6 +11,8 @@ func main() {
 		createPlanet(
 			"Planet Claire",
 			400, 200,
+			1,
+			0,
 			0.4,
 			rl.Blue,
 			1,
@@ -18,6 +20,8 @@ func main() {
 		createPlanet(
 			"Prime Beta Z",
 			100, 300,
+			2,
+			0,
 			0.2,
 			rl.Red,
 			0.2,
