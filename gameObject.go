@@ -10,6 +10,7 @@ type GameObj struct {
 	Origin rl.Vector2
 	Scale	rl.Vector2
 	Components []Component
+	Children []*GameObj
 }
 
 type Component interface {
@@ -61,4 +62,28 @@ func NewGameObject(name string, opts ...GameObjOption) *GameObj {
 	}
 
 	return obj
+}
+
+func (o *GameObj) AddChildren(children ...*GameObj) {
+	o.Children = append(o.Children, children...)
+}
+
+func (o *GameObj) Update() {
+	for _, c := range o.Components {
+		c.Update()
+	}
+
+	for _, c := range o.Children {
+		c.Update()
+	}
+}
+
+func (o *GameObj) Draw() {
+	for _, c := range o.Components {
+		c.Draw()
+	}
+
+	for _, c := range o.Children {
+		c.Draw()
+	}
 }
