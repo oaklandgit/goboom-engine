@@ -6,6 +6,7 @@ type GameObj struct {
 	Name string
 	Tags []string
 	Position rl.Vector2
+	Offset rl.Vector2
 	Rotation float32
 	Origin rl.Vector2
 	Scale	rl.Vector2
@@ -68,12 +69,18 @@ func NewGameObject(name string, opts ...GameObjOption) *GameObj {
 func (o *GameObj) AddChildren(children ...*GameObj) {
 	for _, c := range children {
 		c.Parent = o
+		c.Offset = rl.Vector2Subtract(c.Position, o.Position)
 	}
 
 	o.Children = append(o.Children, children...)
 }
 
 func (o *GameObj) Update() {
+
+	if o.Parent != nil {
+		o.Position = rl.Vector2Add(o.Parent.Position, o.Offset)
+	}
+
 	for _, c := range o.Components {
 		c.Update()
 	}

@@ -4,28 +4,33 @@ import rl "github.com/gen2brain/raylib-go/raylib"
 
 func createShip(
 	x, y float32,
-	speed float32,
-	heading float32,
 	) *GameObj {
 
-	ship := NewGameObject("Spaceship",
-		WithPosition(x, y),
-	)
-	
-	img := rl.GenImageColor(
+	// SHIP
+	ship := NewGameObject("Spaceship")
+	shipShape := rl.GenImageColor(
 		int(16),
 		int(16),
 		rl.Color{0, 0, 0, 0},) 
+	rl.ImageDrawLine(shipShape, 2, 0, 14, 7, rl.White)
+	rl.ImageDrawLine(shipShape, 2, 14, 14, 7, rl.White)
+	ship.NewGraphics(*shipShape)
 
-	rl.ImageDrawLine(img, 7, 0, 0, 14, rl.White)
-	rl.ImageDrawLine(img, 7, 0, 14, 14, rl.White)
+	// FLAME
+	flame := NewGameObject("Flame")
+	flameShape := rl.GenImageColor(
+		int(3),
+		int(3),
+		rl.Color{0, 0, 0, 0},)
+	rl.ImageDrawCircle(flameShape, 0, 0, 3, rl.Red)
+	flame.NewGraphics(*flameShape)
+	flame.Position.Y = 5.5
+	flame.Position.X = -2
 
-	ship.NewGraphics(*img)
+	ship.AddChildren(flame)
 
-	ship.NewMotion(
-		WithSpeed(speed),
-		WithHeading(heading),
-	)
+	// flame.AddComponents(flame.NewOrbit(ship, 1, -2))
+	ship.NewMotion()
 
 	return ship
 

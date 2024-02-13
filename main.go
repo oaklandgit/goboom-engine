@@ -26,7 +26,7 @@ func main() {
 
 	var level1MapTable = map[rune]func() *GameObj{
 	'🚀': func() *GameObj {
-		return createShip(0, 0, 0, 90)
+		return createShip(0, 0)
 	},
 	'🪐': func() *GameObj {
 		return createPlanet("Saturn", 0, 0, 1, 0, 0.1, rl.Yellow, 1)
