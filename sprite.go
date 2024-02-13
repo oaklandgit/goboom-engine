@@ -57,6 +57,13 @@ func (s *Sprite) Center() rl.Vector2 {
 	return rl.NewVector2(float32(s.Texture.Width/2), float32(s.Texture.Height/2))
 }
 
+func (s *Sprite) AnchorPoint() rl.Vector2 {
+	return rl.NewVector2(
+		s.GameObj.Origin.X * float32(s.Texture.Width),
+		s.GameObj.Origin.Y * float32(s.Texture.Height),
+	)
+}
+
 func (s *Sprite) Update() {
 	// no op
 }
@@ -85,16 +92,14 @@ func (s *Sprite) Draw() {
 	dest := rl.NewRectangle(
 		s.GameObj.Position.X - s.GameObj.Origin.X * scaledWidth,
 		s.GameObj.Position.Y - s.GameObj.Origin.Y * scaledHeight,
-        // e.Position.X - (scaledWidth-float32(s.Texture.Width))/2,
-        // e.Position.Y - (scaledHeight-float32(s.Texture.Height))/2,
         scaledWidth,
         scaledHeight)
 
-	//  origin := s.Center()
+	 origin := s.AnchorPoint()
 	 color := s.Color
 	 if s.Opacity < 1.0 {
 		color.A = uint8(float32(color.A) * s.Opacity)
 	 }
-	 rl.DrawTexturePro(s.Texture, source, dest, s.GameObj.Origin, 0, color)
+	 rl.DrawTexturePro(s.Texture, source, dest, origin, s.GameObj.Rotation, color)
 
 }

@@ -2,10 +2,15 @@ package main
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
+var textures map[string]rl.Texture2D
+
 func main() {
 
 	rl.InitWindow(800, 450, "SpaceMiner")
 	rl.SetTargetFPS(60)
+	textures = LoadTextures(
+		"assets/planet.png",
+	)
 
 	var level1Map = `
 	..........

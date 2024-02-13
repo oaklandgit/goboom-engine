@@ -4,21 +4,6 @@ import (
 	"strings"
 )
 
-// var level1Map = `
-// 	..........
-// 	...o......
-// 	......o...
-// 	..o.......
-// 	..........
-// 	`
-
-// var level1MapTable = map[rune]func() *GameObj{
-// 	'o': func() *GameObj {
-// 		return createPlanet("planet", 0, 0, 0, 0, 1, rl.White, 1)
-// 	},
-// }
-
-
 func CreateLevel(
 	name string,
 	levelMap string,

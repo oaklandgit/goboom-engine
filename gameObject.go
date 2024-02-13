@@ -1,6 +1,10 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"math"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 type GameObj struct {
 	Name string
@@ -8,6 +12,7 @@ type GameObj struct {
 	Position rl.Vector2
 	Offset rl.Vector2
 	Rotation float32
+	LocalRotation float32
 	Origin rl.Vector2
 	Scale	rl.Vector2
 	Components []Component
@@ -70,6 +75,7 @@ func (o *GameObj) AddChildren(children ...*GameObj) {
 	for _, c := range children {
 		c.Parent = o
 		c.Offset = rl.Vector2Subtract(c.Position, o.Position)
+		c.LocalRotation = c.Rotation - o.Rotation
 	}
 
 	o.Children = append(o.Children, children...)
@@ -78,7 +84,19 @@ func (o *GameObj) AddChildren(children ...*GameObj) {
 func (o *GameObj) Update() {
 
 	if o.Parent != nil {
-		o.Position = rl.Vector2Add(o.Parent.Position, o.Offset)
+
+		// Calculate the rotated offset
+		rotatedOffset := rl.Vector2{
+			X: o.Offset.X * float32(math.Cos(float64(o.Parent.Rotation))) - o.Offset.Y * float32(math.Sin(float64(o.Parent.Rotation))),
+			Y: o.Offset.X * float32(math.Sin(float64(o.Parent.Rotation))) + o.Offset.Y * float32(math.Cos(float64(o.Parent.Rotation))),
+		}
+
+		// Update position and rotation
+		o.Position = rl.Vector2Add(o.Parent.Position, rotatedOffset)
+		o.Rotation = o.Parent.Rotation + o.LocalRotation
+
+		// o.Position = rl.Vector2Add(o.Parent.Position, o.Offset)
+		// o.Rotation = o.Parent.Rotation + o.LocalRotation
 	}
 
 	for _, c := range o.Components {

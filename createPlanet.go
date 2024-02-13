@@ -11,7 +11,7 @@ func createPlanet(
 	color rl.Color,
 	opacity float32) *GameObj {
 
-	tex := rl.LoadTexture("assets/planet.png")
+	tex := textures["assets/planet.png"]
 
 	p := NewGameObject(name,
 		WithPosition(x, y),
