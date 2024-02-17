@@ -5,6 +5,11 @@ type Follow struct {
 	Target *GameObj
 }
 
+func (*Follow) Id() string {
+	return "follow"
+}
+
+
 type FollowOptions func(*Follow)
 
 func (obj *GameObj) NewFollow(target *GameObj, opts ...FollowOptions) *Follow {

@@ -4,7 +4,7 @@ import rl "github.com/gen2brain/raylib-go/raylib"
 
 func createMoon(
 	name string,
-	planet *GameObj,
+	// planet *GameObj,
 	speed float32,
 	angle float32,
 	scale float32,
@@ -15,6 +15,7 @@ func createMoon(
 	tex := rl.LoadTexture("assets/planet.png")
 
 	m := NewGameObject(name,
+		WithOrigin(0.5, 0.5),
 		WithScale(scale, scale),
 	)
 
@@ -24,7 +25,7 @@ func createMoon(
 		WithOpacity(opacity),
 	)
 
-	m.NewOrbit(planet, speed, distance)
+	m.NewOrbit(speed, distance)
 
 	return m
 

@@ -44,7 +44,8 @@ func createShip(x, y float32) *GameObj {
 		KeyHandler{
 			KeyPress{rl.KeyUp, KEY_REPEAT},
 			func() {
-				// thrust
+				ship.Components["motion"].(*Motion).Speed += 0.01
+				ship.Components["motion"].(*Motion).Heading = ship.Rotation
 			},
 		},
 	)

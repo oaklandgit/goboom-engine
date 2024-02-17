@@ -14,6 +14,7 @@ func createPlanet(
 	tex := textures["assets/planet.png"]
 
 	p := NewGameObject(name,
+		WithOrigin(0.5, 0.5),
 		WithPosition(x, y),
 		WithScale(scale, scale),
 	)
@@ -27,6 +28,7 @@ func createPlanet(
 	p.NewMotion(
 		WithSpeed(speed),
 		WithHeading(heading),
+		WithWrap(true, true, screenW, screenH, 0),
 	)
 
 	return p

@@ -4,9 +4,14 @@ import rl "github.com/gen2brain/raylib-go/raylib"
 
 var textures map[string]rl.Texture2D
 
+const (
+	screenW = 800
+	screenH = 450
+)
+
 func main() {
 
-	rl.InitWindow(800, 450, "SpaceMiner")
+	rl.InitWindow(screenW, screenH, "SpaceMiner")
 	rl.SetTargetFPS(60)
 	textures = LoadTextures(
 		"assets/planet.png",
@@ -22,12 +27,14 @@ func main() {
 	`
 
 	earth := createPlanet("Earth", 0, 0, 2, 180, 0.3, rl.Blue, 1)
-	moon := createMoon("Moon", earth, 1.3, 0, 0.08, 112, rl.White, 0.5)
-	earth.AddChildren(moon)
+	earth.AddChildren(
+		createMoon("Moon", 1.3, 0, 0.08, 112, rl.White, 0.5),
+	)
 
 	mars := createPlanet("Mars", 0, 0, 3, 0, 0.2, rl.Red, 1)
-	phobos := createMoon("Phobos", mars, -1.3, 45, 0.04, 80, rl.Brown, 0.5)
-	mars.AddChildren(phobos)
+	mars.AddChildren(
+		createMoon("Phobos", -1.3, 45, 0.04, 80, rl.Brown, 0.5),
+	)
 
 	var level1MapTable = map[rune]func() *GameObj{
 	'🚀': func() *GameObj {

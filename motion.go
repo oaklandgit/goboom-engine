@@ -9,8 +9,18 @@ import (
 type Motion struct {
 	GameObj *GameObj
 	Speed float32
+	Velocity rl.Vector2
 	Heading float32
+	WrapX bool
+	WrapY bool
+	WrapW float32
+	WrapH float32
 }
+
+func (*Motion) Id() string {
+	return "motion"
+}
+
 
 func (m *Motion) Draw() {
 	// no op
@@ -39,9 +49,24 @@ func WithSpeed(speed float32) MotionOption {
 	}
 }
 
+func WithVelocity(velocity rl.Vector2) MotionOption {
+	return func(m *Motion) {
+		m.Velocity = velocity
+	}
+}
+
 func WithHeading(heading float32) MotionOption {
 	return func(m *Motion) {
 		m.Heading = heading
+	}
+}
+
+func WithWrap(x, y bool, w, h float32, padding float32) MotionOption {
+	return func(m *Motion) {
+		m.WrapX = x
+		m.WrapY = y
+		m.WrapW = w
+		m.WrapH = h
 	}
 }
 
@@ -50,11 +75,26 @@ func (m *Motion) Move(speed float32, heading float32) {
 	m.Heading = heading
 }
 
+func (m *Motion) Accelerate(force float32, heading float32) {
+	headingVector := rl.Vector2{
+        X: float32(math.Cos(float64(heading))),
+        Y: float32(math.Sin(float64(heading))),
+    }
+
+	acceleration := rl.Vector2Scale(headingVector, force)
+
+	m.Velocity = rl.Vector2Add(m.Velocity, acceleration)
+}
+
 func (m *Motion) Stop() {
-	m.Speed = 0
+	m.Velocity = rl.Vector2Zero()
 }
 
 func (m *Motion) Update() {
+
+	
+
+	// m.GameObj.Position = rl.Vector2Add(m.GameObj.Position, rl.Vector2Scale(m.Velocity, m.Speed))
 
 	headingRad := m.Heading * (rl.Pi / 180)
 	headingVector := rl.NewVector2(
@@ -63,6 +103,16 @@ func (m *Motion) Update() {
 	)
 
 	headingVector = rl.Vector2Scale(headingVector, m.Speed)
+
+	if m.WrapX {
+		if m.Velocity.X > 0 && m.GameObj.PosGlobal().X > m.WrapW {
+			m.GameObj.Position.X = 0
+		}
+			
+		if m.Velocity.X < 0 && m.GameObj.PosGlobal().X < m.GameObj.Width() {
+			m.GameObj.Position.X = m.WrapW + m.GameObj.Width()
+		}
+	}
 	
 	m.GameObj.Position = rl.Vector2Add(m.GameObj.Position, headingVector)
 

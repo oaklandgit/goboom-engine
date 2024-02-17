@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -11,6 +13,10 @@ type Sprite struct {
 	Color rl.Color
 	FlipX bool
 	FlipY bool
+}
+
+func (*Sprite) Id() string {
+	return "sprite"
 }
 
 type SpriteOption func(*Sprite)
@@ -48,6 +54,11 @@ func (o *GameObj) NewSprite(tex rl.Texture2D, opts ...SpriteOption) *Sprite {
 		opt(sprite)
 	}
 
+	// apply the texture size to the game object size
+	w := float32(tex.Width) * o.Scale.X
+	h := float32(tex.Height) * o.Scale.Y
+	o.Size = rl.NewVector2(w, h)
+
 	o.AddComponents(sprite)
 
 	return sprite
@@ -59,8 +70,8 @@ func (s *Sprite) Center() rl.Vector2 {
 
 func (s *Sprite) AnchorPoint() rl.Vector2 {
 	return rl.NewVector2(
-		s.GameObj.Origin.X * float32(s.Texture.Width),
-		s.GameObj.Origin.Y * float32(s.Texture.Height),
+		s.GameObj.Origin.X * float32(s.Texture.Width) * s.GameObj.Scale.X,
+		s.GameObj.Origin.Y * float32(s.Texture.Height) * s.GameObj.Scale.Y,
 	)
 }
 
@@ -70,36 +81,40 @@ func (s *Sprite) Update() {
 
 func (s *Sprite) Draw() {
 
-	width := s.Texture.Width
-	height := s.Texture.Height
+	texW := float32(s.Texture.Width)
+	texH := float32(s.Texture.Height)
+
+	objW := s.GameObj.Width()
+	objH := s.GameObj.Height()
+	objR := s.GameObj.Rotation
 
 	if s.FlipX {
-		width = -s.Texture.Width
+		texW *= -1
 	}
 
 	if s.FlipY {
-		height = -s.Texture.Height
+		texH *= -1
 	}
 
-	 source := rl.NewRectangle(
-		0, 0,
-		float32(width),
-		float32(height))
+	source := rl.NewRectangle(0, 0, texW, texH)
 
-    scaledWidth := float32(s.Texture.Width) * s.GameObj.Scale.X
-    scaledHeight := float32(s.Texture.Height) * s.GameObj.Scale.Y
+	// origin := rl.Vector2{X: 0, Y: 0}
 
 	dest := rl.NewRectangle(
-		s.GameObj.Position.X - s.GameObj.Origin.X * scaledWidth,
-		s.GameObj.Position.Y - s.GameObj.Origin.Y * scaledHeight,
-        scaledWidth,
-        scaledHeight)
+		s.GameObj.PosGlobal().X,
+		s.GameObj.PosGlobal().Y,
+        objW,
+        objH)
 
-	 origin := s.AnchorPoint()
-	 color := s.Color
-	 if s.Opacity < 1.0 {
-		color.A = uint8(float32(color.A) * s.Opacity)
-	 }
-	 rl.DrawTexturePro(s.Texture, source, dest, origin, s.GameObj.Rotation, color)
-
+	origin := s.AnchorPoint()
+	// origin := rl.Vector2{X: 0, Y: 0}
+	color := s.Color
+	if s.Opacity < 1.0 {
+	color.A = uint8(float32(color.A) * s.Opacity)
+	}
+	
+	rl.DrawRectanglePro(dest, origin, objR, rl.Color{R: 255, G: 0, B: 0, A: 40})
+	rl.DrawTexturePro(s.Texture, source, dest, origin, 0, color)
+	posText := fmt.Sprintf("%v", s.GameObj.PosGlobal())
+	rl.DrawText(posText, int32(dest.X), int32(dest.Y), 12, rl.White)
 }

@@ -37,6 +37,10 @@ type Input struct {
 	Handlers map[KeyPress]Action
 }
 
+func (i *Input) Id() string {
+	return "input"
+}
+
 func (o *GameObj) NewInput(actions ...KeyHandler) *Input {
 
 	input := &Input{
