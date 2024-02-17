@@ -60,11 +60,11 @@ func WithPosition(x, y float32) GameObjOption {
 	}
 }
 
-func WithRotation(rotation float32) GameObjOption {
-	return func(o *GameObj) {
-		o.Rotation = rotation
-	}
-}
+// func WithRotation(rotation float32) GameObjOption {
+// 	return func(o *GameObj) {
+// 		o.Rotation = rotation
+// 	}
+// }
 
 func WithScale(x, y float32) GameObjOption {
 	return func(o *GameObj) {

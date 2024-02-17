@@ -26,14 +26,14 @@ func main() {
 	..........
 	`
 
-	earth := createPlanet("Earth", 0, 0, 2, 180, 0.3, rl.Blue, 1)
+	earth := createPlanet("Earth", 0, 0, 2, 0.1, 180, 0.3, rl.Blue, 1)
 	earth.AddChildren(
-		createMoon("Moon", 1.3, 0, 0.08, 112, rl.White, 0.5),
+		createMoon("Moon", 0.4, 0.4, 0.08, 112, rl.White, 0.5),
 	)
 
-	mars := createPlanet("Mars", 0, 0, 3, 0, 0.2, rl.Red, 1)
+	mars := createPlanet("Mars", 0, 0, 3, 0.6, 0, 0.2, rl.Red, 1)
 	mars.AddChildren(
-		createMoon("Phobos", -1.3, 45, 0.04, 80, rl.Brown, 0.5),
+		createMoon("Phobos", -1.3, 3, 0.04, 80, rl.Brown, 0.5),
 	)
 
 	var level1MapTable = map[rune]func() *GameObj{
@@ -41,7 +41,7 @@ func main() {
 		return createShip(0, 0)
 	},
 	'🪐': func() *GameObj {
-		return createPlanet("Saturn", 0, 0, 1, 0, 0.1, rl.Yellow, 1)
+		return createPlanet("Saturn", 0, 0, 1, 0.2, 0, 0.1, rl.Yellow, 1)
 	},
 	'🌎': func() *GameObj {
 		return earth

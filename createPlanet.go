@@ -6,6 +6,7 @@ func createPlanet(
 	name string,
 	x, y float32,
 	speed float32,
+	rotationSpeed float32,
 	heading float32,
 	scale float32,
 	color rl.Color,
@@ -30,6 +31,8 @@ func createPlanet(
 		WithHeading(heading),
 		WithWrap(true, false, float32(tex.Width) * scale / 2),
 	)
+
+	p.NewRotate(rotationSpeed)
 
 	return p
 

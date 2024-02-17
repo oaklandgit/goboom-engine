@@ -111,7 +111,7 @@ func (s *Sprite) Draw() {
 	}
 	
 	rl.DrawRectanglePro(dest, origin, objR, rl.Color{R: 255, G: 0, B: 0, A: 60})
-	rl.DrawTexturePro(s.Texture, source, dest, origin, 0, color)
+	rl.DrawTexturePro(s.Texture, source, dest, origin, objR, color)
 	posText := fmt.Sprintf("%v", s.GameObj.PosGlobal())
 	rl.DrawText(posText, int32(dest.X), int32(dest.Y), 12, rl.White)
 }

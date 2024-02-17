@@ -6,7 +6,7 @@ func createMoon(
 	name string,
 	// planet *GameObj,
 	speed float32,
-	angle float32,
+	rotationSpeed float32,
 	scale float32,
 	distance float32,
 	color rl.Color,
@@ -24,6 +24,8 @@ func createMoon(
 		WithColor(color),
 		WithOpacity(opacity),
 	)
+
+	m.NewRotate(rotationSpeed)
 
 	m.NewOrbit(speed, distance)
 
