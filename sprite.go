@@ -98,8 +98,6 @@ func (s *Sprite) Draw() {
 
 	source := rl.NewRectangle(0, 0, texW, texH)
 
-	// origin := rl.Vector2{X: 0, Y: 0}
-
 	dest := rl.NewRectangle(
 		s.GameObj.PosGlobal().X,
 		s.GameObj.PosGlobal().Y,
@@ -107,13 +105,12 @@ func (s *Sprite) Draw() {
         objH)
 
 	origin := s.AnchorPoint()
-	// origin := rl.Vector2{X: 0, Y: 0}
 	color := s.Color
 	if s.Opacity < 1.0 {
 	color.A = uint8(float32(color.A) * s.Opacity)
 	}
 	
-	rl.DrawRectanglePro(dest, origin, objR, rl.Color{R: 255, G: 0, B: 0, A: 40})
+	rl.DrawRectanglePro(dest, origin, objR, rl.Color{R: 255, G: 0, B: 0, A: 60})
 	rl.DrawTexturePro(s.Texture, source, dest, origin, 0, color)
 	posText := fmt.Sprintf("%v", s.GameObj.PosGlobal())
 	rl.DrawText(posText, int32(dest.X), int32(dest.Y), 12, rl.White)

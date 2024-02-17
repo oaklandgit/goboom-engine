@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -13,8 +14,6 @@ type Motion struct {
 	Heading float32
 	WrapX bool
 	WrapY bool
-	WrapW float32
-	WrapH float32
 }
 
 func (*Motion) Id() string {
@@ -61,12 +60,10 @@ func WithHeading(heading float32) MotionOption {
 	}
 }
 
-func WithWrap(x, y bool, w, h float32, padding float32) MotionOption {
+func WithWrap(x, y bool, padding float32) MotionOption {
 	return func(m *Motion) {
 		m.WrapX = x
 		m.WrapY = y
-		m.WrapW = w
-		m.WrapH = h
 	}
 }
 
@@ -105,13 +102,24 @@ func (m *Motion) Update() {
 	headingVector = rl.Vector2Scale(headingVector, m.Speed)
 
 	if m.WrapX {
-		if m.Velocity.X > 0 && m.GameObj.PosGlobal().X > m.WrapW {
+		fmt.Printf("%s: %v\n", m.GameObj.Name, m.GameObj.PosGlobal())
+
+		// wrap relative to its parent
+		if m.GameObj.Position.X < 0 {
+			m.GameObj.Position.X = m.GameObj.Parent.Size.X
+		}
+
+		if m.GameObj.Position.X > m.GameObj.Parent.Size.X {
 			m.GameObj.Position.X = 0
 		}
+
+		// if m.Velocity.X > 0 && m.GameObj.PosGlobal().X > m.WrapW {
+		// 	m.GameObj.Position.X = 0
+		// }
 			
-		if m.Velocity.X < 0 && m.GameObj.PosGlobal().X < m.GameObj.Width() {
-			m.GameObj.Position.X = m.WrapW + m.GameObj.Width()
-		}
+		// if m.Velocity.X < 0 && m.GameObj.PosGlobal().X < m.GameObj.Width() {
+		// 	m.GameObj.Position.X = m.WrapW + m.GameObj.Width()
+		// }
 	}
 	
 	m.GameObj.Position = rl.Vector2Add(m.GameObj.Position, headingVector)

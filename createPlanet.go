@@ -28,7 +28,7 @@ func createPlanet(
 	p.NewMotion(
 		WithSpeed(speed),
 		WithHeading(heading),
-		WithWrap(true, true, screenW, screenH, 0),
+		WithWrap(true, false, 0),
 	)
 
 	return p

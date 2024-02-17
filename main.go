@@ -53,10 +53,13 @@ func main() {
 
 	solarSystem := CreateLevel(
 		"The Solar System",
+		rl.Vector2{X: screenW, Y: screenH},
 		level1Map,
 		60, 60,
 		level1MapTable,
 	)
+
+	solarSystem.Size = rl.NewVector2(screenW, screenH)
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
