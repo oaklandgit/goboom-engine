@@ -33,7 +33,7 @@ func createShip(x, y float32) *GameObj {
 	}
 
 	// SHIP
-	ship := NewGameObject("Spaceship")
+	ship := NewGameObject("Spaceship", WithPosition(x, y))
 	ship.NewSprite(textures["assets/ship.png"])
 
 	ship.NewMotion(WithWrap(true, true, 0))

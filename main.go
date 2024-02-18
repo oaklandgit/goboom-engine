@@ -23,30 +23,29 @@ func main() {
 
 	var level1Map = `
 	..........
-	....🚀.....
+	..........
 	🪐.........
 	.........🌎
 	..🔴.......
 	..........
 	`
 
-	earth := createPlanet("Earth", 0, 0, 1, 0.1, 0, 0.3, rl.Blue, 1)
+	ship := createShip(400, 120)
+
+	earth := createPlanet("Earth", 0, 0, 0.2, 0.1, 0, 0.3, rl.Blue, 0.4, ship, 1)
 	earth.AddChildren(
 		createMoon("Moon", 0.4, 0.4, 0.08, 112, rl.White, 0.5),
 	)
 
-	mars := createPlanet("Mars", 0, 0, 2, 0.6, 0, 0.2, rl.Red, 1)
+	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 0.2, rl.Red, 0.3, ship, 1)
 	mars.AddChildren(
 		createMoon("Phobos", -1.3, 3, 0.04, 80, rl.Brown, 1),
 		createMoon("Deimos", -1, 0.1, 0.02, 62, rl.Gray, 1),
 	)
 
 		var level1MapTable = map[rune]func() *GameObj{
-		'🚀': func() *GameObj {
-			return createShip(0, 0)
-		},
 		'🪐': func() *GameObj {
-			return createPlanet("Saturn", 0, 0, -1.5, 0.2, 0, 0.1, rl.Yellow, 1)
+			return createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 0.1, rl.Yellow, 0.2, ship, 1)
 		},
 		'🌎': func() *GameObj {
 			return earth
@@ -59,16 +58,24 @@ func main() {
 
 	solarSystem := CreateLevel(
 		"The Solar System",
-		rl.Vector2{X: screenW, Y: screenH},
 		level1Map,
 		60, 60,
 		level1MapTable,
 	)
 
 	solarSystem.Size = rl.NewVector2(screenW, screenH)
+
+	// solarSystem.Size = rl.NewVector2(screenW, screenH)
+
+	starfield := NewGameObject("Starfield")
+	starfield.NewStarfield(screenW, screenH, 40)
+
+	scene1 := NewGameObject("Scene 1")
+	scene1.Size = rl.NewVector2(screenW, screenH)
+	scene1.AddChildren(starfield, solarSystem, ship)
 	
-	game.AddScene("solarSystem", solarSystem)
-	game.Run("solarSystem")
+	game.AddScene("level1", scene1)
+	game.Run("level1")
 
 
 }

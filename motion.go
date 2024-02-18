@@ -75,10 +75,10 @@ func (m *Motion) Wrap() {
 	}
 
 	if m.GameObj.Position.Y < -m.WrapPadding {
-		m.GameObj.Position.Y = m.GameObj.Parent.Size.X + m.WrapPadding
+		m.GameObj.Position.Y = m.GameObj.Parent.Size.Y + m.WrapPadding
 	}
 
-	if m.GameObj.Position.Y > m.GameObj.Parent.Size.X + m.WrapPadding {
+	if m.GameObj.Position.Y > m.GameObj.Parent.Size.Y + m.WrapPadding {
 		m.GameObj.Position.Y = -m.WrapPadding
 	}
 }
