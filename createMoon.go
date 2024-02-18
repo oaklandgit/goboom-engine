@@ -12,7 +12,7 @@ func createMoon(
 	color rl.Color,
 	opacity float32) *GameObj {
 
-	tex := rl.LoadTexture("assets/planet.png")
+	tex := textures["assets/planet.png"]
 
 	m := NewGameObject(name,
 		WithOrigin(0.5, 0.5),

@@ -86,7 +86,7 @@ func (s *Sprite) Draw() {
 
 	objW := s.GameObj.Width()
 	objH := s.GameObj.Height()
-	objR := s.GameObj.Rotation
+	objR := s.GameObj.Angle
 
 	if s.FlipX {
 		texW *= -1

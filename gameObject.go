@@ -10,8 +10,8 @@ type GameObj struct {
 	Position rl.Vector2 // local
 	Layer int
 	Offset rl.Vector2
-	Rotation float32
-	LocalRotation float32
+	Angle float32
+	LocalAngle float32
 	Origin rl.Vector2
 	Scale	rl.Vector2
 	Components map[string]Component
@@ -60,6 +60,8 @@ func WithPosition(x, y float32) GameObjOption {
 	}
 }
 
+
+
 // func WithRotation(rotation float32) GameObjOption {
 // 	return func(o *GameObj) {
 // 		o.Rotation = rotation
@@ -75,6 +77,12 @@ func WithScale(x, y float32) GameObjOption {
 func WithOrigin(x, y float32) GameObjOption {
 	return func(o *GameObj) {
 		o.Origin = rl.NewVector2(x, y)
+	}
+}
+
+func WithAngle(angle float32) GameObjOption {
+	return func(o *GameObj) {
+		o.Angle = angle
 	}
 }
 

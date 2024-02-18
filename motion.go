@@ -90,10 +90,6 @@ func (m *Motion) Stop() {
 
 func (m *Motion) Update() {
 
-	
-
-	// m.GameObj.Position = rl.Vector2Add(m.GameObj.Position, rl.Vector2Scale(m.Velocity, m.Speed))
-
 	headingRad := m.Heading * (rl.Pi / 180)
 	headingVector := rl.NewVector2(
 		float32(math.Cos(float64(headingRad))),
@@ -103,9 +99,6 @@ func (m *Motion) Update() {
 	headingVector = rl.Vector2Scale(headingVector, m.Speed)
 
 	if m.WrapX {
-		// fmt.Printf("%s: %v\n", m.GameObj.Name, m.GameObj.PosGlobal())
-
-		// wrap relative to its parent
 		if m.GameObj.Position.X < -m.WrapPadding {
 			m.GameObj.Position.X = m.GameObj.Parent.Size.X + m.WrapPadding
 		}
