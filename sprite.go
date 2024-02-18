@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -110,8 +108,8 @@ func (s *Sprite) Draw() {
 	color.A = uint8(float32(color.A) * s.Opacity)
 	}
 	
-	rl.DrawRectanglePro(dest, origin, objR, rl.Color{R: 255, G: 0, B: 0, A: 60})
+	// rl.DrawRectanglePro(dest, origin, objR, rl.Color{R: 255, G: 0, B: 0, A: 60})
 	rl.DrawTexturePro(s.Texture, source, dest, origin, objR, color)
-	posText := fmt.Sprintf("%v", s.GameObj.PosGlobal())
-	rl.DrawText(posText, int32(dest.X), int32(dest.Y), 12, rl.White)
+	// posText := fmt.Sprintf("%v", s.GameObj.PosGlobal())
+	// rl.DrawText(posText, int32(dest.X), int32(dest.Y), 12, rl.White)
 }

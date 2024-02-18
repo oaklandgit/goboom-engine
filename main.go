@@ -37,7 +37,8 @@ func main() {
 
 	mars := createPlanet("Mars", 0, 0, 2, 0.6, 0, 0.2, rl.Red, 1)
 	mars.AddChildren(
-		createMoon("Phobos", -1.3, 3, 0.04, 80, rl.Brown, 0.5),
+		createMoon("Phobos", -1.3, 3, 0.04, 80, rl.Brown, 1),
+		createMoon("Deimos", -1, 0.1, 0.02, 62, rl.Gray, 1),
 	)
 
 		var level1MapTable = map[rune]func() *GameObj{

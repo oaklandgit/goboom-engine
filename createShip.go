@@ -1,15 +1,17 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 const ROTATE_SPEED = 5
+const THRUST_SPEED = 0.1
 
 func createShip(x, y float32) *GameObj {
 
-	// SHIP CUSTOM METHODS
-	thrust := func(g *GameObj) {
-		g.Components["motion"].(*Motion).Speed += 0.01
-		g.Components["motion"].(*Motion).Heading = g.Angle
+	// SHIP METHODS
+	thrust := func(g *GameObj, speed float32) {
+		g.Components["motion"].(*Motion).Thrust(speed, g.Angle)
 	}
 
 	rotateCW := func(g *GameObj) {
@@ -24,7 +26,7 @@ func createShip(x, y float32) *GameObj {
 	ship := NewGameObject("Spaceship")
 	ship.NewSprite(textures["assets/ship.png"])
 
-	ship.NewMotion()
+	ship.NewMotion(WithWrap(true, true, 0))
 	ship.NewInput(
 		KeyHandler{
 			KeyPress{rl.KeyLeft, KEY_REPEAT},
@@ -41,7 +43,7 @@ func createShip(x, y float32) *GameObj {
 		KeyHandler{
 			KeyPress{rl.KeyUp, KEY_REPEAT},
 			func() {
-				thrust(ship)
+				thrust(ship, THRUST_SPEED)
 			},
 		},
 		

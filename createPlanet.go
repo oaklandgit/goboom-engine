@@ -27,8 +27,7 @@ func createPlanet(
 	)
 
 	p.NewMotion(
-		WithSpeed(speed),
-		WithHeading(heading),
+		WithVelocity(speed, heading),
 		WithWrap(true, false, float32(tex.Width) * scale / 2),
 	)
 
