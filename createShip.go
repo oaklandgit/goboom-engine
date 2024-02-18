@@ -11,7 +11,7 @@ func createShip(x, y float32) *GameObj {
 
 	// SHIP METHODS
 	thrust := func(g *GameObj, speed float32) {
-		g.Components["motion"].(*Motion).Thrust(speed, g.Angle)
+		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
 	}
 
 	rotateCW := func(g *GameObj) {

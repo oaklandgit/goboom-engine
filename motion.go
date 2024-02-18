@@ -40,12 +40,19 @@ func (o *GameObj) NewMotion(opts ...MotionOption) *Motion {
 	return motion
 }
 
+func (m *Motion) SetVelocity(speed float32, heading float32) {
+	rads := float64(heading) * (math.Pi / 180)
+	m.Velocity =
+		rl.Vector2Add(m.Velocity, rl.Vector2{
+			X: speed * float32(math.Cos(rads)),
+			Y: speed * float32(math.Sin(rads)),
+		})
+}
+
+
 func WithVelocity(speed float32, heading float32) MotionOption {
 	return func(m *Motion) {
-		m.Velocity = rl.Vector2{
-			X: speed * float32(math.Cos(float64(heading))),
-			Y: speed * float32(math.Sin(float64(heading))),
-		}
+		m.SetVelocity(speed, heading)
 	}
 }	
 
@@ -55,18 +62,6 @@ func WithWrap(x, y bool, padding float32) MotionOption {
 		m.WrapY = y
 		m.WrapPadding = padding
 	}
-}
-
-func (m *Motion) Thrust(speed float32, heading float32) {
-	// convert heading to radians
-	rads := float64(heading) * (math.Pi / 180)
-
-	// add velocity in angle of the ship
-	m.Velocity =
-		rl.Vector2Add(m.Velocity, rl.Vector2{
-			X: speed * float32(math.Cos(rads)),
-			Y: speed * float32(math.Sin(rads)),
-		})
 }
 
 func (m *Motion) Wrap() {

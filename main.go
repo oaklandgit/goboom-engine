@@ -30,7 +30,7 @@ func main() {
 	..........
 	`
 
-	earth := createPlanet("Earth", 0, 0, 1, 0.1, 180, 0.3, rl.Blue, 1)
+	earth := createPlanet("Earth", 0, 0, 1, 0.1, 0, 0.3, rl.Blue, 1)
 	earth.AddChildren(
 		createMoon("Moon", 0.4, 0.4, 0.08, 112, rl.White, 0.5),
 	)
