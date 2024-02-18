@@ -6,11 +6,21 @@ import (
 
 const ROTATE_SPEED = 5
 const THRUST_SPEED = 0.1
+const MAX_SPEED = 3	
 
 func createShip(x, y float32) *GameObj {
 
 	// SHIP METHODS
 	thrust := func(g *GameObj, speed float32) {
+
+		motion := g.Components["motion"].(*Motion)
+
+		if rl.Vector2Length(motion.Velocity) > MAX_SPEED {
+			motion.Velocity = 
+				rl.Vector2Scale(
+					rl.Vector2Normalize(motion.Velocity), MAX_SPEED)
+		}
+
 		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
 	}
 
