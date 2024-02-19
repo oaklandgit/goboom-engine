@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -52,18 +51,11 @@ func createShip(x, y float32) *GameObj {
 	landingZone.NewArea(CircleCollider{Radius: 3})
 	ship.AddChildren(landingZone)
 
-	rotateLandingWithShip := func() {
-		landingZone.Position.X = float32(-12 * math.Cos(float64(landingZone.Angle * rl.Deg2rad)))
-		landingZone.Position.Y = float32(-12 * math.Sin(float64(landingZone.Angle * rl.Deg2rad)))
-	}
-
 	rotateCW := func(g *GameObj) {
 		if g.Components["dock"].(*Dock).DockedWith != nil {
 			return
 		}
 		g.Angle += ROTATE_SPEED
-		// landingZone.Angle += ROTATE_SPEED
-		rotateLandingWithShip()
 	}
 
 	rotateCCW := func(g *GameObj) {
@@ -71,8 +63,6 @@ func createShip(x, y float32) *GameObj {
 			return
 		}
 		g.Angle -= ROTATE_SPEED
-		// landingZone.Angle -= ROTATE_SPEED
-		rotateLandingWithShip()
 	}
 
 	ship.NewArea(CircleCollider{Radius: 8})
