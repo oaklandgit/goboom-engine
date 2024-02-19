@@ -27,6 +27,8 @@ func createShip(x, y float32) *GameObj {
 	ship := NewGameObject("Spaceship", WithPosition(x, y))
 	ship.NewSprite(textures["assets/ship.png"])
 
+	ship.NewArea(CircleCollider{Radius: 8})
+
 	ship.NewMotion(
 		WithFriction(0.999),
 		WithMaxVelocity(MAX_SPEED),

@@ -30,6 +30,8 @@ func createPlanet(
 		WithOpacity(opacity),
 	)
 
+	p.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
+
 	p.NewMotion(
 		WithVelocity(speed, heading),
 		WithWrap(true, false, float32(tex.Width) * scale / 2),

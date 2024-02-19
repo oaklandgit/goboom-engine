@@ -4,7 +4,6 @@ import rl "github.com/gen2brain/raylib-go/raylib"
 
 func createMoon(
 	name string,
-	// planet *GameObj,
 	speed float32,
 	rotationSpeed float32,
 	scale float32,
@@ -25,8 +24,8 @@ func createMoon(
 		WithOpacity(opacity),
 	)
 
+	m.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
 	m.NewRotate(rotationSpeed)
-
 	m.NewOrbit(speed, distance)
 
 	return m

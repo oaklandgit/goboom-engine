@@ -34,7 +34,7 @@ func main() {
 
 	earth := createPlanet("Earth", 0, 0, 0.2, 0.1, 0, 0.3, rl.Blue, 0.4, ship, 1)
 	earth.AddChildren(
-		createMoon("Moon", 0.4, 0.4, 0.08, 112, rl.White, 0.5),
+		createMoon("Moon", 0.4, 0.4, 0.08, 112, rl.White, 1),
 	)
 
 	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 0.2, rl.Red, 0.3, ship, 1)
