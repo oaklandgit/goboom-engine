@@ -52,7 +52,7 @@ func (g *Game) Run(scene string) {
 	
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.Black)
+		rl.ClearBackground(rl.Color{10, 10, 20, 255})
 
 		game.Scenes[scene].Update()
 		game.Scenes[scene].Draw()

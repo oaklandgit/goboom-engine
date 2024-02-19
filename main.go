@@ -21,6 +21,7 @@ func main() {
 		"assets/ship.png",
 		"assets/rocky.png",
 		"assets/shadow.png",
+		"assets/rings.png",
 	)
 
 	var level1Map = `
@@ -34,20 +35,30 @@ func main() {
 
 	ship := createShip(400, 120)
 
-	earth := createPlanet("Earth", 0, 0, 0.2, 0.1, 0, 1, rl.Blue, 0.4, ship, 1)
+	earth := createPlanet("Earth", 0, 0, 0.2, 0.1, 0, 1, rl.Blue, 0.2, ship, 1)
 	earth.AddChildren(
-		createMoon("Moon", 0.4, 0.4, 0.3, 112, rl.Yellow, 1),
+		createMoon("Moon", 0.4, 0.4, 0.2, 112, rl.RayWhite, 1),
 	)
 
-	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 0.7, rl.Red, 0.3, ship, 1)
+	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 0.7, rl.Red, 0.15, ship, 1)
 	mars.AddChildren(
 		createMoon("Phobos", -1.3, 3, 0.2, 82, rl.Pink, 1),
-		createMoon("Deimos", -1, 0.1, 0.1, 100, rl.Orange, 1),
+		createMoon("Deimos", -1, 0.1, 0.1, 100, rl.Pink, 1),
 	)
+
+	saturn := createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 1.2, rl.Yellow, 0.1, ship, 1)
+	rings := NewGameObject("Rings", WithScale(2.4, 2.4), WithAngle(45))
+	rings.NewSprite(
+		textures["assets/rings.png"],
+		WithOpacity(0.2),
+		WithColor(rl.Yellow),
+	)
+	saturn.AddChildren(rings)
+
 
 		var level1MapTable = map[rune]func() *GameObj{
 		'🪐': func() *GameObj {
-			return createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 1.2, rl.Yellow, 1.3, ship, 1)
+			return saturn
 		},
 		'🌎': func() *GameObj {
 			return earth
