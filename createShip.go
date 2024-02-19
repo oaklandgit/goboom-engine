@@ -13,6 +13,11 @@ func createShip(x, y float32) *GameObj {
 	// SHIP METHODS
 	thrust := func(g *GameObj, speed float32) {
 		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
+		g.Components["sprite"].(*Sprite).CurrFrame = 1
+	}
+
+	stopThrust := func(g *GameObj) {
+		g.Components["sprite"].(*Sprite).CurrFrame = 0
 	}
 
 	rotateCW := func(g *GameObj) {
@@ -25,7 +30,10 @@ func createShip(x, y float32) *GameObj {
 
 	// SHIP
 	ship := NewGameObject("Spaceship", WithPosition(x, y))
-	ship.NewSprite(textures["assets/ship.png"])
+	ship.NewSprite(
+		textures["assets/ship.png"],
+		WithFrames(1, 2, 2),
+	)
 
 	ship.NewArea(CircleCollider{Radius: 8})
 
@@ -51,6 +59,12 @@ func createShip(x, y float32) *GameObj {
 			KeyPress{rl.KeyUp, KEY_REPEAT},
 			func() {
 				thrust(ship, THRUST_SPEED)
+			},
+		},
+		KeyHandler{
+			KeyPress{rl.KeyUp, KEY_UP},
+			func() {
+				stopThrust(ship)
 			},
 		},
 		

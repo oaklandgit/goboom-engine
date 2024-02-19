@@ -7,6 +7,8 @@ import (
 type Sprite struct {
 	GameObj *GameObj
 	Texture rl.Texture2D
+	Frames []rl.Rectangle
+	CurrFrame int
 	Opacity float32
 	Color rl.Color
 	FlipX bool
@@ -29,6 +31,21 @@ func WithColor(color rl.Color) SpriteOption {
 	return func(s *Sprite) {
 		s.Color = color
 	}	
+}
+
+func WithFrames(rows, cols, frames int) SpriteOption {
+	return func(s *Sprite) {
+		// s.Frames = make([]rl.Rectangle, 0, frames)
+		for i := 0; i < frames; i++ {
+			frame := rl.NewRectangle(
+				float32(i % cols) * float32(s.Texture.Width) / float32(cols),
+				float32(i / cols) * float32(s.Texture.Height) / float32(rows),
+				float32(s.Texture.Width) / float32(cols),
+				float32(s.Texture.Height) / float32(rows),
+			)
+			s.Frames = append(s.Frames, frame)
+		}
+	}
 }
 
 func WithFlip(X bool, Y bool) SpriteOption {
@@ -82,8 +99,16 @@ func (s *Sprite) Draw() {
 	texW := float32(s.Texture.Width)
 	texH := float32(s.Texture.Height)
 
-	objW := s.GameObj.Width()
-	objH := s.GameObj.Height()
+	var source rl.Rectangle
+	if len(s.Frames) == 0 {
+		source = rl.NewRectangle(0, 0, texW, texH)
+	} else {
+		source = s.Frames[s.CurrFrame]
+	}
+
+
+	// objW := s.GameObj.Width()
+	// objH := s.GameObj.Height()
 	objR := s.GameObj.Angle
 
 	if s.FlipX {
@@ -94,13 +119,13 @@ func (s *Sprite) Draw() {
 		texH *= -1
 	}
 
-	source := rl.NewRectangle(0, 0, texW, texH)
+
 
 	dest := rl.NewRectangle(
 		s.GameObj.PosGlobal().X,
 		s.GameObj.PosGlobal().Y,
-        objW,
-        objH)
+        source.Width * s.GameObj.Scale.X,
+        source.Height * s.GameObj.Scale.Y,)
 
 	origin := s.AnchorPoint()
 	color := s.Color

@@ -50,8 +50,6 @@ func (a *Attract) Update() {
 		
 		p1 := a.GameObj.PosGlobal()
 		p2 := t.PosGlobal()
-		// p1 := a.GameObj.Position
-		// p2 := t.Position
 
 		dist := rl.Vector2Distance(p2, p1)
 
@@ -62,8 +60,6 @@ func (a *Attract) Update() {
 		// strength := a.Force / (dist * dist) + 0.001 // avoid divide by zero
 		strength := a.Force / dist
 
-		// fmt.Println("strength", strength)
-		
 		dir := rl.Vector2Subtract(p1, p2)
 		pull := rl.Vector2Scale(rl.Vector2Normalize(dir), strength)
 
