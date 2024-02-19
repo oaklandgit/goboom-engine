@@ -47,6 +47,7 @@ func createShip(x, y float32) *GameObj {
 	landingZone := NewGameObject(
 		"Landing Zone",
 		WithPosition(-12, 0),
+		WithTags("landingZone"),
 	)
 	landingZone.NewArea(CircleCollider{Radius: 3})
 	ship.AddChildren(landingZone)
