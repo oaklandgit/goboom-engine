@@ -11,10 +11,14 @@ const ROTATE_SPEED = 5
 const THRUST_SPEED = 0.04
 const MAX_SPEED = 2	
 
+
 func createShip(x, y float32) *GameObj {
 
 	// SHIP METHODS
 	thrust := func(g *GameObj, speed float32) {
+		if g.Components["dock"].(*Dock).DockedWith != nil {
+			g.Components["dock"].(*Dock).Undock()
+		}
 		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
 		g.Components["sprite"].(*Sprite).CurrFrame = 1
 	}
@@ -24,10 +28,7 @@ func createShip(x, y float32) *GameObj {
 	}
 
 	dockWith := func(g *GameObj, thePlanet *GameObj) {
-		g.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
-		g.Tags = append(g.Tags, "docked")
-		thePlanet.Tags = append(thePlanet.Tags, "docking")
-		fmt.Printf("Landed on %s!\n", thePlanet.Name)
+		g.Components["dock"].(*Dock).DockWith(thePlanet)
 	}
 
 	// SHIP
@@ -36,10 +37,13 @@ func createShip(x, y float32) *GameObj {
 		WithOrigin(0.6, 0.5),
 		WithTags("ship"),
 	)
+
 	ship.NewSprite(
 		textures["assets/ship.png"],
 		WithFrames(1, 2, 2),
 	)
+
+	ship.NewDock()
 
 	landingZone := NewGameObject(
 		"Landing Zone",
@@ -53,16 +57,21 @@ func createShip(x, y float32) *GameObj {
 		landingZone.Position.Y = float32(-12 * math.Sin(float64(landingZone.Angle * rl.Deg2rad)))
 	}
 
-
 	rotateCW := func(g *GameObj) {
+		if g.Components["dock"].(*Dock).DockedWith != nil {
+			return
+		}
 		g.Angle += ROTATE_SPEED
-		landingZone.Angle += ROTATE_SPEED
+		// landingZone.Angle += ROTATE_SPEED
 		rotateLandingWithShip()
 	}
 
 	rotateCCW := func(g *GameObj) {
+		if g.Components["dock"].(*Dock).DockedWith != nil {
+			return
+		}
 		g.Angle -= ROTATE_SPEED
-		landingZone.Angle -= ROTATE_SPEED
+		// landingZone.Angle -= ROTATE_SPEED
 		rotateLandingWithShip()
 	}
 

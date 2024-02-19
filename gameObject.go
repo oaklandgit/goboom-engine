@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -22,7 +24,14 @@ type GameObj struct {
 
 func (o *GameObj) PosGlobal() rl.Vector2 {
 	if o.Parent != nil {
-		return rl.Vector2Add(o.Position, o.Parent.PosGlobal())
+	
+		rads := float64(o.Parent.Angle * rl.Deg2rad)
+        rotatedPosition := rl.Vector2{
+            X: o.Position.X*float32(math.Cos(rads)) - o.Position.Y*float32(math.Sin(rads)),
+            Y: o.Position.X*float32(math.Sin(rads)) + o.Position.Y*float32(math.Cos(rads)),
+        }
+        return rl.Vector2Add(rotatedPosition, o.Parent.PosGlobal())
+		
 	}
 
 	if o.Position != rl.Vector2Zero() {
