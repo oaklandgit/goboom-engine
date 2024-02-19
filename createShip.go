@@ -12,15 +12,6 @@ func createShip(x, y float32) *GameObj {
 
 	// SHIP METHODS
 	thrust := func(g *GameObj, speed float32) {
-
-		motion := g.Components["motion"].(*Motion)
-
-		if rl.Vector2Length(motion.Velocity) > MAX_SPEED {
-			motion.Velocity = 
-				rl.Vector2Scale(
-					rl.Vector2Normalize(motion.Velocity), MAX_SPEED)
-		}
-
 		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
 	}
 
@@ -36,7 +27,11 @@ func createShip(x, y float32) *GameObj {
 	ship := NewGameObject("Spaceship", WithPosition(x, y))
 	ship.NewSprite(textures["assets/ship.png"])
 
-	ship.NewMotion(WithWrap(true, true, 0))
+	ship.NewMotion(
+		WithFriction(0.999),
+		WithMaxVelocity(MAX_SPEED),
+		WithWrap(true, true, 0),
+	)
 	ship.NewInput(
 		KeyHandler{
 			KeyPress{rl.KeyLeft, KEY_REPEAT},

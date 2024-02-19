@@ -9,6 +9,8 @@ import (
 type Motion struct {
 	GameObj *GameObj
 	Velocity rl.Vector2
+	MaxVelocity float32
+	Friction float32
 	WrapX bool
 	WrapY bool
 	WrapPadding float32
@@ -54,7 +56,19 @@ func WithVelocity(speed float32, heading float32) MotionOption {
 	return func(m *Motion) {
 		m.SetVelocity(speed, heading)
 	}
-}	
+}
+
+func WithFriction(friction float32) MotionOption {
+	return func(m *Motion) {
+		m.Friction = friction
+	}
+}
+
+func WithMaxVelocity(max float32) MotionOption {
+	return func(m *Motion) {
+		m.MaxVelocity = max
+	}
+}
 
 func WithWrap(x, y bool, padding float32) MotionOption {
 	return func(m *Motion) {
@@ -85,10 +99,26 @@ func (m *Motion) Wrap() {
 
 func (m *Motion) Update() {
 
+	// WRAP
 	if m.WrapX || m.WrapY {
 		m.Wrap()
 	}
 
+	// FRICTION
+	if m.Friction > 0 {
+		m.Velocity = rl.Vector2Scale(m.Velocity, m.Friction)
+	}
+
+	// LIMIT
+	if m.MaxVelocity > 0 {
+		if rl.Vector2Length(m.Velocity) > m.MaxVelocity {
+			m.Velocity = 
+				rl.Vector2Scale(
+					rl.Vector2Normalize(m.Velocity), m.MaxVelocity)
+		}
+	}
+
+	// NEW POSITION
 	m.GameObj.Position = rl.Vector2Add(m.GameObj.Position, m.Velocity)
 	
 }
