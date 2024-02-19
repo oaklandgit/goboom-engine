@@ -20,6 +20,7 @@ func main() {
 		"assets/planet.png",
 		"assets/ship.png",
 		"assets/rocky.png",
+		"assets/rocky2.png",
 		"assets/shadow.png",
 		"assets/rings.png",
 	)
