@@ -23,6 +23,13 @@ func createShip(x, y float32) *GameObj {
 		g.Components["sprite"].(*Sprite).CurrFrame = 0
 	}
 
+	dockWith := func(g *GameObj, thePlanet *GameObj) {
+		g.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
+		g.Tags = append(g.Tags, "docked")
+		thePlanet.Tags = append(thePlanet.Tags, "docking")
+		fmt.Printf("Landed on %s!\n", thePlanet.Name)
+	}
+
 	// SHIP
 	ship := NewGameObject("Spaceship",
 		WithPosition(x, y),
@@ -97,7 +104,7 @@ func createShip(x, y float32) *GameObj {
 	ship.Components["area"].(*Area).AddCollisionHandler(
 			"planet",
 			func(you *GameObj, thePlanet *GameObj) {
-				if !thePlanet.HasTag("landed") {
+				if !thePlanet.HasTag("docking") {
 					fmt.Printf("BOOM! You crashed with %s\n", thePlanet.Name)
 				}
 			})
@@ -105,8 +112,7 @@ func createShip(x, y float32) *GameObj {
 	landingZone.Components["area"].(*Area).AddCollisionHandler(
 		"planet",
 		func(you *GameObj, thePlanet *GameObj) {
-			fmt.Printf("You landed on %s!\n", thePlanet.Name)
-			thePlanet.Tags = append(thePlanet.Tags, "landed")
+			dockWith(ship, thePlanet)			
 		})
 
 	return ship

@@ -5,6 +5,7 @@ import (
 )
 
 const GRAVITY_THRESHOLD = 300
+const IGNORE_WHEN = "docked"
 
 func createPlanet(
 	name string,
@@ -40,7 +41,12 @@ func createPlanet(
 		WithWrap(true, false, float32(tex.Width) * scale / 2),
 	)
 
-	p.NewAttract([]*GameObj{target}, gravity, GRAVITY_THRESHOLD)
+	p.NewAttract(
+		[]*GameObj{target},
+		gravity,
+		GRAVITY_THRESHOLD,
+		WithIgnored(IGNORE_WHEN),
+	)
 
 	p.NewRotate(rotationSpeed)
 

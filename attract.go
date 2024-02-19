@@ -8,6 +8,7 @@ import (
 type Attract struct {
 	GameObj *GameObj
 	Targets []*GameObj
+	Ignored []string
 	Force float32
 	Threshold float32
 }
@@ -16,13 +17,13 @@ func (*Attract) Id() string {
 	return "attract"
 }
 
-type AttractOptions func(*Attract)
+type AttractOption func(*Attract)
 
 func (obj *GameObj) NewAttract(
 	targets []*GameObj,
 	force float32,
 	threshold float32,
-	opts ...AttractOptions) *Attract {
+	opts ...AttractOption) *Attract {
 
 	attract := &Attract{
 		Targets: targets,
@@ -39,6 +40,13 @@ func (obj *GameObj) NewAttract(
 
 	return attract
 }
+
+func WithIgnored(ignored... string) AttractOption {
+	return func(a *Attract) {
+		a.Ignored = ignored
+	}
+}
+
 
 func (a *Attract) Update() {
 
@@ -70,6 +78,11 @@ func (a *Attract) Update() {
 	}
 
 	for _, target := range a.Targets {
+		for _, ignore := range a.Ignored {
+			if target.HasTag(ignore) {
+				return
+			}
+		}
 		attract(target)
 	}
 
