@@ -18,7 +18,7 @@ func createPlanet(
 	target *GameObj,
 	opacity float32) *GameObj {
 
-	tex := textures["assets/rocky2.png"]
+	tex := textures["assets/rocky.png"]
 
 	p := NewGameObject(name,
 		WithTags("planet"),

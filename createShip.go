@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -63,7 +64,7 @@ func createShip(x, y float32) *GameObj {
 	ship.NewMotion(
 		WithFriction(0.999),
 		WithMaxVelocity(MAX_SPEED),
-		WithWrap(true, true, 0),
+		WithWrap(true, true, 16),
 	)
 	ship.NewInput(
 		KeyHandler{
@@ -92,6 +93,21 @@ func createShip(x, y float32) *GameObj {
 		},
 		
 	)
+
+	ship.Components["area"].(*Area).AddCollisionHandler(
+			"planet",
+			func(you *GameObj, thePlanet *GameObj) {
+				if !thePlanet.HasTag("landed") {
+					fmt.Printf("BOOM! You crashed with %s\n", thePlanet.Name)
+				}
+			})
+
+	landingZone.Components["area"].(*Area).AddCollisionHandler(
+		"planet",
+		func(you *GameObj, thePlanet *GameObj) {
+			fmt.Printf("You landed on %s!\n", thePlanet.Name)
+			thePlanet.Tags = append(thePlanet.Tags, "landed")
+		})
 
 	return ship
 

@@ -54,6 +54,43 @@ func (o *GameObj) AddComponents(comps ...Component) {
 	// o.Components = append(o.Components, comps...)
 }
 
+func (o *GameObj) HasTag(tag string) bool {
+	for _, t := range o.Tags {
+		if t == tag {
+			return true
+		}
+	}
+	return false
+}
+
+func (o *GameObj) FindChildrenByTags(recurse bool, tags... string) []*GameObj {
+	var objs []*GameObj
+	for _, c := range o.Children {
+		for _, t := range tags {
+			if c.HasTag(t) {
+				objs = append(objs, c)
+			}
+			if recurse && len(c.Children) > 0 {
+				objs = append(objs, c.FindChildrenByTags(recurse, tags...)...)
+			}
+		}
+	}
+	return objs
+}
+
+func (o *GameObj) FindChildrenByComponent(recurse bool, comp string) []*GameObj {
+	var objs []*GameObj
+	for _, c := range o.Children {
+		if c.Components[comp] != nil {
+			objs = append(objs, c)
+		}
+		if recurse && len(c.Children) > 0 {
+			objs = append(objs, c.FindChildrenByComponent(recurse, comp)...)
+		}
+	}
+	return objs
+}
+
 func WithTags(tags ...string) GameObjOption {
 	return func(o *GameObj) {
 		o.Tags = tags

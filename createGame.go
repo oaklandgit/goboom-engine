@@ -1,6 +1,8 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 type State int
 
@@ -34,27 +36,15 @@ func (g *Game) AddScene(name string, scene *GameObj) {
 	g.Scenes[name] = scene
 }
 
-func (g *Game) Start(scene string) {
-	rl.InitWindow(g.Width, g.Height, g.Title)
-	rl.SetTargetFPS(60)
-	textures = LoadTextures("assets/planet.png", "assets/ship.png")
-}
-
 func (g *Game) Run(scene string) {
 	g.State = Running
-
-	// rl.InitWindow(g.Width, g.Height, g.Title)
-	// rl.SetTargetFPS(60)
-
-	// textures = LoadTextures("assets/planet.png", "assets/ship.png")
-	// textures = LoadTextures(g.Textures...)
-	
 	
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Color{10, 10, 20, 255})
 
 		game.Scenes[scene].Update()
+		CheckForCollisions(game.Scenes[scene])
 		game.Scenes[scene].Draw()
 		
 		rl.EndDrawing()
@@ -67,5 +57,44 @@ func (g *Game) Pause() {
 
 func (g *Game) Stop() {
 	g.State = Stopped
+}
+
+func CheckForCollisions(scope *GameObj) {
+	objs := scope.FindChildrenByComponent(true, "area")
+
+	// RESET
+	for _, a := range objs {
+		area := a.Components["area"].(*Area)
+		area.Collided = false
+	}
+
+	// CHECK
+	for i := 0; i < len(objs); i++ {
+		this := objs[i]
+		thisArea := this.Components["area"].(*Area)
+		for j := i + 1; j < len(objs); j++ {
+			that := objs[j]
+		  	thatArea := that.Components["area"].(*Area)
+		  	collision := thisArea.CollidedWith(that)
+		  	if collision {
+				thisArea.Collided = true
+				thatArea.Collided = true
+
+				// check for collision handlers on both objects!
+
+				for tag, handler := range thisArea.CollisionHandlers {
+					if that.HasTag(tag) {
+						handler(this, that)
+					}
+				}
+
+				for tag, handler := range thatArea.CollisionHandlers {
+					if this.HasTag(tag) {
+						handler(that, this)
+					}
+				}
+		  	}
+		}
+	}
 }
 

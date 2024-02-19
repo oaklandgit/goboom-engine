@@ -1,6 +1,8 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 var textures map[string]rl.Texture2D
 
@@ -20,11 +22,18 @@ func main() {
 		"assets/planet.png",
 		"assets/ship.png",
 		"assets/rocky.png",
-		"assets/rocky2.png",
 		"assets/shadow.png",
 		"assets/rings.png",
 	)
 
+	// SHIP
+	ship := createShip(400, 120)
+
+	// STARS
+	starfield := NewGameObject("Starfield")
+	starfield.NewStarfield(screenW, screenH, 40)
+
+	// PLANETS
 	var level1Map = `
 	..........
 	..........
@@ -33,8 +42,6 @@ func main() {
 	..🔴.......
 	..........
 	`
-
-	ship := createShip(400, 120)
 
 	earth := createPlanet("Earth", 0, 0, 0.2, 0.1, 0, 1, rl.Blue, 0.2, ship, 1)
 	earth.AddChildren(
@@ -48,15 +55,13 @@ func main() {
 	)
 
 	saturn := createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 1.2, rl.Yellow, 0.1, ship, 1)
-	rings := NewGameObject("Rings", WithScale(2.4, 2.4), WithAngle(45))
+	rings := NewGameObject("Rings", WithScale(2.4, 2.4), WithAngle(30))
 	rings.NewSprite(
 		textures["assets/rings.png"],
 		WithOpacity(0.2),
 		WithColor(rl.Yellow),
 	)
 	saturn.AddChildren(rings)
-
-
 		var level1MapTable = map[rune]func() *GameObj{
 		'🪐': func() *GameObj {
 			return saturn
@@ -69,25 +74,20 @@ func main() {
 		},
 
 	}
-
 	solarSystem := CreateLevel(
 		"The Solar System",
 		level1Map,
 		60, 60,
 		level1MapTable,
 	)
-
 	solarSystem.Size = rl.NewVector2(screenW, screenH)
 
-	starfield := NewGameObject("Starfield")
-	starfield.NewStarfield(screenW, screenH, 40)
-
+	// SCENE
 	scene1 := NewGameObject("Scene 1")
 	scene1.Size = rl.NewVector2(screenW, screenH)
 	scene1.AddChildren(starfield, solarSystem, ship)
-	
+
 	game.AddScene("level1", scene1)
 	game.Run("level1")
-
 
 }

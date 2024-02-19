@@ -52,6 +52,5 @@ func (s *Starfield) Update() {
 }
 
 func (s *Starfield) Draw() {
-
 	rl.DrawTexture(s.Texture, 0, 0, rl.White)
 }

@@ -4,17 +4,17 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-type Shape interface {
+type CollisionShape interface {
 	Width() float32
 	Height() float32
-	Collides(*Shape) bool
 	Draw(x, y float32, color rl.Color) // for debugging
 }
 
 type Area struct {
 	GameObj *GameObj
-	Shape Shape
-	CollisionHandlers map[string]func(*GameObj)
+	Shape CollisionShape
+	Collided bool
+	CollisionHandlers map[string]func(*GameObj, *GameObj)
 }
 
 func (*Area) Id() string {
@@ -25,12 +25,13 @@ func (*Area) Id() string {
 type AreaOptions func(*Area)
 
 func (obj *GameObj) NewArea(
-	shape Shape,
+	shape CollisionShape,
 	opts ...AreaOptions) *Area {
 
 	area := &Area{
 		GameObj: obj,
 		Shape: shape,
+		CollisionHandlers: make(map[string]func(*GameObj, *GameObj)),
 	}
 
 	for _, opt := range opts {
@@ -42,16 +43,32 @@ func (obj *GameObj) NewArea(
 	return area
 }
 
-func (a *Area) AddCollisionHandler(tag string, handler func(*GameObj)) {
+func (a *Area) AddCollisionHandler(tag string, handler func(*GameObj, *GameObj)) {
 	a.CollisionHandlers[tag] = handler
 }
 
+func (a *Area) CollidedWith(other *GameObj) bool {
+	b := other.Components["area"].(*Area)
+
+	return rl.CheckCollisionCircles(
+		a.GameObj.PosGlobal(),
+		a.Shape.Width()/2,
+		b.GameObj.PosGlobal(),
+		b.Shape.Width()/2)
+}
+
 func (a *Area) Update() {
+	// no op
 }
 
 func (a *Area) Draw() {
 	// DEBUG
-	// a.Shape.Draw(a.GameObj.PosGlobal().X, a.GameObj.PosGlobal().Y, rl.Green)
+
+	color := rl.Green
+	if a.Collided {
+		color = rl.Red
+	}
+	a.Shape.Draw(a.GameObj.PosGlobal().X, a.GameObj.PosGlobal().Y, color)
 }
 
 type CircleCollider struct {
@@ -66,7 +83,7 @@ func (c CircleCollider) Height() float32 {
 	return c.Radius * 2
 }
 
-func (c CircleCollider) Collides(s *Shape) bool {
+func (c CircleCollider) Collides(s *CollisionShape) bool {
 	return false
 }
 
@@ -91,7 +108,7 @@ func (r RectangleCollider) Draw(x, y float32, color rl.Color) {
 	rl.DrawRectangle(int32(x), int32(y), int32(r.W), int32(r.H), color)
 }
 
-func (r RectangleCollider) Collides(s *Shape) bool {
+func (r RectangleCollider) Collides(s *CollisionShape) bool {
 	return false
 }
 
