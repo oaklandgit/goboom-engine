@@ -1,5 +1,11 @@
 package main
 
+import (
+	"math"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
+
 type Rotate struct {
 	GameObj *GameObj
 	Speed float32 // can be negative
@@ -7,11 +13,6 @@ type Rotate struct {
 
 func (*Rotate) Id() string {
 	return "rotate"
-}
-
-
-func (r *Rotate) Draw() {
-	// no op
 }
 
 type RotateOption func(*Rotate)
@@ -42,5 +43,22 @@ func (r *Rotate) Update() {
 		r.GameObj.Angle = 360
 	}
 	
+}
+
+func (r *Rotate) Draw() {
+	p1 := r.GameObj.PosGlobal()
+	radius := r.GameObj.Width() / 2
+	rads := float64(r.GameObj.Angle * rl.Deg2rad)
+
+	p2 := rl.Vector2{
+		X: p1.X + radius * float32(math.Cos(rads)),
+		Y: p1.Y + radius * float32(math.Sin(rads)),
+	} 
+
+	rl.DrawLine(
+		int32(p1.X),
+		int32(p1.Y),
+		int32(p2.X), int32(p2.Y),
+		rl.White)
 }
 

@@ -26,8 +26,9 @@ func createShip(x, y float32) *GameObj {
 		g.Components["sprite"].(*Sprite).CurrFrame = 0
 	}
 
-	dockWith := func(g *GameObj, thePlanet *GameObj) {
-		g.Components["dock"].(*Dock).DockWith(thePlanet)
+	dockWith := func(g *GameObj, thePlanet *GameObj, landingPosition rl.Vector2) {
+		// landingPosition is the angle of where on the edge it landed
+		g.Components["dock"].(*Dock).DockWith(thePlanet, landingPosition)
 	}
 
 	// SHIP
@@ -112,7 +113,7 @@ func createShip(x, y float32) *GameObj {
 	landingZone.Components["area"].(*Area).AddCollisionHandler(
 		"planet",
 		func(you *GameObj, thePlanet *GameObj) {
-			dockWith(ship, thePlanet)			
+			dockWith(ship, thePlanet, landingZone.PosGlobal())			
 		})
 
 	return ship

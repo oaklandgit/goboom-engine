@@ -13,6 +13,7 @@ const DOCK_HEIGHT = 12
 type Dock struct {
 	GameObj *GameObj
 	DockedWith *GameObj
+	AngleOffset float32
 }
 
 func (*Dock) Id() string {
@@ -37,7 +38,7 @@ func (obj *GameObj) NewDock(
 	return dock
 }
 
-func (d *Dock) DockWith(other *GameObj) {
+func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
 	d.DockedWith = other
 
 	// stop motion
@@ -91,11 +92,14 @@ func (d *Dock) Update() {
 	y := d.DockedWith.PosGlobal().Y + (radius * float32(math.Sin(float64(angle))))
 
 	d.GameObj.Position = rl.NewVector2(x, y)
+
 	d.GameObj.Angle = d.DockedWith.Angle
-	// d.GameObj.Position = d.DockedWith.PosGlobal()
 
 }
 
 func (d *Dock) Draw() {
-	// no op
+	if d.DockedWith == nil { return }
+	
+	text := fmt.Sprintf("Docked with %s", d.DockedWith.Name)
+	rl.DrawText(text, 10, 10, 20, rl.White)
 }
