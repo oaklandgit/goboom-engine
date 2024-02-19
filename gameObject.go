@@ -54,6 +54,12 @@ func (o *GameObj) AddComponents(comps ...Component) {
 	// o.Components = append(o.Components, comps...)
 }
 
+func WithTags(tags ...string) GameObjOption {
+	return func(o *GameObj) {
+		o.Tags = tags
+	}
+}
+
 func WithPosition(x, y float32) GameObjOption {
 	return func(o *GameObj) {
 		o.Position = rl.NewVector2(x, y)

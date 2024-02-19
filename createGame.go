@@ -15,10 +15,7 @@ type Game struct {
 	Width int32
 	Height int32
 	Scenes map[string]*GameObj
-	// CurrScene *GameObj
 	State State
-	// Textures []string
-	// Textures map[string]rl.Texture2D
 }
 
 func NewGame(title string, w, h int32, textures map[string]rl.Texture2D) *Game {
@@ -28,7 +25,6 @@ func NewGame(title string, w, h int32, textures map[string]rl.Texture2D) *Game {
 		Height: h,
 		State: Stopped,
 		Scenes: make(map[string]*GameObj),
-		// Textures: textures,
 	}
 
 	return game
@@ -36,6 +32,12 @@ func NewGame(title string, w, h int32, textures map[string]rl.Texture2D) *Game {
 
 func (g *Game) AddScene(name string, scene *GameObj) {
 	g.Scenes[name] = scene
+}
+
+func (g *Game) Start(scene string) {
+	rl.InitWindow(g.Width, g.Height, g.Title)
+	rl.SetTargetFPS(60)
+	textures = LoadTextures("assets/planet.png", "assets/ship.png")
 }
 
 func (g *Game) Run(scene string) {

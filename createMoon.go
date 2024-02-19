@@ -11,7 +11,7 @@ func createMoon(
 	color rl.Color,
 	opacity float32) *GameObj {
 
-	tex := textures["assets/planet.png"]
+	tex := textures["assets/rocky.png"]
 
 	m := NewGameObject(name,
 		WithOrigin(0.5, 0.5),
@@ -27,8 +27,14 @@ func createMoon(
 	m.NewRotate(rotationSpeed)
 	m.NewOrbit(speed, distance)
 	m.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
-	
 
+	shadow := NewGameObject("Shadow", WithScale(scale * 0.9, scale * 0.9))
+	shadow.NewSprite(
+		textures["assets/shadow.png"],
+		WithOpacity(0.9),
+	)
+	m.AddChildren(shadow)
+	
 	return m
 
 }

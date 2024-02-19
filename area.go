@@ -1,6 +1,8 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 type Shape interface {
 	Width() float32
@@ -12,6 +14,7 @@ type Shape interface {
 type Area struct {
 	GameObj *GameObj
 	Shape Shape
+	CollisionHandlers map[string]func(*GameObj)
 }
 
 func (*Area) Id() string {
@@ -39,12 +42,16 @@ func (obj *GameObj) NewArea(
 	return area
 }
 
+func (a *Area) AddCollisionHandler(tag string, handler func(*GameObj)) {
+	a.CollisionHandlers[tag] = handler
+}
+
 func (a *Area) Update() {
-	
 }
 
 func (a *Area) Draw() {
-	a.Shape.Draw(a.GameObj.PosGlobal().X, a.GameObj.PosGlobal().Y, rl.Green)
+	// DEBUG
+	// a.Shape.Draw(a.GameObj.PosGlobal().X, a.GameObj.PosGlobal().Y, rl.Green)
 }
 
 type CircleCollider struct {

@@ -1,6 +1,8 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 const GRAVITY_THRESHOLD = 300
 
@@ -16,9 +18,10 @@ func createPlanet(
 	target *GameObj,
 	opacity float32) *GameObj {
 
-	tex := textures["assets/planet.png"]
+	tex := textures["assets/rocky.png"]
 
 	p := NewGameObject(name,
+		WithTags("planet"),
 		WithOrigin(0.5, 0.5),
 		WithPosition(x, y),
 		WithScale(scale, scale),
@@ -40,6 +43,13 @@ func createPlanet(
 	p.NewAttract([]*GameObj{target}, gravity, GRAVITY_THRESHOLD)
 
 	p.NewRotate(rotationSpeed)
+
+	shadow := NewGameObject("Shadow", WithScale(scale * 0.95, scale * 0.95))
+	shadow.NewSprite(
+		textures["assets/shadow.png"],
+		WithOpacity(0.8),
+	)
+	p.AddChildren(shadow)
 
 	return p
 

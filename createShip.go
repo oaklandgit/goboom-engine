@@ -7,8 +7,8 @@ import (
 )
 
 const ROTATE_SPEED = 5
-const THRUST_SPEED = 0.07
-const MAX_SPEED = 3	
+const THRUST_SPEED = 0.04
+const MAX_SPEED = 2	
 
 func createShip(x, y float32) *GameObj {
 
@@ -26,6 +26,7 @@ func createShip(x, y float32) *GameObj {
 	ship := NewGameObject("Spaceship",
 		WithPosition(x, y),
 		WithOrigin(0.6, 0.5),
+		WithTags("ship"),
 	)
 	ship.NewSprite(
 		textures["assets/ship.png"],
