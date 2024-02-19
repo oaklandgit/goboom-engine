@@ -43,7 +43,8 @@ func (o *GameObj) NewMotion(opts ...MotionOption) *Motion {
 }
 
 func (m *Motion) SetVelocity(speed float32, heading float32) {
-	rads := float64(heading) * (math.Pi / 180)
+	// rads := float64(heading) * (math.Pi / 180)
+	rads := float64(heading * rl.Deg2rad)
 	m.Velocity =
 		rl.Vector2Add(m.Velocity, rl.Vector2{
 			X: speed * float32(math.Cos(rads)),

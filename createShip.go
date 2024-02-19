@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -20,14 +22,6 @@ func createShip(x, y float32) *GameObj {
 		g.Components["sprite"].(*Sprite).CurrFrame = 0
 	}
 
-	rotateCW := func(g *GameObj) {
-		g.Angle += ROTATE_SPEED
-	}
-
-	rotateCCW := func(g *GameObj) {
-		g.Angle -= ROTATE_SPEED
-	}
-
 	// SHIP
 	ship := NewGameObject("Spaceship",
 		WithPosition(x, y),
@@ -37,6 +31,31 @@ func createShip(x, y float32) *GameObj {
 		textures["assets/ship.png"],
 		WithFrames(1, 2, 2),
 	)
+
+	landingZone := NewGameObject(
+		"Landing Zone",
+		WithPosition(-12, 0),
+	)
+	landingZone.NewArea(CircleCollider{Radius: 3})
+	ship.AddChildren(landingZone)
+
+	rotateLandingWithShip := func() {
+		landingZone.Position.X = float32(-12 * math.Cos(float64(landingZone.Angle * rl.Deg2rad)))
+		landingZone.Position.Y = float32(-12 * math.Sin(float64(landingZone.Angle * rl.Deg2rad)))
+	}
+
+
+	rotateCW := func(g *GameObj) {
+		g.Angle += ROTATE_SPEED
+		landingZone.Angle += ROTATE_SPEED
+		rotateLandingWithShip()
+	}
+
+	rotateCCW := func(g *GameObj) {
+		g.Angle -= ROTATE_SPEED
+		landingZone.Angle -= ROTATE_SPEED
+		rotateLandingWithShip()
+	}
 
 	ship.NewArea(CircleCollider{Radius: 8})
 

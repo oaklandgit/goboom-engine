@@ -2,6 +2,8 @@ package main
 
 import (
 	"math"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 type Orbit struct {
@@ -49,9 +51,9 @@ func (orb *Orbit) Update() {
 		orb.Angle = 0
 	}
 
-	radians := orb.Angle * (math.Pi / 180)
-	orb.GameObj.Position.X = orb.Distance * float32(math.Cos(float64(radians)))
-	orb.GameObj.Position.Y = orb.Distance * float32(math.Sin(float64(radians)))
+	rads := float64(orb.Angle * rl.Deg2rad)
+	orb.GameObj.Position.X = orb.Distance * float32(math.Cos(rads))
+	orb.GameObj.Position.Y = orb.Distance * float32(math.Sin(rads))
 
 }
 
