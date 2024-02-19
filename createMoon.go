@@ -24,9 +24,10 @@ func createMoon(
 		WithOpacity(opacity),
 	)
 
-	m.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
 	m.NewRotate(rotationSpeed)
 	m.NewOrbit(speed, distance)
+	m.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
+	
 
 	return m
 

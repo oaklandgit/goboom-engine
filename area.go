@@ -15,7 +15,7 @@ type Area struct {
 }
 
 func (*Area) Id() string {
-	return "orbit"
+	return "area"
 }
 
 
