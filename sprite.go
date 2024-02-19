@@ -35,7 +35,6 @@ func WithColor(color rl.Color) SpriteOption {
 
 func WithFrames(rows, cols, frames int) SpriteOption {
 	return func(s *Sprite) {
-		// s.Frames = make([]rl.Rectangle, 0, frames)
 		for i := 0; i < frames; i++ {
 			frame := rl.NewRectangle(
 				float32(i % cols) * float32(s.Texture.Width) / float32(cols),
@@ -83,10 +82,10 @@ func (s *Sprite) Center() rl.Vector2 {
 	return rl.NewVector2(float32(s.Texture.Width/2), float32(s.Texture.Height/2))
 }
 
-func (s *Sprite) AnchorPoint() rl.Vector2 {
+func (s *Sprite) AnchorPoint(w, h float32) rl.Vector2 {
 	return rl.NewVector2(
-		s.GameObj.Origin.X * float32(s.Texture.Width) * s.GameObj.Scale.X,
-		s.GameObj.Origin.Y * float32(s.Texture.Height) * s.GameObj.Scale.Y,
+		s.GameObj.Origin.X * w,
+		s.GameObj.Origin.Y * h,
 	)
 }
 
@@ -94,8 +93,9 @@ func (s *Sprite) Update() {
 	// no op
 }
 
-func (s *Sprite) Draw() {
+func (s *Sprite) GetSpriteRect() (rl.Rectangle, rl.Rectangle) {
 
+	// SOURCE
 	texW := float32(s.Texture.Width)
 	texH := float32(s.Texture.Height)
 
@@ -106,10 +106,24 @@ func (s *Sprite) Draw() {
 		source = s.Frames[s.CurrFrame]
 	}
 
+	// DEST
+	dest := rl.NewRectangle(
+		s.GameObj.PosGlobal().X,
+		s.GameObj.PosGlobal().Y,
+        source.Width * s.GameObj.Scale.X,
+        source.Height * s.GameObj.Scale.Y,)
 
-	// objW := s.GameObj.Width()
-	// objH := s.GameObj.Height()
+	return source, dest
+
+}
+
+func (s *Sprite) Draw() {
+
+	source, dest := s.GetSpriteRect()
 	objR := s.GameObj.Angle
+
+	texW := float32(s.Texture.Width)
+	texH := float32(s.Texture.Height)
 
 	if s.FlipX {
 		texW *= -1
@@ -119,22 +133,12 @@ func (s *Sprite) Draw() {
 		texH *= -1
 	}
 
-
-
-	dest := rl.NewRectangle(
-		s.GameObj.PosGlobal().X,
-		s.GameObj.PosGlobal().Y,
-        source.Width * s.GameObj.Scale.X,
-        source.Height * s.GameObj.Scale.Y,)
-
-	origin := s.AnchorPoint()
+	origin := s.AnchorPoint(dest.Width, dest.Height)
 	color := s.Color
 	if s.Opacity < 1.0 {
 	color.A = uint8(float32(color.A) * s.Opacity)
 	}
 	
-	// rl.DrawRectanglePro(dest, origin, objR, rl.Color{R: 255, G: 0, B: 0, A: 60})
 	rl.DrawTexturePro(s.Texture, source, dest, origin, objR, color)
-	// posText := fmt.Sprintf("%v", s.GameObj.PosGlobal())
 	// rl.DrawText(posText, int32(dest.X), int32(dest.Y), 12, rl.White)
 }
