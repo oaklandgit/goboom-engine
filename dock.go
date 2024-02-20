@@ -45,21 +45,21 @@ func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
 	d.GameObj.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
 	
 	// stop attracting and colliding
-	d.GameObj.Tags = append(d.GameObj.Tags, "docked")
-	other.Tags = append(other.Tags, "docking")
+	d.GameObj.Tags["docked"] = struct{}{}
+	other.Tags["docking"] = struct{}{}
 
 	// fanfare
 	fmt.Printf("Landed on %s!\n", other.Name)
 }
 
-func remove(s []string, r string) []string {
-    for i, v := range s {
-        if v == r {
-            return append(s[:i], s[i+1:]...)
-        }
-    }
-    return s
-}
+// func remove(s []string, r string) []string {
+//     for i, v := range s {
+//         if v == r {
+//             return append(s[:i], s[i+1:]...)
+//         }
+//     }
+//     return s
+// }
 
 func displace(distance float32, angle float32) rl.Vector2 {
 	rads := float64(angle * rl.Deg2rad)
@@ -71,8 +71,13 @@ func displace(distance float32, angle float32) rl.Vector2 {
 }
 
 func (d *Dock) Undock() {
-	d.GameObj.Tags = remove(d.GameObj.Tags, "docked")
-	d.DockedWith.Tags = remove(d.DockedWith.Tags, "docking")
+	fmt.Println(d.GameObj.Tags)
+	// d.GameObj.Tags = remove(d.GameObj.Tags, "docked")
+	delete(d.GameObj.Tags, "docked")
+	fmt.Println(d.GameObj.Tags)
+	
+	// d.DockedWith.Tags = remove(d.DockedWith.Tags, "docking")
+	delete(d.DockedWith.Tags, "docking")
 	d.DockedWith = nil
 	// move it a bit to avoid immediate re-docking
 	displacement := displace(DOCK_HEIGHT, d.GameObj.Angle)
@@ -99,7 +104,7 @@ func (d *Dock) Update() {
 
 func (d *Dock) Draw() {
 	if d.DockedWith == nil { return }
-	
+
 	text := fmt.Sprintf("Docked with %s", d.DockedWith.Name)
 	rl.DrawText(text, 10, 10, 20, rl.White)
 }

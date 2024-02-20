@@ -50,6 +50,8 @@ func createPlanet(
 
 	p.NewRotate(rotationSpeed)
 
+	p.NewMine()
+
 	shadow := NewGameObject("Shadow", WithScale(scale * 0.95, scale * 0.95))
 	shadow.NewSprite(
 		textures["assets/shadow.png"],

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -60,5 +61,11 @@ func (r *Rotate) Draw() {
 		int32(p1.Y),
 		int32(p2.X), int32(p2.Y),
 		rl.White)
+
+	rl.DrawText(
+		fmt.Sprintf("%.0f", r.GameObj.Angle),
+		int32(p1.X + 10),
+		int32(p1.Y + 10),
+		20, rl.White)
 }
 

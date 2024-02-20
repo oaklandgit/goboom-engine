@@ -8,7 +8,7 @@ import (
 
 type GameObj struct {
 	Name string
-	Tags []string
+	Tags map[string]struct{}
 	Position rl.Vector2 // local
 	Layer int
 	Offset rl.Vector2
@@ -64,12 +64,15 @@ func (o *GameObj) AddComponents(comps ...Component) {
 }
 
 func (o *GameObj) HasTag(tag string) bool {
-	for _, t := range o.Tags {
-		if t == tag {
-			return true
-		}
-	}
-	return false
+
+	_, exists := o.Tags[tag]
+
+	// for _, t := range o.Tags {
+	// 	if t == tag {
+	// 		return true
+	// 	}
+	// }
+	return exists
 }
 
 func (o *GameObj) FindChildrenByTags(recurse bool, tags... string) []*GameObj {
@@ -102,7 +105,10 @@ func (o *GameObj) FindChildrenByComponent(recurse bool, comp string) []*GameObj 
 
 func WithTags(tags ...string) GameObjOption {
 	return func(o *GameObj) {
-		o.Tags = tags
+		// o.Tags = tags
+		for _, t := range tags {
+			o.Tags[t] = struct{}{}
+		}
 	}
 }
 
@@ -138,6 +144,7 @@ func NewGameObject(name string, opts ...GameObjOption) *GameObj {
 		Scale: rl.Vector2{X: 1, Y: 1},
 		Origin: rl.Vector2{X: 0.5, Y: 0.5},
 		Components: make(map[string]Component),
+		Tags: make(map[string]struct{}),
 	}
 
 	for _, opt := range opts {
