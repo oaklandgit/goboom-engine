@@ -45,6 +45,7 @@ func createShip(x, y float32) *GameObj {
 
 	ship.NewDock()
 	ship.NewBank()
+	ship.NewLives(3)
 
 	landingZone := NewGameObject(
 		"Landing Zone",
@@ -104,11 +105,17 @@ func createShip(x, y float32) *GameObj {
 	)
 
 	ship.Components["area"].(*Area).AddCollisionHandler(
-			"planet",
+			"canKill",
 			func(you *GameObj, thePlanet *GameObj) {
-				if !thePlanet.HasTag("docking") {
-					fmt.Printf("BOOM! You crashed with %s\n", thePlanet.Name)
+
+				// not a collision if it's the planet you're docked with
+				if you.Components["dock"].(*Dock).DockedWith != nil &&
+					you.Components["dock"].(*Dock).DockedWith == thePlanet { 
+						return
 				}
+
+				fmt.Printf("BOOM! You crashed with %s\n", thePlanet.Name)
+				you.Components["lives"].(*Lives).RemoveLife()
 			})
 
 	landingZone.Components["area"].(*Area).AddCollisionHandler(
