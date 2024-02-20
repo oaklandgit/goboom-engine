@@ -6,12 +6,14 @@ func createMoon(
 	name string,
 	speed float32,
 	rotationSpeed float32,
-	scale float32,
+	radius float32,
 	distance float32,
 	color rl.Color,
 	opacity float32) *GameObj {
 
 	tex := textures["assets/rocky.png"]
+	scale := (radius * 2) / float32(tex.Width)
+
 
 	m := NewGameObject(name,
 		WithOrigin(0.5, 0.5),

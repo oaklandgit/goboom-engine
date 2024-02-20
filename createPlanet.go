@@ -13,13 +13,15 @@ func createPlanet(
 	speed float32,
 	rotationSpeed float32,
 	heading float32,
-	scale float32,
+	radius float32,
 	color rl.Color,
 	gravity float32,
 	target *GameObj,
 	opacity float32) *GameObj {
 
 	tex := textures["assets/rocky.png"]
+
+	scale := (radius * 2) / float32(tex.Width)
 
 	p := NewGameObject(name,
 		WithTags("planet"),

@@ -54,9 +54,9 @@ func main() {
 	..........
 	`
 
-	earth := createPlanet("Earth", 0, 0, 0.2, -0.1, 0, 1, rl.Blue, 0.2, ship, 1)
+	earth := createPlanet("Earth", 0, 0, 0.2, -0.1, 0, 60, rl.Blue, 0.2, ship, 1)
 	earth.AddChildren(
-		createMoon("Moon", 0.4, 0.4, 0.2, 112, rl.RayWhite, 1),
+		createMoon("Moon", 0.4, 0.4, 20, 112, rl.RayWhite, 1),
 	)
 	earth.Components["mine"].(*Mine).
 		AddResource("gold", 100, 1000).
@@ -64,17 +64,17 @@ func main() {
 		AddResource("copper", 300, 200).
 		AddResource("iron", 400, 100)
 
-	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 0.7, rl.Red, 0.15, ship, 1)
+	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 40, rl.Red, 0.15, ship, 1)
 	mars.AddChildren(
-		createMoon("Phobos", -1.3, 3, 0.2, 82, rl.Pink, 1),
-		createMoon("Deimos", -1, 0.1, 0.1, 100, rl.Pink, 1),
+		createMoon("Phobos", -1.3, 3, 4, 50, rl.Pink, 1),
+		createMoon("Deimos", -1, 0.1, 8, 100, rl.Pink, 1),
 	)
 	mars.Components["mine"].(*Mine).
 		AddResource("lithium", 100, 1000).
 		AddResource("uranium", 200, 500).
 		AddResource("plutonium", 300, 200)
 
-	saturn := createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 1.2, rl.Yellow, 0.1, ship, 1)
+	saturn := createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 80, rl.Yellow, 0.1, ship, 1)
 	
 	saturn.Components["mine"].(*Mine).
 		AddResource("diamond", 100, 1000).
