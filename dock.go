@@ -41,6 +41,9 @@ func (obj *GameObj) NewDock(
 func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
 	d.DockedWith = other
 
+	// let the mine know I'm here
+	other.Components["mine"].(*Mine).MinedBy = d.GameObj
+
 	// stop motion
 	d.GameObj.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
 	
@@ -52,15 +55,6 @@ func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
 	fmt.Printf("Landed on %s!\n", other.Name)
 }
 
-// func remove(s []string, r string) []string {
-//     for i, v := range s {
-//         if v == r {
-//             return append(s[:i], s[i+1:]...)
-//         }
-//     }
-//     return s
-// }
-
 func displace(distance float32, angle float32) rl.Vector2 {
 	rads := float64(angle * rl.Deg2rad)
 	displacement := rl.Vector2{
@@ -71,17 +65,18 @@ func displace(distance float32, angle float32) rl.Vector2 {
 }
 
 func (d *Dock) Undock() {
-	fmt.Println(d.GameObj.Tags)
-	// d.GameObj.Tags = remove(d.GameObj.Tags, "docked")
+
+	// delete the tags
 	delete(d.GameObj.Tags, "docked")
-	fmt.Println(d.GameObj.Tags)
-	
-	// d.DockedWith.Tags = remove(d.DockedWith.Tags, "docking")
 	delete(d.DockedWith.Tags, "docking")
-	d.DockedWith = nil
-	// move it a bit to avoid immediate re-docking
+	
+	// move ship a bit to avoid immediate re-docking
 	displacement := displace(DOCK_HEIGHT, d.GameObj.Angle)
 	d.GameObj.Position = rl.Vector2Add(d.GameObj.Position, displacement)
+
+	// sever the connection
+	d.DockedWith.Components["mine"].(*Mine).MinedBy = nil
+	d.DockedWith = nil
 }
 
 func (d *Dock) Update() {
@@ -105,6 +100,11 @@ func (d *Dock) Update() {
 func (d *Dock) Draw() {
 	if d.DockedWith == nil { return }
 
+	fontSize := int32(20)
 	text := fmt.Sprintf("Docked with %s", d.DockedWith.Name)
-	rl.DrawText(text, 10, 10, 20, rl.White)
+	textWidth := rl.MeasureText(text, fontSize)
+
+	color := d.DockedWith.Components["sprite"].(*Sprite).Color
+
+	rl.DrawText(text, 400 - textWidth/2, 408, fontSize, color)
 }

@@ -44,6 +44,7 @@ func createShip(x, y float32) *GameObj {
 	)
 
 	ship.NewDock()
+	ship.NewBank()
 
 	landingZone := NewGameObject(
 		"Landing Zone",

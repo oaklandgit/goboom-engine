@@ -62,7 +62,9 @@ func (a *Area) Update() {
 }
 
 func (a *Area) Draw() {
-	// DEBUG
+	if !DEBUG {
+		return
+	}
 
 	color := rl.Green
 	if a.Collided {
