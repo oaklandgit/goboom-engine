@@ -42,8 +42,14 @@ func (l *Lives) AddLives(count int) *Lives {
 }
 
 func (l *Lives) Respawn() *Lives {
+	// stop the ship
 	l.GameObj.Components["motion"].(*Motion).SetVelocity(0, 0)
 	l.GameObj.Components["sprite"].(*Sprite).CurrFrame = 0
+
+	// undock the ship
+	l.GameObj.Components["dock"].(*Dock).Undock()
+
+	// move the ship back to the start
 	l.GameObj.Position = rl.NewVector2(400, 120)
 	
 	return l
@@ -53,7 +59,6 @@ func (l *Lives) RemoveLife() {
 	l.Remaining--
 	if l.Remaining <= 0 {
 		fmt.Println("Game Over!")
-		return
 	}
 
 	l.Respawn()
