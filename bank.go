@@ -48,8 +48,6 @@ func (b *Bank) Draw() {
 	formatter := message.NewPrinter(language.English)
 	text := formatter.Sprintf("$%d", b.Balance)
 
-	fontSize := int32(30)
-	textWidth := rl.MeasureText(text, fontSize)
-	rl.DrawText(text, 400 - textWidth/2, 10, fontSize, rl.Green)
+	DrawText(text, 400, 16, 42, 12, rl.Green, Center)
 	
 }

@@ -9,3 +9,11 @@ func LoadTextures(textures ...string) map[string]rl.Texture2D {
 	}
 	return textureMap
 }
+
+func LoadFonts(fonts ...string) map[string]rl.Font {
+	fontMap := make(map[string]rl.Font)
+	for _, f := range fonts {
+		fontMap[f] = rl.LoadFont(f)
+	}
+	return fontMap
+}

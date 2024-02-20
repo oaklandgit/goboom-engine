@@ -100,11 +100,7 @@ func (d *Dock) Update() {
 func (d *Dock) Draw() {
 	if d.DockedWith == nil { return }
 
-	fontSize := int32(20)
-	text := fmt.Sprintf("Docked with %s", d.DockedWith.Name)
-	textWidth := rl.MeasureText(text, fontSize)
-
+	text := d.DockedWith.Name
 	color := d.DockedWith.Components["sprite"].(*Sprite).Color
-
-	rl.DrawText(text, 400 - textWidth/2, 408, fontSize, color)
+	DrawText(text, 400, 400, 32, 3, color, Center)
 }

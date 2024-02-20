@@ -85,24 +85,40 @@ func (m *Mine) Draw() {
 	// TEXT ABOVE PLANET
 	for i, r := range m.Resources {
 
-		text := fmt.Sprintf("%s: %d of %d", r.Name, r.Remaining, r.Amount)
-		fontSize := int32(16)
-		textWidth := rl.MeasureText(text, fontSize)
+		// draw progress bar
 
-		rl.DrawText(
+		text := fmt.Sprintf("%s: %d of %d", r.Name, r.Remaining, r.Amount)
+
+		itemSpacing := 42
+		progressBarWidth := 180
+		nudgeLeft := m.GameObj.Width() / 2 + 8
+		distFromPlanet := m.GameObj.Height() / 2 + 42
+
+		DrawProgressBar(
+			int32(m.GameObj.PosGlobal().X - float32(nudgeLeft)),
+			int32(m.GameObj.PosGlobal().Y) -
+				int32(i * itemSpacing) -
+				int32(distFromPlanet),
+			int32(progressBarWidth),
+			int32(r.Amount - r.Remaining),
+			int32(r.Amount),
 			text,
-			int32(m.GameObj.Position.X) - int32(textWidth)/2,
-			int32(m.GameObj.Position.Y) -
-				int32((2 + i) * int(fontSize + 6)) -
-				int32(m.GameObj.Height()/2),
-			fontSize, rl.White)
+		)
+
+		// 
+		// fontSize := int32(16)
+
+		// x := 	int32(m.GameObj.Position.X)
+		// y := 	int32(m.GameObj.Position.Y) -
+		// 		int32((2 + i) * int(fontSize + 6)) -
+		// 		int32(m.GameObj.Height()/2)
+
+		// DrawText(text, x, y, fontSize, 2, rl.White, Left)
 		
 	}
 
 	// TEXT BELOW $SCORE
 	text2 := fmt.Sprintf("%s @ $%d/unit", m.Resources[0].Name, m.Resources[0].Price)
-	fontSize := int32(18)
-	textWidth := rl.MeasureText(text2, fontSize)
-	rl.DrawText(text2, 400 - textWidth/2, 46, fontSize, rl.White)
+	DrawText(text2, 400, 62, 18, 8, rl.Green, Center)
 	
 }

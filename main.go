@@ -5,6 +5,7 @@ import (
 )
 
 var textures map[string]rl.Texture2D
+// var fonts map[string]rl.Font
 
 const (
 	screenW = 800
@@ -26,6 +27,15 @@ func main() {
 		"assets/shadow.png",
 		"assets/rings.png",
 	)
+
+	// fonts = LoadFonts(
+	// 	"assets/Monocraft.ttf",
+	// )
+
+	// FONT
+	// fontPath := "assets/Monocraft.ttf"
+	// fontSize := int32(16)
+	// customFont := rl.LoadFontEx(fontPath, fontSize, nil)
 
 	// SHIP
 	ship := createShip(400, 120)
