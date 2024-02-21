@@ -53,6 +53,16 @@ func createPlanet(
 	p.NewRotate(rotationSpeed)
 
 	p.NewMine()
+	// p.NewTween(
+	// 	0.01,
+	// 	func(g *GameObj) *float32 {
+	// 		return &g.Components["sprite"].(*Sprite).Opacity
+	// 	},
+	// 	func() {
+	// 		fmt.Println("Tween complete!")
+	// 		p.Components["tween"].(*Tween).GameObj.RemoveComponent("tween")
+	// 	},
+	// )
 
 	shadow := NewGameObject("Shadow", WithScale(scale * 0.95, scale * 0.95))
 	shadow.NewSprite(

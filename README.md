@@ -1,8 +1,10 @@
 # TO DO
 
 - Explosion and death on wrong landing
-- Mult lives / respawing
+- Delay before respawn
 - Buggy when docked and moving past left or right edge of screen
+- Game Over state
+- Game Start state
 - Ship should attach to planet at correct landing point
 - sprite animations (separate component from sprite)
 - worm holes (teleportation)
@@ -10,6 +12,7 @@
 
 # DONE
 
+- Mult lives / respawing
 - Planets (and moons) should have radius param, not scale
 - Depletion of resources reverse progress bars
 - HUD showing docked planet and its resources

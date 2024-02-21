@@ -60,7 +60,10 @@ func (o *GameObj) AddComponents(comps ...Component) {
 	for _, c := range comps {
 		o.Components[c.Id()] = c
 	}
-	// o.Components = append(o.Components, comps...)
+}
+
+func (o *GameObj) RemoveComponent(id string) {
+	delete(o.Components, id)
 }
 
 func (o *GameObj) HasTag(tag string) bool {
@@ -157,12 +160,17 @@ func NewGameObject(name string, opts ...GameObjOption) *GameObj {
 func (o *GameObj) AddChildren(children ...*GameObj) {
 	for _, c := range children {
 		c.Parent = o
-		// c.Offset = rl.Vector2Subtract(c.Position, o.Position)
-		// c.LocalRotation = c.Rotation - o.Rotation
 	}
 
 	o.Children = append(o.Children, children...)
 }
+
+// func (o *GameObj) RemoveChild(c *GameObj) {
+// 	for _, c := range o.Children {
+// 		c.Parent = nil
+// 	}
+// 	o.Children = nil
+// }
 
 func (o *GameObj) Update() {
 
