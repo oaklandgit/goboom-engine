@@ -26,6 +26,7 @@ func main() {
 		"assets/rocky.png",
 		"assets/shadow.png",
 		"assets/rings.png",
+		"assets/shard.png",
 	)
 
 	// fonts = LoadFonts(

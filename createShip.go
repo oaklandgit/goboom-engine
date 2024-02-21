@@ -114,6 +114,12 @@ func createShip(x, y float32) *GameObj {
 						return
 				}
 
+				ship.Parent.AddChildren(
+					createExplosion(
+						you.PosGlobal().X,
+						you.PosGlobal().Y,
+						"assets/shard.png",
+						))
 				fmt.Printf("BOOM! You crashed with %s\n", thePlanet.Name)
 				you.Components["lives"].(*Lives).RemoveLife()
 			})
