@@ -35,7 +35,7 @@ func createExplosion(x, y float32, texture string) *GameObj {
 				return &g.Components["sprite"].(*Sprite).Opacity
 			},
 			func() {
-				// TO DO: remove explosion
+				c.Delete()
 			},
 		)
 

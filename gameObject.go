@@ -20,6 +20,7 @@ type GameObj struct {
 	Parent *GameObj
 	Children []*GameObj
 	Size rl.Vector2
+	Deleted bool
 }
 
 func (o *GameObj) PosGlobal() rl.Vector2 {
@@ -148,6 +149,7 @@ func NewGameObject(name string, opts ...GameObjOption) *GameObj {
 		Origin: rl.Vector2{X: 0.5, Y: 0.5},
 		Components: make(map[string]Component),
 		Tags: make(map[string]struct{}),
+		Deleted: false,
 	}
 
 	for _, opt := range opts {
@@ -165,41 +167,31 @@ func (o *GameObj) AddChildren(children ...*GameObj) {
 	o.Children = append(o.Children, children...)
 }
 
-// func (o *GameObj) RemoveChild(c *GameObj) {
-// 	for _, c := range o.Children {
-// 		c.Parent = nil
-// 	}
-// 	o.Children = nil
-// }
+func (o *GameObj) Delete() {
+	o.Deleted = true
+}
 
 func (o *GameObj) Update() {
 
-	// if o.Parent != nil {
-
-		// Calculate the rotated offset
-		// rotatedOffset := rl.Vector2{
-		// 	X: o.Offset.X * float32(math.Cos(float64(o.Parent.Rotation))) - o.Offset.Y * float32(math.Sin(float64(o.Parent.Rotation))),
-		// 	Y: o.Offset.X * float32(math.Sin(float64(o.Parent.Rotation))) + o.Offset.Y * float32(math.Cos(float64(o.Parent.Rotation))),
-		// }
-
-		// Update position and rotation
-		// o.Position = rl.Vector2Add(o.Parent.Position, rotatedOffset)
-		// o.Rotation = o.Parent.Rotation + o.LocalRotation
-
-		// o.Position = rl.Vector2Add(o.Parent.Position, o.Offset)
-		// o.Rotation = o.Parent.Rotation + o.LocalRotation
-	// }
-
-	for _, c := range o.Components {
-		c.Update()
+	// update components
+	for _, comp := range o.Components {
+		comp.Update()
 	}
 
+	// update and remove children
+	var newChildren []*GameObj
 	for _, c := range o.Children {
+		if !c.Deleted {
+			newChildren = append(newChildren, c)
+		}
+
 		c.Update()
 	}
+	o.Children = newChildren
 }
 
 func (o *GameObj) Draw() {
+
 	for _, c := range o.Components {
 		c.Draw()
 	}

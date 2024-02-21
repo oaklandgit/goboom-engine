@@ -11,7 +11,7 @@ const (
 	screenW = 800
 	screenH = 450
 	title = "Space Miner!"
-	DEBUG = false
+	DEBUG = true
 )
 
 var game = NewGame(title, screenW, screenH, textures)
@@ -21,7 +21,6 @@ func main() {
 	rl.InitWindow(screenW, screenH, title)
 	rl.SetTargetFPS(60)
 	textures = LoadTextures(
-		"assets/planet.png",
 		"assets/ship.png",
 		"assets/rocky.png",
 		"assets/shadow.png",
