@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -40,19 +39,8 @@ func (obj *GameObj) NewDock(
 
 func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
 	d.DockedWith = other
-
-	// let the mine know I'm here
 	other.Components["mine"].(*Mine).MinedBy = d.GameObj
-
-	// stop motion
 	d.GameObj.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
-	
-	// stop attracting and colliding
-	d.GameObj.Tags["docked"] = struct{}{}
-	other.Tags["docking"] = struct{}{}
-
-	// fanfare
-	fmt.Printf("Landed on %s!\n", other.Name)
 }
 
 func displace(distance float32, angle float32) rl.Vector2 {
@@ -66,10 +54,8 @@ func displace(distance float32, angle float32) rl.Vector2 {
 
 func (d *Dock) Undock() {
 
-	// delete the tags
-	delete(d.GameObj.Tags, "docked")
-	delete(d.DockedWith.Tags, "docking")
-	
+	if d.DockedWith == nil { return }
+
 	// move ship a bit to avoid immediate re-docking
 	displacement := displace(DOCK_HEIGHT, d.GameObj.Angle)
 	d.GameObj.Position = rl.Vector2Add(d.GameObj.Position, displacement)
@@ -81,9 +67,7 @@ func (d *Dock) Undock() {
 
 func (d *Dock) Update() {
 
-	if d.DockedWith == nil {
-		return
-	}
+	if d.DockedWith == nil { return }
 
 	radius := d.DockedWith.Width() / 2 + DOCK_HEIGHT
 	angle := d.DockedWith.Angle * rl.Deg2rad
