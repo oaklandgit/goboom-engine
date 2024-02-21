@@ -1,23 +1,27 @@
+# IN PROGRESS
+
+- Collision with planet if too-fast or wrong-angle landing
+- More feedback on state of landing (e.g. too fast!)
+
 # TO DO
 
-- More feedback on state of landing (e.g. too fast!)
-- When toggling debug mode, print scene graph to console
+- Deal with memory leaks
+  - Lifespan component // use for explosions
+  - When toggling debug mode, print scene graph to console
 - Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
-- Lifespan component // use for explosions
 - Delay before respawn
 - Game Start state
 - Animate touching down tutorial
-- Generalized Animate function - Use for sprite frames or tweening eg “pulse” behavior. How would Van Dur Spey do it?
+
+- Generalized Animate function - Use for sprite frames or tweening eg “pulse” behavior. How would Van Dur Spey do it? Sprite animations (separate component from sprite)
 - Buggy when docked and moving past left or right edge of screen
 - Game Over state
 - Ship should attach to planet at correct landing point
-- sprite animations (separate component from sprite)
 - worm holes (teleportation)
 - more levels
 
 # DONE
 
-- Collision with planet if too-fast or wrong-angle landing
 - Explosion and death on wrong landing
 - Mult lives / respawing
 - Planets (and moons) should have radius param, not scale
