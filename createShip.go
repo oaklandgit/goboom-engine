@@ -105,7 +105,7 @@ func createShip(x, y float32) *GameObj {
 	)
 
 	ship.Components["area"].(*Area).AddCollisionHandler(
-			"canKill",
+			"deadly",
 			func(you *GameObj, thePlanet *GameObj) {
 
 				// not a collision if it's the planet you're docked with

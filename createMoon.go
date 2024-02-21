@@ -18,7 +18,7 @@ func createMoon(
 	m := NewGameObject(name,
 		WithOrigin(0.5, 0.5),
 		WithScale(scale, scale),
-		WithTags("moon", "canKill"),
+		WithTags("moon", "deadly"),
 	)
 
 	m.NewSprite(

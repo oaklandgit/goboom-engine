@@ -6,6 +6,8 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+const RESPAWN_BERTH = 22
+
 // could also repel if force is negative
 type Lives struct {
 	GameObj *GameObj
@@ -42,16 +44,43 @@ func (l *Lives) AddLives(count int) *Lives {
 }
 
 func (l *Lives) Respawn() *Lives {
-	// stop the ship
-	l.GameObj.Components["motion"].(*Motion).SetVelocity(0, 0)
-	l.GameObj.Components["sprite"].(*Sprite).CurrFrame = 0
 
-	// undock the ship
+	// stop the ship
+	l.GameObj.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
+	l.GameObj.Components["sprite"].(*Sprite).CurrFrame = 0
 	l.GameObj.Components["dock"].(*Dock).Undock()
 
-	// move the ship back to the start
-	l.GameObj.Position = rl.NewVector2(400, 120)
-	
+	randomSpot := func() rl.Vector2 {
+		x := float32(rl.GetRandomValue(200, 600))
+		y := float32(rl.GetRandomValue(100, 300))
+		return rl.NewVector2(x, y)
+	}
+
+	safe := false
+
+	safeLoop:
+	for !safe {
+
+		// try a random spot
+		l.GameObj.Position = randomSpot()
+
+		for _, sibling := range l.GameObj.Parent.FindChildrenByTags(true, "deadly") {
+
+			if rl.CheckCollisionCircles(
+				l.GameObj.PosGlobal(),
+				l.GameObj.Width() + RESPAWN_BERTH,
+				sibling.PosGlobal(),
+				sibling.Width() + RESPAWN_BERTH,
+			) {
+				continue safeLoop
+			}
+			
+		}
+
+		safe = true
+
+	}
+
 	return l
 }
 

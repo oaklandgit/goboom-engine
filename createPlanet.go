@@ -24,7 +24,7 @@ func createPlanet(
 	scale := (radius * 2) / float32(tex.Width)
 
 	p := NewGameObject(name,
-		WithTags("planet", "canKill"),
+		WithTags("planet", "deadly"),
 		WithOrigin(0.5, 0.5),
 		WithPosition(x, y),
 		WithScale(scale, scale),
