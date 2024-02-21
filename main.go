@@ -11,7 +11,7 @@ const (
 	screenW = 800
 	screenH = 450
 	title = "Space Miner!"
-	DEBUG = true
+	DEBUG = false
 )
 
 var game = NewGame(title, screenW, screenH, textures)
@@ -113,6 +113,7 @@ func main() {
 	scene1 := NewGameObject("Scene 1")
 	scene1.Size = rl.NewVector2(screenW, screenH)
 	scene1.AddChildren(starfield, solarSystem, ship)
+
 
 	game.AddScene("level1", scene1)
 	game.Run("level1")

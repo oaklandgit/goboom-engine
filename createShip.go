@@ -8,7 +8,14 @@ import (
 
 const ROTATE_SPEED = 5
 const THRUST_SPEED = 0.04
-const MAX_SPEED = 2	
+const MAX_SPEED = 2
+
+const WARNING_DISTANCE = 100
+// if not docked and within this distance,
+// check: is the angle correct for a landing?
+// check: is the speed correct for a landing?
+// no? Flash warning!
+// AKA approach vector
 
 
 func createShip(x, y float32) *GameObj {
@@ -76,6 +83,14 @@ func createShip(x, y float32) *GameObj {
 		WithMaxVelocity(MAX_SPEED),
 		WithWrap(true, true, 16),
 	)
+
+	ship.NewApproach(
+		[]string{"planet"},
+		WithSafeDistance(WARNING_DISTANCE, func() {}),
+		WithSafeAngle(10, func() {}),
+		WithSafeSpeed(0.5, func() {}),
+	)
+
 	ship.NewInput(
 		KeyHandler{
 			KeyPress{rl.KeyLeft, KEY_REPEAT},
