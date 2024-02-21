@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
+
+const MAX_LIFESPAN = 60 // 1 second
 
 func createExplosion(x, y float32, texture string) *GameObj {
 
@@ -22,18 +23,22 @@ func createExplosion(x, y float32, texture string) *GameObj {
 
 	// EXPLOSION
 	e := NewGameObject(
-		"splosion",
+		"explosion",
 		WithOrigin(0.5, 0.5),
-		WithPosition(x, y))
+		WithPosition(x, y),
+		WithTags("explosion"))
+
+	e.NewLifespan(MAX_LIFESPAN)
 
 	// SMOKE CLOUDS
 	for i := 0; i < 12; i++ {
 
 		c := NewGameObject(
-			fmt.Sprintf("splosion-%d", i),
+			"shard",
 			WithScale(
 				rand.Float32()*0.5,
-				rand.Float32()*0.5))
+				rand.Float32()*0.5),
+			WithTags("shard"))
 
 		c.NewMotion(
 			WithVelocity(

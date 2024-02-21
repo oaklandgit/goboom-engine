@@ -1,6 +1,10 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	_ "net/http/pprof"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -15,13 +19,23 @@ const (
 	DEBUG = false
 )
 
-var game = NewGame(title, screenW, screenH, textures)
+var game = NewGame(title, screenW, screenH)
 
 func main() {
+
+	if DEBUG {
+		go func() {
+			log.Println(http.ListenAndServe("localhost:6060", nil))
+		}()
+	}
 
 	rl.InitWindow(screenW, screenH, title)
 	rl.SetTargetFPS(60)
 	rl.InitAudioDevice()
+
+	defer rl.CloseAudioDevice()
+	defer rl.CloseWindow()
+
 	textures = LoadTextures(
 		"assets/ship.png",
 		"assets/rocky.png",

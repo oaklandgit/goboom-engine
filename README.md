@@ -5,9 +5,7 @@
 
 # TO DO
 
-- Deal with memory leaks
-  - Lifespan component // use for explosions
-  - When toggling debug mode, print scene graph to console
+- Docking sound
 - Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
 - Delay before respawn
 - Game Start state
@@ -22,6 +20,10 @@
 
 # DONE
 
+- Deal with memory leaks
+  - Lifespan component // use for explosions
+  - When toggling debug mode, print scene graph to console
+- thrust and explosion sounds
 - Explosion and death on wrong landing
 - Mult lives / respawing
 - Planets (and moons) should have radius param, not scale

@@ -20,7 +20,7 @@ type Game struct {
 	State State
 }
 
-func NewGame(title string, w, h int32, textures map[string]rl.Texture2D) *Game {
+func NewGame(title string, w, h int32) *Game {
 	game := &Game{
 		Title: title,
 		Width: w,
@@ -46,6 +46,16 @@ func (g *Game) Run(scene string) {
 		game.Scenes[scene].Update()
 		CheckForCollisions(game.Scenes[scene])
 		game.Scenes[scene].Draw()
+
+		if DEBUG {
+			game.Scenes[scene].Profile(
+				"ship",
+				"planet",
+				"moon",
+				"deadly",
+				"explosion",
+				"shard")
+		}
 		
 		rl.EndDrawing()
 	}

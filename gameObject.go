@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -68,15 +69,16 @@ func (o *GameObj) RemoveComponent(id string) {
 }
 
 func (o *GameObj) HasTag(tag string) bool {
-
 	_, exists := o.Tags[tag]
-
-	// for _, t := range o.Tags {
-	// 	if t == tag {
-	// 		return true
-	// 	}
-	// }
 	return exists
+}
+
+func (o *GameObj) Profile(tags... string) {
+	// fmt.Printf("====== %v ======\n", time.Now())
+	fmt.Println("================")
+	for _, t := range tags {
+		fmt.Printf("%-12s %d\n", t, len(o.FindChildrenByTags(true, t)))
+	}
 }
 
 func (o *GameObj) FindChildrenByTags(recurse bool, tags... string) []*GameObj {
