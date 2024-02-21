@@ -3,9 +3,22 @@ package main
 import (
 	"fmt"
 	"math/rand"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 func createExplosion(x, y float32, texture string) *GameObj {
+
+	sound := 
+		[]rl.Sound{
+			sounds["sounds/explosion1.wav"],
+			sounds["sounds/explosion2.wav"],
+			sounds["sounds/explosion3.wav"],
+		}[rand.Intn(3)]
+
+	rl.SetSoundVolume(sound, 0.2);
+	
+	rl.PlaySound(sound)
 
 	// EXPLOSION
 	e := NewGameObject(

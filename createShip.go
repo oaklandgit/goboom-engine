@@ -20,6 +20,10 @@ const WARNING_DISTANCE = 100
 
 func createShip(x, y float32) *GameObj {
 
+	// SOUNDS
+	thrustSound := sounds["sounds/thrust.wav"]
+	rl.SetSoundVolume(thrustSound, 0.1);
+
 	// SHIP METHODS
 	thrust := func(g *GameObj, speed float32) {
 		if g.Components["dock"].(*Dock).DockedWith != nil {
@@ -27,10 +31,18 @@ func createShip(x, y float32) *GameObj {
 		}
 		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
 		g.Components["sprite"].(*Sprite).CurrFrame = 1
+
+		
+
+		if !rl.IsSoundPlaying(thrustSound) {
+			rl.PlaySound(thrustSound)
+		}
+		
 	}
 
 	stopThrust := func(g *GameObj) {
 		g.Components["sprite"].(*Sprite).CurrFrame = 0
+		rl.StopSound(thrustSound)
 	}
 
 	dockWith := func(g *GameObj, thePlanet *GameObj, landingPosition rl.Vector2) {

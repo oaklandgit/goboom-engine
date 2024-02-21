@@ -6,6 +6,7 @@ import (
 
 var textures map[string]rl.Texture2D
 // var fonts map[string]rl.Font
+var sounds map[string]rl.Sound
 
 const (
 	screenW = 800
@@ -20,12 +21,21 @@ func main() {
 
 	rl.InitWindow(screenW, screenH, title)
 	rl.SetTargetFPS(60)
+	rl.InitAudioDevice()
 	textures = LoadTextures(
 		"assets/ship.png",
 		"assets/rocky.png",
 		"assets/shadow.png",
 		"assets/rings.png",
 		"assets/shard.png",
+	)
+
+	sounds = LoadSounds(
+		"sounds/thrust.wav",
+		"sounds/explosion1.wav",
+		"sounds/explosion2.wav",
+		"sounds/explosion3.wav",
+		"sounds/gameover.wav",
 	)
 
 	// fonts = LoadFonts(

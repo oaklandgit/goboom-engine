@@ -88,6 +88,9 @@ func (l *Lives) RemoveLife() {
 	l.Remaining--
 	if l.Remaining <= 0 {
 		fmt.Println("Game Over!")
+		music := sounds["sounds/gameover.wav"]
+		rl.SetSoundVolume(music, 0.2);
+		rl.PlaySound(music);
 	}
 
 	l.Respawn()
