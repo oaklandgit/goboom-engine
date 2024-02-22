@@ -148,7 +148,13 @@ func createShip(x, y float32) *GameObj {
 	landingZone.Components["area"].(*Area).AddCollisionHandler(
 		"planet",
 		func(you *GameObj, thePlanet *GameObj) {
-			dockWith(ship, thePlanet, landingZone.PosGlobal())			
+
+			if ship.Components["approach"].(*Approach).IsSafeSpeed() {
+				dockWith(ship, thePlanet, landingZone.PosGlobal())
+			} else {
+				fmt.Println("TOO FAST!")
+			}
+					
 		})
 
 	return ship

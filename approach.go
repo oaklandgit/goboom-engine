@@ -78,6 +78,22 @@ func (a *Approach) IsPointingToward(o *GameObj) bool {
 	return dot > 0 // moving towards if > 0
 }
 
+func (a *Approach) IsClose(target *GameObj) bool {
+
+	// Vector from the ship to planet
+	planetVec := rl.Vector2Subtract(target.Position, a.GameObj.Position)
+	planetRadius := target.Width() / 2
+
+	close := rl.Vector2Length(planetVec) <= a.SafeDistance + planetRadius
+	
+	return close
+}
+
+func (a *Approach) IsSafeSpeed() bool {
+	shipVel := a.GameObj.Components["motion"].(*Motion).Velocity
+	safe := rl.Vector2Length(shipVel) <= a.SafeSpeed
+	return safe
+}
 
 func (a *Approach) Update() {
 
@@ -100,7 +116,7 @@ func (a *Approach) Update() {
 					return
 				}
 
-				if !a.IsSafeSpeed(obj) {
+				if !a.IsSafeSpeed() {
 					a.Message = "Adjust your speed!"
 					return
 				}
@@ -113,21 +129,4 @@ func (a *Approach) Update() {
 
 func (a *Approach) Draw() {
 	DrawText(a.Message, 400, 400, 14, 2, rl.White, Center)
-}
-
-func (a *Approach) IsClose(target *GameObj) bool {
-
-	// Vector from the ship to planet
-	planetVec := rl.Vector2Subtract(target.Position, a.GameObj.Position)
-	planetRadius := target.Width() / 2
-
-	close := rl.Vector2Length(planetVec) <= a.SafeDistance + planetRadius
-	
-	return close
-}
-
-func (a *Approach) IsSafeSpeed(target *GameObj) bool {
-	shipVel := a.GameObj.Components["motion"].(*Motion).Velocity
-	safe := rl.Vector2Length(shipVel) <= a.SafeSpeed
-	return safe
 }
