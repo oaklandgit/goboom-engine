@@ -44,6 +44,7 @@ func main() {
 		"assets/rings.png",
 		"assets/shard.png",
 		"assets/gameover.png",
+		"assets/title.png",
 	)
 
 	sounds = LoadSounds(
@@ -135,6 +136,26 @@ func main() {
 	)
 	solarSystem.Size = rl.NewVector2(screenW, screenH)
 
+	// TITLE SCENE
+	titleScene := NewGameObject(
+		"Space Miner Start!",
+		WithPosition(screenW/2, screenH/2),
+		WithOrigin(0.5, 0.5),
+		WithScale(2, 2))
+	titleScene.Size = rl.NewVector2(screenW, screenH)
+	titleScene.NewSprite(
+		textures["assets/title.png"],
+		)
+	titleScene.NewInput(
+		KeyHandler{
+			KeyPress{rl.KeyX, KEY_ONCE},
+			func() {
+				game.SetScene("level1")
+			},
+		},
+	)
+	game.AddScene("titlescene", titleScene)
+
 	// GAME SCENE
 	scene1 := NewGameObject("Scene 1")
 	scene1.Size = rl.NewVector2(screenW, screenH)
@@ -152,11 +173,19 @@ func main() {
 		textures["assets/gameover.png"],
 		WithColor(rl.Red),
 	)
+	// gameOver.NewInput(
+	// 	KeyHandler{
+	// 		KeyPress{rl.KeyX, KEY_ONCE},
+	// 		func() {
+	// 			game.SetScene("level1")
+	// 		},
+	// 	},
+	// )
 	game.AddScene("gameover", gameOver)
 
 
 	// RUN!	
-	game.SetScene("level1")
+	game.SetScene("titlescene")
 	game.Run()
 
 }

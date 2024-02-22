@@ -5,21 +5,21 @@
 
 # TO DO
 
+- Reset all variables on game start
 - Docking sound
-- Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
 - Delay before respawn
-- Game Start state
+- Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
 - Animate touching down tutorial
-
 - Generalized Animate function - Use for sprite frames or tweening eg “pulse” behavior. How would Van Dur Spey do it? Sprite animations (separate component from sprite)
 - Buggy when docked and moving past left or right edge of screen
-- Game Over state
 - Ship should attach to planet at correct landing point
 - worm holes (teleportation)
 - more levels
 
 # DONE
 
+- Game Start state
+- Game Over state (and scene switching generalized)
 - Deal with memory leaks
   - Lifespan component // use for explosions
   - When toggling debug mode, print scene graph to console
