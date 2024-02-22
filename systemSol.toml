@@ -20,13 +20,14 @@ rotation = -0.1
 color = [0, 0, 255] # blue
 gravity = 0.2
 
-[planets.earth.moons]
-[planets.earth.moons.moon]
+[planets.earth.satellites]
+[planets.earth.satellites.moon]
 name = "Moon"
 texture = "cratery"
 radius = 14
 speed = 0.4
-distance = 0.4
+rotation = 0.2
+distance = 100
 color = [255, 255, 255] # white
 
 [planets.earth.products]

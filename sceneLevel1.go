@@ -39,6 +39,15 @@ type Product struct {
 	Value int
 }
 
+type Satellite struct {
+	Name string
+	Radius float32
+	Speed float32
+	Rotation float32
+	Distance float32
+	Color []int
+}
+
 type Planet struct {
 	Name string
 	Symbol string
@@ -51,7 +60,10 @@ type Planet struct {
 	Color []int
 	Gravity float32
 	Products map[string]Product
+	Satellites map[string]Satellite
 }
+
+
 
 func createLevel1Scene(g *Game) *GameObj {
 
@@ -80,7 +92,7 @@ func createLevel1Scene(g *Game) *GameObj {
 
 	for _, p := range sol.Planets {
 
-		color := rl.NewColor(
+		planetColor := rl.NewColor(
 			uint8(p.Color[0]),
 			uint8(p.Color[1]),
 			uint8(p.Color[2]),
@@ -101,11 +113,34 @@ func createLevel1Scene(g *Game) *GameObj {
 			p.Rotation,
 			p.Heading,
 			p.Radius,
-			color,
+			planetColor,
 			p.Gravity,
 			ship,
 			1,
 		)
+
+		for _, s := range p.Satellites {
+
+			satColor := rl.NewColor(
+				uint8(s.Color[0]),
+				uint8(s.Color[1]),
+				uint8(s.Color[2]),
+				255,
+			)
+
+			planet.AddChildren(
+				createMoon(
+					s.Name,
+					s.Speed,
+					s.Rotation,
+					s.Radius,
+					s.Distance,
+					satColor,
+					1,
+				),
+			)
+		}
+
 
 		mine := planet.NewMine()
 
