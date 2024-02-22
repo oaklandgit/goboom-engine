@@ -7,19 +7,15 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-// could also repel if force is negative
 type Approach struct {
 	GameObj *GameObj
 	OtherTags []string
 
 	SafeAngle float32
-	CallbackAngle func()
-
 	SafeDistance float32
-	CallbackDistance func()
-
 	SafeSpeed float32
-	CallbackSpeed func()
+
+	Message string
 }
 
 func (*Approach) Id() string {
@@ -46,40 +42,76 @@ func (obj *GameObj) NewApproach(
 	return approach
 }
 
-func WithSafeDistance(distance float32, callback func()) ApproachOption {
+func WithSafeDistance(distance float32) ApproachOption {
 	return func(a *Approach) {
 		a.SafeDistance = distance
-		a.CallbackDistance = callback
 	}
 }
 
-func WithSafeAngle(angle float32, callback func()) ApproachOption {
+func WithSafeAngle(angle float32) ApproachOption {
 	return func(a *Approach) {
 		a.SafeAngle = angle
-		a.CallbackAngle = callback
 	}
 }
 
-func WithSafeSpeed(speed float32, callback func()) ApproachOption {
+func WithSafeSpeed(speed float32) ApproachOption {
 	return func(a *Approach) {
 		a.SafeSpeed = speed
-		a.CallbackSpeed = callback
 	}
+}
+
+func (a *Approach) IsMovingTowards(o *GameObj) bool {
+
+	dir := rl.Vector2Subtract(o.Position, a.GameObj.Position)
+	dir = rl.Vector2Normalize(dir)
+	dot := rl.Vector2DotProduct(
+		a.GameObj.Components["motion"].(*Motion).Velocity, dir)
+
+	return dot > 0 // moving towards if > 0
+}
+
+func (a *Approach) IsPointingToward(o *GameObj) bool {
+
+	rads := float64(a.GameObj.Angle) * rl.Deg2rad
+
+	headingX := float32(math.Cos(rads))
+	headingY := float32(math.Sin(rads))
+	headingVector := rl.NewVector2(headingX, headingY)
+
+	dir := rl.Vector2Subtract(o.Position, a.GameObj.Position)
+	dir = rl.Vector2Normalize(dir)
+	dot := rl.Vector2DotProduct(headingVector, dir)
+
+	return dot > 0 // moving towards if > 0
 }
 
 
 func (a *Approach) Update() {
 
+	a.Message = ""
+
+	if a.GameObj.Components["dock"].(*Dock).DockedWith != nil {
+		return
+	}
+
 	// check distance of all objects with tags
 	for _, tag := range a.OtherTags {
 		objs := a.GameObj.Parent.FindChildrenByTags(true, tag)
 		for _, obj := range objs {
-			if a.IsClose(obj) {
-				if a.IsSafe(obj) {
-					fmt.Println("Safe angle and speed")
-				} else {
-					fmt.Println("CAREFUL!")
+			if a.IsClose(obj) && a.IsMovingTowards(obj) {
+
+				a.Message = fmt.Sprintf("Approaching %s", obj.Name)
+
+				if a.IsPointingToward(obj) {
+					a.Message = "Turn to dock!"
+					return
 				}
+
+				if !a.IsSafeSpeed(obj) {
+					a.Message = "Adjust your speed!"
+					return
+				}
+
 			}
 		}
 	}
@@ -87,41 +119,22 @@ func (a *Approach) Update() {
 }
 
 func (a *Approach) Draw() {
-	// no op
+	DrawText(a.Message, 400, 400, 14, 2, rl.White, Center)
 }
 
 func (a *Approach) IsClose(target *GameObj) bool {
+
 	// Vector from the ship to planet
 	planetVec := rl.Vector2Subtract(target.Position, a.GameObj.Position)
-	
-	// Within thresholds?
-	close := rl.Vector2Length(planetVec) <= a.SafeDistance
-	
-	if close && a.CallbackDistance != nil {
-		a.CallbackDistance()
-	}
+	planetRadius := target.Width() / 2
+
+	close := rl.Vector2Length(planetVec) <= a.SafeDistance + planetRadius
 	
 	return close
 }
 
-func (a *Approach) IsSafe(target *GameObj) bool {
-	
-		// Vector from the ship to planet
-		planetVec := rl.Vector2Subtract(target.Position, a.GameObj.Position)
-		shipVel := a.GameObj.Components["motion"].(*Motion).Velocity
-	
-		// Normalize vectors
-		planetVec = rl.Vector2Normalize(planetVec)
-		shipVel = rl.Vector2Normalize(shipVel)
-	
-		// Angle of approach in degrees
-		angleOfApproach := rl.Vector2Angle(shipVel, planetVec)
-	
-		// Within thresholds?
-		safe := float32(
-			math.Abs(float64(angleOfApproach))) <=
-			a.SafeAngle && rl.Vector2Length(shipVel) <= 
-			a.SafeSpeed
-			
-		return safe
-	}
+func (a *Approach) IsSafeSpeed(target *GameObj) bool {
+	shipVel := a.GameObj.Components["motion"].(*Motion).Velocity
+	safe := rl.Vector2Length(shipVel) <= a.SafeSpeed
+	return safe
+}

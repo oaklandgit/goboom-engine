@@ -1,11 +1,11 @@
 # IN PROGRESS
 
+- Move planet, moon and ore info into TOML file
 - Collision with planet if too-fast or wrong-angle landing
 - More feedback on state of landing (e.g. too fast!)
 
 # TO DO
 
-- Move planet, moon and ore info into TOML file
 - Delay before respawn
 - Reset all variables on game start
 - Docking sound
@@ -16,10 +16,10 @@
 - Ship should attach to planet at correct landing point
 - worm holes (teleportation)
 - more levels
+- embed assets in binary
 
 # DONE
 
-- Use TOML for solar system data
 - organize scenes into files
 - Game Start state
 - Game Over state (and scene switching generalized)
