@@ -11,7 +11,6 @@ type Approach struct {
 	GameObj *GameObj
 	OtherTags []string
 
-	SafeAngle float32
 	SafeDistance float32
 	SafeSpeed float32
 
@@ -45,12 +44,6 @@ func (obj *GameObj) NewApproach(
 func WithSafeDistance(distance float32) ApproachOption {
 	return func(a *Approach) {
 		a.SafeDistance = distance
-	}
-}
-
-func WithSafeAngle(angle float32) ApproachOption {
-	return func(a *Approach) {
-		a.SafeAngle = angle
 	}
 }
 

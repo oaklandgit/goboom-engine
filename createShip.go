@@ -11,8 +11,7 @@ const THRUST_SPEED = 0.04
 const MAX_SPEED = 2
 const LIVES = 1
 const WARNING_DISTANCE = 120
-const SAFE_ANGLE = 90
-const SAFE_SPEED = 0.5
+const SAFE_LANDING_SPEED = 0.5
 
 func createShip(x, y float32) *GameObj {
 
@@ -95,8 +94,7 @@ func createShip(x, y float32) *GameObj {
 	ship.NewApproach(
 		[]string{"planet"},
 		WithSafeDistance(WARNING_DISTANCE),
-		WithSafeAngle(SAFE_ANGLE),
-		WithSafeSpeed(SAFE_SPEED),
+		WithSafeSpeed(SAFE_LANDING_SPEED ),
 	)
 
 	ship.NewInput(
