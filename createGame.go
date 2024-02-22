@@ -17,6 +17,7 @@ type Game struct {
 	Width int32
 	Height int32
 	Scenes map[string]*GameObj
+	CurrScene string
 	State State
 }
 
@@ -36,19 +37,25 @@ func (g *Game) AddScene(name string, scene *GameObj) {
 	g.Scenes[name] = scene
 }
 
-func (g *Game) Run(scene string) {
+func (g *Game) SetScene(name string) {
+	g.CurrScene = name
+}
+
+func (g *Game) Run() {
 	g.State = Running
+
+	scene := g.Scenes[g.CurrScene]
 	
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Color{10, 10, 20, 255})
 
-		game.Scenes[scene].Update()
-		CheckForCollisions(game.Scenes[scene])
-		game.Scenes[scene].Draw()
+		scene.Update()
+		CheckForCollisions(scene)
+		scene.Draw()
 
 		if DEBUG {
-			game.Scenes[scene].Profile(
+			game.Scenes[g.CurrScene].Profile(
 				"ship",
 				"planet",
 				"moon",
@@ -58,6 +65,12 @@ func (g *Game) Run(scene string) {
 		}
 		
 		rl.EndDrawing()
+
+		// Check for scene change here
+		// So that we're sure to finish drawing
+		if scene != g.Scenes[g.CurrScene] {
+			scene = g.Scenes[g.CurrScene]
+		}
 	}
 }
 

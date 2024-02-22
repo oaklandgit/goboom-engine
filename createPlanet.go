@@ -19,7 +19,7 @@ func createPlanet(
 	target *GameObj,
 	opacity float32) *GameObj {
 
-	tex := textures["assets/rocky.png"]
+	tex := textures["assets/rocky3.png"]
 
 	scale := (radius * 2) / float32(tex.Width)
 
@@ -51,20 +51,10 @@ func createPlanet(
 	)
 
 	p.NewRotate(rotationSpeed)
-
+	
 	p.NewMine()
-	// p.NewTween(
-	// 	0.01,
-	// 	func(g *GameObj) *float32 {
-	// 		return &g.Components["sprite"].(*Sprite).Opacity
-	// 	},
-	// 	func() {
-	// 		fmt.Println("Tween complete!")
-	// 		p.Components["tween"].(*Tween).GameObj.RemoveComponent("tween")
-	// 	},
-	// )
 
-	shadow := NewGameObject("Shadow", WithScale(scale * 0.95, scale * 0.95))
+	shadow := NewGameObject("Shadow", WithScale(scale * 0.88, scale * 0.88))
 	shadow.NewSprite(
 		textures["assets/shadow.png"],
 		WithOpacity(0.8),

@@ -1,6 +1,5 @@
 package main
 
-// could also repel if force is negative
 type Lifespan struct {
 	GameObj *GameObj
 	Total int

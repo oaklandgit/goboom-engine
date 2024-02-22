@@ -39,9 +39,11 @@ func main() {
 	textures = LoadTextures(
 		"assets/ship.png",
 		"assets/rocky.png",
+		"assets/rocky3.png",
 		"assets/shadow.png",
 		"assets/rings.png",
 		"assets/shard.png",
+		"assets/gameover.png",
 	)
 
 	sounds = LoadSounds(
@@ -80,7 +82,7 @@ func main() {
 
 	earth := createPlanet("Earth", 0, 0, 0.2, -0.1, 0, 60, rl.Blue, 0.2, ship, 1)
 	earth.AddChildren(
-		createMoon("Moon", 0.4, 0.4, 20, 112, rl.RayWhite, 1),
+		createMoon("Moon", 0.4, 0.4, 14, 112, rl.Fade(rl.RayWhite, 0.5), 1),
 	)
 	earth.Components["mine"].(*Mine).
 		AddResource("gold", 100, 1000).
@@ -88,17 +90,17 @@ func main() {
 		AddResource("copper", 300, 200).
 		AddResource("iron", 400, 100)
 
-	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 40, rl.Red, 0.15, ship, 1)
+	mars := createPlanet("Mars", 0, 0, 0.3, 0.6, 0, 40, rl.Fade(rl.Red, 0.7), 0.15, ship, 1)
 	mars.AddChildren(
-		createMoon("Phobos", -1.3, 3, 4, 50, rl.Pink, 1),
-		createMoon("Deimos", -1, 0.1, 8, 100, rl.Pink, 1),
+		createMoon("Phobos", -1.3, 3, 4, 50, rl.Fade(rl.Pink, 0.6), 1),
+		createMoon("Deimos", -1, 0.1, 8, 100, rl.Fade(rl.Pink, 0.6), 1),
 	)
 	mars.Components["mine"].(*Mine).
 		AddResource("lithium", 100, 1000).
 		AddResource("uranium", 200, 500).
 		AddResource("plutonium", 300, 200)
 
-	saturn := createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 80, rl.Yellow, 0.1, ship, 1)
+	saturn := createPlanet("Saturn", 0, 0, -0.1, 0.2, 0, 80, rl.Fade(rl.Yellow, 0.6), 0.1, ship, 1)
 	
 	saturn.Components["mine"].(*Mine).
 		AddResource("diamond", 100, 1000).
@@ -133,13 +135,28 @@ func main() {
 	)
 	solarSystem.Size = rl.NewVector2(screenW, screenH)
 
-	// SCENE
+	// GAME SCENE
 	scene1 := NewGameObject("Scene 1")
 	scene1.Size = rl.NewVector2(screenW, screenH)
 	scene1.AddChildren(starfield, solarSystem, ship)
-
-
 	game.AddScene("level1", scene1)
-	game.Run("level1")
+
+	// GAME OVER SCENE
+	gameOver := NewGameObject(
+		"Game Over",
+		WithPosition(screenW/2, screenH/2),
+		WithOrigin(0.5, 0.5),
+		WithScale(2, 2))
+	gameOver.Size = rl.NewVector2(screenW, screenH)
+	gameOver.NewSprite(
+		textures["assets/gameover.png"],
+		WithColor(rl.Red),
+	)
+	game.AddScene("gameover", gameOver)
+
+
+	// RUN!	
+	game.SetScene("level1")
+	game.Run()
 
 }

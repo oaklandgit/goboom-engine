@@ -9,6 +9,7 @@ import (
 const ROTATE_SPEED = 5
 const THRUST_SPEED = 0.04
 const MAX_SPEED = 2
+const LIVES = 1
 
 const WARNING_DISTANCE = 100
 // if not docked and within this distance,
@@ -16,7 +17,6 @@ const WARNING_DISTANCE = 100
 // check: is the speed correct for a landing?
 // no? Flash warning!
 // AKA approach vector
-
 
 func createShip(x, y float32) *GameObj {
 
@@ -64,7 +64,7 @@ func createShip(x, y float32) *GameObj {
 
 	ship.NewDock()
 	ship.NewBank()
-	ship.NewLives(3)
+	ship.NewLives(LIVES)
 
 	landingZone := NewGameObject(
 		"Landing Zone",

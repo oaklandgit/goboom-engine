@@ -1,6 +1,10 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"time"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 // const FONT = "assets/VT323-Regular.ttf"
 
@@ -11,6 +15,10 @@ const (
 	Center
 	// Right
 )
+
+func WaitAndTrigger(callback func(), delay time.Duration) {
+    time.AfterFunc(delay, callback)
+}
 
 func DrawText(
 	text string,

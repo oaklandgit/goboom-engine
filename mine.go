@@ -6,7 +6,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-// could also repel if force is negative
 type Mine struct {
 	GameObj *GameObj
 	MinedBy *GameObj

@@ -10,17 +10,20 @@ import (
 type GameObj struct {
 	Name string
 	Tags map[string]struct{}
-	Position rl.Vector2 // local
-	Layer int
-	Offset rl.Vector2
-	Angle float32
-	LocalAngle float32
-	Origin rl.Vector2
-	Scale	rl.Vector2
-	Components map[string]Component
+	//
+	Game *Game
 	Parent *GameObj
 	Children []*GameObj
+	//
+	Position rl.Vector2
 	Size rl.Vector2
+	Layer int // TO DO
+	Origin rl.Vector2
+	Angle float32
+	Scale	rl.Vector2
+	//
+	Components map[string]Component
+	//
 	Deleted bool
 }
 
@@ -111,7 +114,6 @@ func (o *GameObj) FindChildrenByComponent(recurse bool, comp string) []*GameObj 
 
 func WithTags(tags ...string) GameObjOption {
 	return func(o *GameObj) {
-		// o.Tags = tags
 		for _, t := range tags {
 			o.Tags[t] = struct{}{}
 		}
@@ -144,7 +146,6 @@ func WithAngle(angle float32) GameObjOption {
 
 func NewGameObject(name string, opts ...GameObjOption) *GameObj {
 
-	// default values that would otherwise be zero
 	obj := &GameObj{
 		Name: name,
 		Scale: rl.Vector2{X: 1, Y: 1},

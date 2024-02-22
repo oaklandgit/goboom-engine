@@ -8,7 +8,6 @@ import (
 
 const RESPAWN_BERTH = 22
 
-// could also repel if force is negative
 type Lives struct {
 	GameObj *GameObj
 	Total int
@@ -87,13 +86,16 @@ func (l *Lives) Respawn() *Lives {
 func (l *Lives) RemoveLife() {
 	l.Remaining--
 	if l.Remaining <= 0 {
-		fmt.Println("Game Over!")
+		game.SetScene("gameover")
+		
+		// should move this to the gameover scene:
 		music := sounds["sounds/gameover.wav"]
 		rl.SetSoundVolume(music, 0.2);
 		rl.PlaySound(music);
+	} else {
+		l.Respawn()
 	}
-
-	l.Respawn()
+	
 }
 
 func (l *Lives) Update() {
