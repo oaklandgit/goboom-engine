@@ -33,6 +33,12 @@ type System struct {
 	Planets map[string]Planet
 }
 
+type Product struct {
+	Name string
+	Amount int
+	Value int
+}
+
 type Planet struct {
 	Name string
 	Symbol string
@@ -44,6 +50,7 @@ type Planet struct {
 	Rotation float32
 	Color []int
 	Gravity float32
+	Products map[string]Product
 }
 
 func createLevel1Scene(g *Game) *GameObj {
@@ -71,34 +78,40 @@ func createLevel1Scene(g *Game) *GameObj {
 	solarSystem := NewGameObject("Solar System")
 	solarSystem.Size = rl.NewVector2(screenW, screenH)
 
-	for _, planet := range sol.Planets {
+	for _, p := range sol.Planets {
 
 		color := rl.NewColor(
-			uint8(planet.Color[0]),
-			uint8(planet.Color[1]),
-			uint8(planet.Color[2]),
+			uint8(p.Color[0]),
+			uint8(p.Color[1]),
+			uint8(p.Color[2]),
 			255,
 		)
 
 		// find its position in the chart
 
-		symbol := rune(planet.Symbol[0])
+		symbol := rune(p.Symbol[0])
 		
 		posX, posY := findPos(sol.Chart, symbol, 8)
 
 		planet := createPlanet(
-			planet.Name,
+			p.Name,
 			float32(posX * cellW),
 			float32(posY * cellH),
-			planet.Speed,
-			planet.Rotation,
-			planet.Heading,
-			planet.Radius,
+			p.Speed,
+			p.Rotation,
+			p.Heading,
+			p.Radius,
 			color,
-			planet.Gravity,
+			p.Gravity,
 			ship,
 			1,
-		)			
+		)
+
+		mine := planet.NewMine()
+
+		for _, product := range p.Products {
+			mine.AddResource(product.Name, product.Amount, product.Value)
+		}
 
 		solarSystem.AddChildren(planet)
 	}

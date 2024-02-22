@@ -1,7 +1,6 @@
 # IN PROGRESS
 
 - Move planet, moon and ore info into TOML file
-- Collision with planet if too-fast or wrong-angle landing
 - More feedback on state of landing (e.g. too fast!)
 
 # TO DO
@@ -20,6 +19,7 @@
 
 # DONE
 
+- Collision with planet if too-fast or wrong-angle landing
 - organize scenes into files
 - Game Start state
 - Game Over state (and scene switching generalized)

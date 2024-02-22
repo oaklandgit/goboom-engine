@@ -29,23 +29,23 @@ speed = 0.4
 distance = 0.4
 color = [255, 255, 255] # white
 
-[planets.earth.resources]
-[planets.earth.resources.gold]
+[planets.earth.products]
+[planets.earth.products.gold]
 name = "gold"
 amount = 100
 value = 1000
 
-[planets.earth.resources.silver]
+[planets.earth.products.silver]
 name = "silver"
 amount = 200
 value = 500
 
-[planets.earth.resources.copper]
+[planets.earth.products.copper]
 name = "copper"
 amount = 300
 value = 200
 
-[planets.earth.resources.iron]
+[planets.earth.products.iron]
 name = "iron"
 amount = 400
 value = 100
