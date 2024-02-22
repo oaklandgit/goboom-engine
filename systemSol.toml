@@ -1,0 +1,51 @@
+name = "Sol"
+suns = 1
+chart = '''
+........
+........
+...e....
+........
+'''
+
+[planets]
+[planets.earth]
+name = "Earth"
+symbol = "e"
+pos = [0.0, 0.0]
+texture = "earthy"
+radius = 60.0
+speed = 0.2
+heading = 0
+rotation = -0.1
+color = [0, 0, 255] # blue
+gravity = 0.2
+
+[planets.earth.moons]
+[planets.earth.moons.moon]
+name = "Moon"
+texture = "cratery"
+radius = 14
+speed = 0.4
+distance = 0.4
+color = [255, 255, 255] # white
+
+[planets.earth.resources]
+[planets.earth.resources.gold]
+name = "gold"
+amount = 100
+value = 1000
+
+[planets.earth.resources.silver]
+name = "silver"
+amount = 200
+value = 500
+
+[planets.earth.resources.copper]
+name = "copper"
+amount = 300
+value = 200
+
+[planets.earth.resources.iron]
+name = "iron"
+amount = 400
+value = 100

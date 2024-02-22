@@ -5,7 +5,7 @@
 
 # TO DO
 
-- organize scenes into files
+- Move planet, moon and ore info into TOML file
 - Delay before respawn
 - Reset all variables on game start
 - Docking sound
@@ -19,6 +19,8 @@
 
 # DONE
 
+- Use TOML for solar system data
+- organize scenes into files
 - Game Start state
 - Game Over state (and scene switching generalized)
 - Deal with memory leaks
