@@ -56,7 +56,7 @@ func (l *Lives) Respawn() *Lives {
 	}
 
 	safe := false
-	maxAttempts := 1_000
+	maxAttempts := 1_000 // prevent a potential infinite loop
 	attempts := 0
 
 	safeLoop:
@@ -78,12 +78,8 @@ func (l *Lives) Respawn() *Lives {
 			}
 			
 		}
-
 		safe = true
-
 	}
-
-
 
 	return l
 }
@@ -105,10 +101,7 @@ func (l *Lives) RemoveLife() {
 }
 
 func (l *Lives) Update() {
-	// if l.ReadyToRespawn {
-	// 	l.Respawn()
-	// 	l.ReadyToRespawn = false
-	// }
+	// no op
 }
 
 func (l *Lives) Draw() {

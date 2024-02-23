@@ -22,36 +22,36 @@ color = [0, 0, 255] # blue
 gravity = 0.2
 hasrings = false
 
-# [planets.earth.satellites]
-# [planets.earth.satellites.moon]
-# name = "Moon"
-# texture = "cratery"
-# radius = 14
-# speed = 0.4
-# rotation = 0.2
-# distance = 100
-# color = [255, 255, 255] # white
+[planets.earth.satellites]
+[planets.earth.satellites.moon]
+name = "Moon"
+texture = "cratery"
+radius = 14
+speed = 0.4
+rotation = 0.2
+distance = 100
+color = [255, 255, 255] # white
 
-# [planets.earth.products]
-# [planets.earth.products.gold]
-# name = "gold"
-# amount = 100
-# value = 1000
+[planets.earth.products]
+[planets.earth.products.gold]
+name = "gold"
+amount = 100
+value = 1000
 
-# [planets.earth.products.silver]
-# name = "silver"
-# amount = 200
-# value = 500
+[planets.earth.products.silver]
+name = "silver"
+amount = 200
+value = 500
 
-# [planets.earth.products.copper]
-# name = "copper"
-# amount = 300
-# value = 200
+[planets.earth.products.copper]
+name = "copper"
+amount = 300
+value = 200
 
-# [planets.earth.products.iron]
-# name = "iron"
-# amount = 400
-# value = 100
+[planets.earth.products.iron]
+name = "iron"
+amount = 400
+value = 100
 
 [planets.mars]
 name = "Mars"
@@ -65,40 +65,40 @@ color = [255, 0, 0] # red
 gravity = 0.3
 hasrings = false
 
-# [planets.mars.satellites]
-# [planets.mars.satellites.phobos]
-# name = "Phobos"
-# texture = "cratery"
-# radius = 4
-# speed = 0.6
-# rotation = 0.2
-# distance = 50
-# color = [255, 192, 203] # pink
+[planets.mars.satellites]
+[planets.mars.satellites.phobos]
+name = "Phobos"
+texture = "cratery"
+radius = 4
+speed = 0.6
+rotation = 0.2
+distance = 50
+color = [255, 192, 203] # pink
 
-# [planets.mars.satellites.deimos]
-# name = "Deimos"
-# texture = "cratery"
-# radius = 8
-# speed = -0.3
-# rotation = 0.2
-# distance = 100
-# color = [255, 192, 203] # pink
+[planets.mars.satellites.deimos]
+name = "Deimos"
+texture = "cratery"
+radius = 8
+speed = -0.3
+rotation = 0.2
+distance = 100
+color = [255, 192, 203] # pink
 
-# [planets.mars.products]
-# [planets.mars.products.lithium]
-# name = "lithium"
-# amount = 100
-# value = 1000
+[planets.mars.products]
+[planets.mars.products.lithium]
+name = "lithium"
+amount = 100
+value = 1000
 
-# [planets.mars.products.uranium]
-# name = "uranium"
-# amount = 200
-# value = 500
+[planets.mars.products.uranium]
+name = "uranium"
+amount = 200
+value = 500
 
-# [planets.mars.products.plutonium]
-# name = "plutonium"
-# amount = 300
-# value = 200
+[planets.mars.products.plutonium]
+name = "plutonium"
+amount = 300
+value = 200
 
 [planets.saturn]
 name = "Saturn"
@@ -111,6 +111,3 @@ rotation = -0.1
 color = [255, 255, 0] # yellow
 gravity = 0.1
 hasrings = true
-
-
-
