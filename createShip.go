@@ -147,7 +147,7 @@ func createShip(x, y float32) *GameObj {
 						you.PosGlobal().Y,
 						"assets/shard.png",
 						))
-				// you.Components["lives"].(*Lives).RemoveLife()
+				you.Components["lives"].(*Lives).RemoveLife()
 			})
 
 	return ship

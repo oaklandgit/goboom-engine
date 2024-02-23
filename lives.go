@@ -50,15 +50,17 @@ func (l *Lives) Respawn() *Lives {
 	l.GameObj.Components["dock"].(*Dock).Undock()
 
 	randomSpot := func() rl.Vector2 {
-		x := float32(rl.GetRandomValue(200, 600))
-		y := float32(rl.GetRandomValue(100, 300))
+		x := float32(rl.GetRandomValue(20, screenW - 20))
+		y := float32(rl.GetRandomValue(20, screenH - 20))
 		return rl.NewVector2(x, y)
 	}
 
 	safe := false
+	maxAttempts := 1_000
+	attempts := 0
 
 	safeLoop:
-	for !safe {
+	for !safe && attempts < maxAttempts {
 
 		// try a random spot
 		l.GameObj.Position = randomSpot()
@@ -71,6 +73,7 @@ func (l *Lives) Respawn() *Lives {
 				sibling.PosGlobal(),
 				sibling.Width() + RESPAWN_BERTH,
 			) {
+				attempts++
 				continue safeLoop
 			}
 			
@@ -79,6 +82,8 @@ func (l *Lives) Respawn() *Lives {
 		safe = true
 
 	}
+
+
 
 	return l
 }
@@ -93,13 +98,17 @@ func (l *Lives) RemoveLife() {
 		rl.SetSoundVolume(music, 0.2);
 		rl.PlaySound(music);
 	} else {
-		// l.Respawn()
+		// l.ReadyToRespawn = true
+		l.Respawn()
 	}
 	
 }
 
 func (l *Lives) Update() {
-	
+	// if l.ReadyToRespawn {
+	// 	l.Respawn()
+	// 	l.ReadyToRespawn = false
+	// }
 }
 
 func (l *Lives) Draw() {
