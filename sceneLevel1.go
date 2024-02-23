@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"math/rand"
 	"os"
@@ -9,6 +10,9 @@ import (
 	"github.com/BurntSushi/toml"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
+
+//go:embed systemSol.toml
+var tomlData string
 
 const (
 	CHART_CELL_SIZE = 60
@@ -72,7 +76,7 @@ func createLevel1Scene(g *Game) *GameObj {
 
 	// load toml file
 	var system System
-    _, err := toml.DecodeFile("systemSol.toml", &system)
+    _, err := toml.Decode(tomlData, &system)
     if err != nil {
         fmt.Println("Error:", err)
         os.Exit(1)
@@ -118,8 +122,6 @@ func createLevel1Scene(g *Game) *GameObj {
 		)
 
 		if p.HasRings {
-
-			fmt.Println("Creating rings")
 
 			ringTex := textures["assets/rings.png"]
 			ringW := ringTex.Width

@@ -6,14 +6,11 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-// const FONT = "assets/VT323-Regular.ttf"
-
 type Alignment int
 
 const (
 	Left Alignment = iota
 	Center
-	// Right
 )
 
 func WaitAndTrigger(callback func(), delay time.Duration) {

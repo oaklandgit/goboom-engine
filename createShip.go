@@ -1,17 +1,20 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const ROTATE_SPEED = 5
-const THRUST_SPEED = 0.04
-const MAX_SPEED = 2
-const LIVES = 3
-const WARNING_DISTANCE = 120
-const SAFE_LANDING_SPEED = 0.5
+const (
+	ROTATE_SPEED = 5
+	THRUST_SPEED = 0.04
+	MAX_SPEED = 2
+	LIVES = 3
+	WARNING_DISTANCE = 120
+	SAFE_LANDING_SPEED = 0.5
+	SHIP_RADIUS = 8
+	SHIP_DRAG = 0.999
+	SHIP_WRAP_PADDING = 16
+)
 
 func createShip(x, y float32) *GameObj {
 
@@ -26,8 +29,6 @@ func createShip(x, y float32) *GameObj {
 		}
 		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
 		g.Components["sprite"].(*Sprite).CurrFrame = 1
-
-		
 
 		if !rl.IsSoundPlaying(thrustSound) {
 			rl.PlaySound(thrustSound)
@@ -61,14 +62,6 @@ func createShip(x, y float32) *GameObj {
 	ship.NewBank()
 	ship.NewLives(LIVES)
 
-	landingZone := NewGameObject(
-		"Landing Zone",
-		WithPosition(-12, 0),
-		WithTags("landingZone"),
-	)
-	landingZone.NewArea(CircleCollider{Radius: 3})
-	ship.AddChildren(landingZone)
-
 	rotateCW := func(g *GameObj) {
 		if g.Components["dock"].(*Dock).DockedWith != nil {
 			return
@@ -83,12 +76,12 @@ func createShip(x, y float32) *GameObj {
 		g.Angle -= ROTATE_SPEED
 	}
 
-	ship.NewArea(CircleCollider{Radius: 8})
+	ship.NewArea(CircleCollider{Radius: SHIP_RADIUS})
 
 	ship.NewMotion(
-		WithFriction(0.999),
+		WithFriction(SHIP_DRAG),
 		WithMaxVelocity(MAX_SPEED),
-		WithWrap(true, true, 16),
+		WithWrap(true, true, SHIP_WRAP_PADDING),
 	)
 
 	ship.NewApproach(
@@ -129,35 +122,29 @@ func createShip(x, y float32) *GameObj {
 			"deadly",
 			func(you *GameObj, thePlanet *GameObj) {
 
-				// not a collision if it's the planet you're docked with
+				// don't crash if docked with this planet
 				if you.Components["dock"].(*Dock).DockedWith != nil &&
 					you.Components["dock"].(*Dock).DockedWith == thePlanet { 
 						return
 				}
 
-				ship.Parent.AddChildren(
+				// land if good speed and angle
+				if you.Components["approach"].(*Approach).IsSafeSpeed() &&
+					!you.Components["approach"].(*Approach).IsPointingToward(thePlanet) {
+						
+					dockWith(you, thePlanet, rl.Vector2{})
+					return
+				}
+
+				// otherwise, crash
+				you.Parent.AddChildren(
 					createExplosion(
 						you.PosGlobal().X,
 						you.PosGlobal().Y,
 						"assets/shard.png",
 						))
-				fmt.Printf("BOOM! You crashed with %s\n", thePlanet.Name)
 				you.Components["lives"].(*Lives).RemoveLife()
 			})
-
-	landingZone.Components["area"].(*Area).AddCollisionHandler(
-		"planet",
-		func(you *GameObj, thePlanet *GameObj) {
-
-			if ship.Components["approach"].(*Approach).IsSafeSpeed() {
-				dockWith(ship, thePlanet, landingZone.PosGlobal())
-			}
-
-			// no need to deal with the landingzone collision
-			// after this point, because the ship will hit the planet
-			// and trigger its own collision.
-					
-		})
 
 	return ship
 

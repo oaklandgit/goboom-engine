@@ -41,12 +41,14 @@ func createPlanet(
 		WithWrap(true, false, float32(tex.Width) * scale / 2),
 	)
 
-	p.NewAttract(
-		[]*GameObj{target},
-		gravity,
-		GRAVITY_THRESHOLD,
-		WithIgnored(IGNORE_WHEN),
-	)
+	// COMMENTING OUT TO SEE IF IT'S THE PROBLEM WITH HANGS
+	
+	// p.NewAttract(
+	// 	[]*GameObj{target},
+	// 	gravity,
+	// 	GRAVITY_THRESHOLD,
+	// 	WithIgnored(IGNORE_WHEN),
+	// )
 
 	p.NewRotate(rotationSpeed)
 	
