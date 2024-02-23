@@ -93,7 +93,7 @@ func (l *Lives) RemoveLife() {
 		rl.SetSoundVolume(music, 0.2);
 		rl.PlaySound(music);
 	} else {
-		l.Respawn()
+		// l.Respawn()
 	}
 	
 }

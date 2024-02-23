@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -76,7 +78,9 @@ func createShip(x, y float32) *GameObj {
 		g.Angle -= ROTATE_SPEED
 	}
 
-	ship.NewArea(CircleCollider{Radius: SHIP_RADIUS})
+	ship.NewArea(CircleCollider{Radius: SHIP_RADIUS},
+		WithCooldown(2 * time.Second),
+	)
 
 	ship.NewMotion(
 		WithFriction(SHIP_DRAG),
@@ -120,7 +124,7 @@ func createShip(x, y float32) *GameObj {
 
 	ship.Components["area"].(*Area).AddCollisionHandler(
 			"deadly",
-			func(you *GameObj, thePlanet *GameObj) {
+			func(you, thePlanet *GameObj) {
 
 				// don't crash if docked with this planet
 				if you.Components["dock"].(*Dock).DockedWith != nil &&
@@ -143,7 +147,7 @@ func createShip(x, y float32) *GameObj {
 						you.PosGlobal().Y,
 						"assets/shard.png",
 						))
-				you.Components["lives"].(*Lives).RemoveLife()
+				// you.Components["lives"].(*Lives).RemoveLife()
 			})
 
 	return ship

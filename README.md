@@ -5,6 +5,8 @@
 
 # TO DO
 
+- Planets orbit their star (as opposed to just gliing across the screen)
+- Mini map of the full solar system
 - Delay before respawn
 - Reset all variables on game start
 - Docking sound

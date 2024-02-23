@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -15,6 +17,8 @@ type Area struct {
 	Shape CollisionShape
 	Collided bool
 	CollisionHandlers map[string]func(*GameObj, *GameObj)
+	LastCollisionTime time.Time
+	CollisionCooldown time.Duration
 }
 
 func (*Area) Id() string {
@@ -43,18 +47,37 @@ func (obj *GameObj) NewArea(
 	return area
 }
 
-func (a *Area) AddCollisionHandler(tag string, handler func(*GameObj, *GameObj)) {
+func WithCooldown(cooldown time.Duration) AreaOptions {
+	return func(a *Area) {
+		a.CollisionCooldown = cooldown
+	}
+}
+
+func (a *Area) AddCollisionHandler(
+		tag string,
+		handler func(*GameObj, *GameObj),
+		) {
 	a.CollisionHandlers[tag] = handler
 }
 
 func (a *Area) CollidedWith(other *GameObj) bool {
 	b := other.Components["area"].(*Area)
 
-	return rl.CheckCollisionCircles(
+	if time.Since(a.LastCollisionTime) < a.CollisionCooldown {
+		return false
+	}
+
+	collided := rl.CheckCollisionCircles(
 		a.GameObj.PosGlobal(),
 		a.Shape.Width()/2,
 		b.GameObj.PosGlobal(),
 		b.Shape.Width()/2)
+
+	if collided {
+		a.LastCollisionTime = time.Now()
+	}
+
+	return collided
 }
 
 func (a *Area) Update() {

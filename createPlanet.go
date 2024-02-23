@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -34,7 +36,9 @@ func createPlanet(
 		WithColor(color),
 	)
 
-	p.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
+	p.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2},
+		WithCooldown(2 * time.Second),
+	)
 
 	p.NewMotion(
 		WithVelocity(speed, heading),
