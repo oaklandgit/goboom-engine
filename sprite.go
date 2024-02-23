@@ -136,9 +136,8 @@ func (s *Sprite) Draw() {
 	origin := s.AnchorPoint(dest.Width, dest.Height)
 	color := s.Color
 	if s.Opacity < 1.0 {
-	color.A = uint8(float32(color.A) * s.Opacity)
+		color.A = uint8(255 * s.Opacity)
 	}
 	
 	rl.DrawTexturePro(s.Texture, source, dest, origin, objR, color)
-	// rl.DrawText(posText, int32(dest.X), int32(dest.Y), 12, rl.White)
 }

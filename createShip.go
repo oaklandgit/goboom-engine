@@ -9,7 +9,7 @@ import (
 const ROTATE_SPEED = 5
 const THRUST_SPEED = 0.04
 const MAX_SPEED = 2
-const LIVES = 1
+const LIVES = 3
 const WARNING_DISTANCE = 120
 const SAFE_LANDING_SPEED = 0.5
 
@@ -151,9 +151,11 @@ func createShip(x, y float32) *GameObj {
 
 			if ship.Components["approach"].(*Approach).IsSafeSpeed() {
 				dockWith(ship, thePlanet, landingZone.PosGlobal())
-			} else {
-				fmt.Println("TOO FAST!")
 			}
+
+			// no need to deal with the landingzone collision
+			// after this point, because the ship will hit the planet
+			// and trigger its own collision.
 					
 		})
 

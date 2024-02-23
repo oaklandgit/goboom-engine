@@ -16,8 +16,7 @@ func createPlanet(
 	radius float32,
 	color rl.Color,
 	gravity float32,
-	target *GameObj,
-	opacity float32) *GameObj {
+	target *GameObj) *GameObj {
 
 	tex := textures["assets/rocky3.png"]
 
@@ -33,7 +32,6 @@ func createPlanet(
 	p.NewSprite(
 		tex,
 		WithColor(color),
-		WithOpacity(opacity),
 	)
 
 	p.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
