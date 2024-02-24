@@ -17,8 +17,8 @@ var textures map[string]rl.Texture2D
 var sounds map[string]rl.Sound
 
 const (
-	screenW = 800
-	screenH = 450
+	screenW = 600
+	screenH = 800
 	title = "Space Miner!"
 	DEBUG = false
 )
@@ -43,6 +43,8 @@ func main() {
 	textures = LoadTextures(
 		"assets/ship.png",
 		"assets/rocky.png",
+		"assets/earthy.png",
+		"assets/cratery.png",
 		"assets/rocky3.png",
 		"assets/shadow.png",
 		"assets/rings.png",

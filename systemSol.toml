@@ -18,7 +18,7 @@ radius = 60.0
 speed = 0.2
 heading = 0
 rotation = -0.1
-color = [0, 0, 255] # blue
+color = [0, 120, 255] # blue
 gravity = 0.2
 
 [planets.earth.satellites]
@@ -55,7 +55,7 @@ value = 100
 [planets.mars]
 name = "Mars"
 symbol = "m"
-texture = "marsy"
+texture = "cratery"
 radius = 40.0
 speed = -0.3
 heading = 0
@@ -101,7 +101,7 @@ value = 200
 [planets.saturn]
 name = "Saturn"
 symbol = "s"
-texture = "gasous"
+texture = "cratery"
 radius = 100.0
 speed = 0.1
 heading = 0

@@ -128,5 +128,10 @@ func (a *Approach) Update() {
 }
 
 func (a *Approach) Draw() {
-	DrawText(a.Message, 400, 400, 14, 2, rl.White, Center)
+	// DrawText(a.Message, screenW/2, screenH - 14, 14, 2, rl.White, Center)
+	DrawText(
+		a.Message,
+		int32(a.GameObj.PosGlobal().X),
+		int32(a.GameObj.PosGlobal().Y) + 16,
+		14, 2, rl.Gray, Center)
 }

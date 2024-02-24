@@ -118,6 +118,6 @@ func (m *Mine) Draw() {
 
 	// TEXT BELOW $SCORE
 	text2 := fmt.Sprintf("%s @ $%d/unit", m.Resources[0].Name, m.Resources[0].Price)
-	DrawText(text2, 400, 62, 18, 8, rl.Green, Center)
+	DrawText(text2, screenW/2, 62, 18, 8, rl.Green, Center)
 	
 }

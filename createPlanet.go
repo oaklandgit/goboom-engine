@@ -11,6 +11,7 @@ const IGNORE_WHEN = "docked"
 
 func createPlanet(
 	name string,
+	texture rl.Texture2D,
 	x, y float32,
 	speed float32,
 	rotationSpeed float32,
@@ -20,9 +21,7 @@ func createPlanet(
 	gravity float32,
 	target *GameObj) *GameObj {
 
-	tex := textures["assets/rocky3.png"]
-
-	scale := (radius * 2) / float32(tex.Width)
+	scale := (radius * 2) / float32(texture.Width)
 
 	p := NewGameObject(name,
 		WithTags("planet", "deadly"),
@@ -32,17 +31,17 @@ func createPlanet(
 	)
 
 	p.NewSprite(
-		tex,
+		texture,
 		WithColor(color),
 	)
 
-	p.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2},
+	p.NewArea(CircleCollider{Radius: float32(texture.Width) * scale / 2},
 		WithCooldown(2 * time.Second),
 	)
 
 	p.NewMotion(
 		WithVelocity(speed, heading),
-		WithWrap(true, false, float32(tex.Width) * scale / 2),
+		WithWrap(true, false, float32(texture.Width) * scale / 2),
 	)
 
 	// COMMENTING OUT TO SEE IF IT'S THE PROBLEM WITH HANGS
@@ -58,7 +57,7 @@ func createPlanet(
 	
 	p.NewMine()
 
-	shadow := NewGameObject("Shadow", WithScale(scale * 0.88, scale * 0.88))
+	shadow := NewGameObject("Shadow", WithScale(scale * 0.94, scale * 0.94))
 	shadow.NewSprite(
 		textures["assets/shadow.png"],
 		WithOpacity(0.8),

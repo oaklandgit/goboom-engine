@@ -46,6 +46,7 @@ type Product struct {
 
 type Satellite struct {
 	Name string
+	Texture string
 	Radius float32
 	Speed float32
 	Rotation float32
@@ -105,8 +106,11 @@ func createLevel(g *Game, tomlStr string) *GameObj {
 		symbol := rune(p.Symbol[0])
 		posY, posX := findPos(system.Chart, symbol, CHART_CELL_SIZE)
 
+		planetTex := textures[fmt.Sprintf("assets/%s.png", p.Texture)]
+
 		planet := createPlanet(
 			p.Name,
+			planetTex,
 			float32(posX),
 			float32(posY),
 			p.Speed,
@@ -148,9 +152,12 @@ func createLevel(g *Game, tomlStr string) *GameObj {
 				255,
 			)
 
+			moonTex := textures[fmt.Sprintf("assets/%s.png", s.Texture)]
+
 			planet.AddChildren(
 				createMoon(
 					s.Name,
+					moonTex,
 					s.Speed,
 					s.Rotation,
 					s.Radius,

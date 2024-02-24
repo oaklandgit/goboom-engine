@@ -88,5 +88,5 @@ func (d *Dock) Draw() {
 
 	text := d.DockedWith.Name
 	color := d.DockedWith.Components["sprite"].(*Sprite).Color
-	DrawText(text, 400, 400, 32, 3, color, Center)
+	DrawText(text, screenW/2, screenH - 48, 32, 3, color, Center)
 }

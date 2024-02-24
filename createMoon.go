@@ -4,6 +4,7 @@ import rl "github.com/gen2brain/raylib-go/raylib"
 
 func createMoon(
 	name string,
+	texture rl.Texture2D,
 	speed float32,
 	rotationSpeed float32,
 	radius float32,
@@ -11,8 +12,8 @@ func createMoon(
 	color rl.Color,
 	opacity float32) *GameObj {
 
-	tex := textures["assets/rocky.png"]
-	scale := (radius * 2) / float32(tex.Width)
+	// tex := textures["assets/rocky.png"]
+	scale := (radius * 2) / float32(texture.Width)
 
 
 	m := NewGameObject(name,
@@ -22,14 +23,14 @@ func createMoon(
 	)
 
 	m.NewSprite(
-		tex,
+		texture,
 		WithColor(color),
 		WithOpacity(opacity),
 	)
 
 	m.NewRotate(rotationSpeed)
 	m.NewOrbit(speed, distance)
-	m.NewArea(CircleCollider{Radius: float32(tex.Width) * scale / 2})
+	m.NewArea(CircleCollider{Radius: float32(texture.Width) * scale / 2})
 
 	shadow := NewGameObject("Shadow", WithScale(scale * 0.9, scale * 0.9))
 	shadow.NewSprite(
