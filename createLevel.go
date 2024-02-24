@@ -11,9 +11,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-//go:embed systemSol.toml
-var tomlData string
-
 const (
 	CHART_CELL_SIZE = 60
 	RING_TO_PLANET_SIZE_RATIO = 3.8
@@ -72,11 +69,11 @@ type Planet struct {
 	HasRings bool
 }
 
-func createLevel1Scene(g *Game) *GameObj {
+func createLevel(g *Game, tomlStr string) *GameObj {
 
 	// load toml file
 	var system System
-    _, err := toml.Decode(tomlData, &system)
+    _, err := toml.Decode(tomlStr, &system)
     if err != nil {
         fmt.Println("Error:", err)
         os.Exit(1)
@@ -100,7 +97,7 @@ func createLevel1Scene(g *Game) *GameObj {
 			uint8(p.Color[0]),
 			uint8(p.Color[1]),
 			uint8(p.Color[2]),
-			uint8(255),
+			255,
 		)
 
 		// find its position in the chart

@@ -6,7 +6,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const DOCK_HEIGHT = 12
+const DOCK_HEIGHT = 8
 
 // could also repel if force is negative
 type Dock struct {
@@ -67,13 +67,15 @@ func (d *Dock) Undock() {
 
 func (d *Dock) Update() {
 
+	// testAngleOffset := 90
+
 	if d.DockedWith == nil { return }
 
 	radius := d.DockedWith.Width() / 2 + DOCK_HEIGHT
-	angle := d.DockedWith.Angle * rl.Deg2rad
+	angle := float64(d.DockedWith.Angle * rl.Deg2rad)
 
-	x := d.DockedWith.PosGlobal().X + (radius * float32(math.Cos(float64(angle))))
-	y := d.DockedWith.PosGlobal().Y + (radius * float32(math.Sin(float64(angle))))
+	x := d.DockedWith.PosGlobal().X + (radius * float32(math.Cos(angle)))
+	y := d.DockedWith.PosGlobal().Y + (radius * float32(math.Sin(angle)))
 
 	d.GameObj.Position = rl.NewVector2(x, y)
 

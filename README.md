@@ -1,26 +1,39 @@
 # IN PROGRESS
 
-- Move planet, moon and ore info into TOML file
-- More feedback on state of landing (e.g. too fast!)
-
 # TO DO
 
+- Ship should attach to planet at correct landing point
+- Delay before respawn
+- embed textures in binary
+- embed sounds in binary
+- Test stand-alone binary
+- Buggy when docked and moving past left or right edge of screen
+- Leverage go time package for time-based events
+
+# JUICINESS
+
+- Game starts with instructions on objective and how to land
+- Each scene starts with an intro to its solar system
 - Planets orbit their star (as opposed to just gliing across the screen)
 - Mini map of the full solar system
-- Delay before respawn
-- Reset all variables on game start
 - Docking sound
-- Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
 - Animate touching down tutorial
-- Generalized Animate function - Use for sprite frames or tweening eg “pulse” behavior. How would Van Dur Spey do it? Sprite animations (separate component from sprite)
-- Buggy when docked and moving past left or right edge of screen
-- Ship should attach to planet at correct landing point
+- Artificial satellites
+- Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
 - worm holes (teleportation)
 - more levels
-- embed assets in binary
+
+# PROBABLY DON'T NEED
+
+- Generalized Animate function - Use for sprite frames or tweening eg “pulse” behavior. How would Van Dur Spey do it? Sprite animations (separate component from sprite)
 
 # DONE
 
+- Play again
+- Reset all variables on game start
+- embed toml in binary
+- More feedback on state of landing (e.g. too fast!)
+- Move planet, moon and ore info into TOML file
 - Collision with planet if too-fast or wrong-angle landing
 - organize scenes into files
 - Game Start state

@@ -87,8 +87,16 @@ func (l *Lives) Respawn() *Lives {
 func (l *Lives) RemoveLife() {
 	l.Remaining--
 	if l.Remaining <= 0 {
-		game.SetScene("gameover")
 		
+
+		// reset lives for next game
+		l.Remaining = l.Total
+		game.Reset()
+
+		//
+		game.SetScene("gameover")
+		game.Scenes["gameover"].Components["timer"].(*Timer).Start()
+
 		// should move this to the gameover scene:
 		music := sounds["sounds/gameover.wav"]
 		rl.SetSoundVolume(music, 0.2);

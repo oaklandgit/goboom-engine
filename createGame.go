@@ -41,6 +41,10 @@ func (g *Game) SetScene(name string) {
 	g.CurrScene = name
 }
 
+func (g *Game) Reset() {
+	g.AddScene("level1", createLevel(game, tomlData))
+}
+
 func (g *Game) Run() {
 	g.State = Running
 

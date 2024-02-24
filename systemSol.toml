@@ -20,7 +20,6 @@ heading = 0
 rotation = -0.1
 color = [0, 0, 255] # blue
 gravity = 0.2
-hasrings = false
 
 [planets.earth.satellites]
 [planets.earth.satellites.moon]
@@ -63,7 +62,6 @@ heading = 0
 rotation = -0.1
 color = [255, 0, 0] # red
 gravity = 0.3
-hasrings = false
 
 [planets.mars.satellites]
 [planets.mars.satellites.phobos]

@@ -1,12 +1,16 @@
 package main
 
 import (
+	_ "embed"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
+
+//go:embed systemSol.toml
+var tomlData string
 
 var textures map[string]rl.Texture2D
 // var fonts map[string]rl.Font
@@ -56,7 +60,8 @@ func main() {
 	)
 
 	game.AddScene("titlescene", createTitleScene(game))
-	game.AddScene("level1", createLevel1Scene(game))
+	game.Reset()
+	// game.AddScene("level1", createLevel(game, tomlData))
 	game.AddScene("gameover", createGameOverScene(game))
 
 	// RUN!	

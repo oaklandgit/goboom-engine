@@ -1,6 +1,13 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"fmt"
+	"time"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
+
+const SWITCH_TO_START = 6 * time.Second
 
 func createGameOverScene(g *Game) *GameObj {
 
@@ -14,13 +21,22 @@ func createGameOverScene(g *Game) *GameObj {
 		textures["assets/gameover.png"],
 		WithColor(rl.Red),
 	)
-	// gameOver.NewInput(
-	// 	KeyHandler{
-	// 		KeyPress{rl.KeyX, KEY_ONCE},
-	// 		func() {
-	// 			game.SetScene("level1")
-	// 		},
-	// 	},
-	// )
+
+	gameOver.NewTimer(
+		SWITCH_TO_START,
+		func() {
+			game.SetScene("titlescene")
+			fmt.Println("Switching to title scene")
+		})
+
+	gameOver.NewInput(
+		KeyHandler{
+			KeyPress{rl.KeyX, KEY_ONCE},
+			func() {
+				game.SetScene("level1")
+			},
+		},
+	)
+
 	return gameOver
 }
