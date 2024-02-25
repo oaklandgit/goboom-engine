@@ -17,9 +17,9 @@ func createMoon(
 
 
 	m := NewGameObject(name,
+		WithTags("moon", "deadly"),
 		WithOrigin(0.5, 0.5),
 		WithScale(scale, scale),
-		WithTags("moon", "deadly"),
 	)
 
 	m.NewSprite(
@@ -30,7 +30,7 @@ func createMoon(
 
 	m.NewRotate(rotationSpeed)
 	m.NewOrbit(speed, distance)
-	m.NewArea(CircleCollider{Radius: float32(texture.Width) * scale / 2})
+	m.NewArea(CircleCollider{Radius: radius})
 
 	shadow := NewGameObject("Shadow", WithScale(scale * 0.9, scale * 0.9))
 	shadow.NewSprite(

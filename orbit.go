@@ -8,7 +8,6 @@ import (
 
 type Orbit struct {
 	GameObj *GameObj
-	// Target *GameObj
 	Angle float32
 	Speed float32
 	Distance float32
@@ -18,18 +17,24 @@ func (*Orbit) Id() string {
 	return "orbit"
 }
 
+func (orb *Orbit) GetVelocity() rl.Vector2 {
+	rads := float64(orb.Angle * rl.Deg2rad)
+
+    vx := orb.Speed * float32(math.Cos(rads))
+    vy := orb.Speed * float32(math.Sin(rads))
+
+	return rl.NewVector2(vx, vy) 
+}
 
 type OrbitOptions func(*Orbit)
 
 func (obj *GameObj) NewOrbit(
-	// target *GameObj,
 	speed float32,
 	distance float32,
 	opts ...OrbitOptions) *Orbit {
 
 	orbit := &Orbit{
 		GameObj: obj,
-		// Target: target,
 		Speed: speed,
 		Distance: distance,
 	}

@@ -1,22 +1,24 @@
 name = "Sol"
 suns = 1
-chart = '''
-.............
-........>....
-.s...........
-..........m..
-...e.........
-.............
-'''
 
 [planets]
+
+[planets.mercury]
+name = "Mercury"
+texture = "rocky"
+radius = 12.0
+distance = 50
+speed = 0.3
+rotation = -0.1
+color = [200, 75, 0] # brown
+gravity = 0.1
+
 [planets.earth]
 name = "Earth"
-symbol = "e"
 texture = "earthy"
-radius = 60.0
+radius = 40.0
+distance = 120
 speed = 0.2
-heading = 0
 rotation = -0.1
 color = [0, 120, 255] # blue
 gravity = 0.2
@@ -25,10 +27,10 @@ gravity = 0.2
 [planets.earth.satellites.moon]
 name = "Moon"
 texture = "cratery"
-radius = 14
-speed = 0.4
+radius = 8
+speed = 0.2
 rotation = 0.2
-distance = 100
+distance = 60
 color = [255, 255, 255] # white
 
 [planets.earth.products]
@@ -54,13 +56,12 @@ value = 100
 
 [planets.mars]
 name = "Mars"
-symbol = "m"
-texture = "cratery"
-radius = 40.0
-speed = -0.3
-heading = 0
+texture = "rocky"
+radius = 30.0
+distance = 240
+speed = -0.2
 rotation = -0.1
-color = [255, 0, 0] # red
+color = [255, 150, 150] # sort of pinkish really
 gravity = 0.3
 
 [planets.mars.satellites]
@@ -70,7 +71,7 @@ texture = "cratery"
 radius = 4
 speed = 0.6
 rotation = 0.2
-distance = 50
+distance = 42
 color = [255, 192, 203] # pink
 
 [planets.mars.satellites.deimos]
@@ -79,7 +80,7 @@ texture = "cratery"
 radius = 8
 speed = -0.3
 rotation = 0.2
-distance = 100
+distance = 46
 color = [255, 192, 203] # pink
 
 [planets.mars.products]
@@ -100,11 +101,10 @@ value = 200
 
 [planets.saturn]
 name = "Saturn"
-symbol = "s"
 texture = "cratery"
-radius = 100.0
+radius = 75.0
+distance = 440
 speed = 0.1
-heading = 0
 rotation = -0.1
 color = [255, 255, 0] # yellow
 gravity = 0.1

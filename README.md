@@ -2,6 +2,8 @@
 
 # TO DO
 
+- Collisions should not "cooldown" if collision is between two planets
+  - in fact, collisions should be ignored between planets
 - Ship should attach to planet at correct landing point
 - Delay before respawn
 - embed textures in binary

@@ -6,7 +6,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const DOCK_HEIGHT = 8
+const DOCK_HEIGHT = 12
 
 // could also repel if force is negative
 type Dock struct {

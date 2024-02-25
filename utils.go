@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -15,6 +16,12 @@ const (
 
 func WaitAndTrigger(callback func(), delay time.Duration) {
     time.AfterFunc(delay, callback)
+}
+
+func printObjs (objs []*GameObj) {
+	for _, o := range objs {
+		fmt.Println(o.Name)
+	}
 }
 
 func DrawText(

@@ -109,6 +109,8 @@ func (o *GameObj) FindChildrenByComponent(recurse bool, comp string) []*GameObj 
 			objs = append(objs, c.FindChildrenByComponent(recurse, comp)...)
 		}
 	}
+
+	// printObjs(objs)
 	return objs
 }
 

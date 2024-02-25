@@ -14,8 +14,8 @@ func createPlanet(
 	texture rl.Texture2D,
 	x, y float32,
 	speed float32,
+	orbitPosition float32,
 	rotationSpeed float32,
-	heading float32,
 	radius float32,
 	color rl.Color,
 	gravity float32,
@@ -39,19 +39,19 @@ func createPlanet(
 		WithCooldown(2 * time.Second),
 	)
 
-	p.NewMotion(
-		WithVelocity(speed, heading),
-		WithWrap(true, false, float32(texture.Width) * scale / 2),
-	)
+	// p.NewMotion(
+	// 	WithVelocity(speed, heading),
+	// 	WithWrap(true, false, float32(texture.Width) * scale / 2),
+	// )
 
 	// COMMENTING OUT TO SEE IF IT'S THE PROBLEM WITH HANGS
 	
-	// p.NewAttract(
-	// 	[]*GameObj{target},
-	// 	gravity,
-	// 	GRAVITY_THRESHOLD,
-	// 	WithIgnored(IGNORE_WHEN),
-	// )
+	p.NewAttract(
+		[]*GameObj{target},
+		gravity,
+		GRAVITY_THRESHOLD,
+		WithIgnored(IGNORE_WHEN),
+	)
 
 	p.NewRotate(rotationSpeed)
 	

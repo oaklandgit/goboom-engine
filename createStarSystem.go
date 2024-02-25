@@ -5,31 +5,14 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"strings"
 
 	"github.com/BurntSushi/toml"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 const (
-	CHART_CELL_SIZE = 60
 	RING_TO_PLANET_SIZE_RATIO = 3.8
 )
-
-func findPos(chart string, code rune, size int) (x, y int) {
-
-	rows := strings.Split(chart, "\n")
-
-	for i, row := range rows {
-		col := strings.IndexRune(row, code)
-		if col != -1 {
-			return i * size, col * size
-		}
-	}
-
-	return -1, -1
-
-}
 
 type System struct {
 	Name string
@@ -58,11 +41,12 @@ type Planet struct {
 	Name string
 	Symbol string
 	Pos []float32
+	Distance float32 // from its sun
 	Texture string
 	Radius float32
 	Speed float32
-	Heading float32
 	Rotation float32
+	OrbitPosition float32
 	Color []int
 	Gravity float32
 	Products map[string]Product
@@ -70,7 +54,7 @@ type Planet struct {
 	HasRings bool
 }
 
-func createLevel(g *Game, tomlStr string) *GameObj {
+func createStarSystem(g *Game, tomlStr string) *GameObj {
 
 	// load toml file
 	var system System
@@ -81,16 +65,21 @@ func createLevel(g *Game, tomlStr string) *GameObj {
     }
 
 	// SHIP ////////////////////
-	shipY, shipX := findPos(system.Chart, rune('>'), CHART_CELL_SIZE)
-	ship := createShip(float32(shipX), float32(shipY))
+	ship := createShip(200, 200)
 	
 	// STARS ///////////////////
 	starfield := NewGameObject("Starfield")
-	starfield.NewStarfield(screenW, screenH, 40)
+	starfield.NewStarfield(screenW, screenH, 60)
 
 	// STAR SYSTEM //////////////
-	starSystem := NewGameObject("Solar System")
+	starSystem := NewGameObject("Solar System", WithScale(0.5, 0.5))
 	starSystem.Size = rl.NewVector2(screenW, screenH)
+	starSystem.NewSprite(textures["assets/sun.png"],
+		WithColor(rl.Yellow),
+		WithOpacity(0.2))
+
+	// star is located at bottom center of screen
+	starSystem.Position = rl.NewVector2(screenW/2, screenH/2)
 
 	for _, p := range system.Planets {
 
@@ -101,21 +90,16 @@ func createLevel(g *Game, tomlStr string) *GameObj {
 			255,
 		)
 
-		// find its position in the chart
-
-		symbol := rune(p.Symbol[0])
-		posY, posX := findPos(system.Chart, symbol, CHART_CELL_SIZE)
-
 		planetTex := textures[fmt.Sprintf("assets/%s.png", p.Texture)]
 
 		planet := createPlanet(
 			p.Name,
 			planetTex,
-			float32(posX),
-			float32(posY),
+			0, // temporary
+			0,
 			p.Speed,
+			p.OrbitPosition,
 			p.Rotation,
-			p.Heading,
 			p.Radius,
 			planetColor,
 			p.Gravity,
@@ -169,13 +153,14 @@ func createLevel(g *Game, tomlStr string) *GameObj {
 
 		}
 
-
 		mine := planet.NewMine()
 
 		for _, product := range p.Products {
 			mine.AddResource(product.Name, product.Amount, product.Value)
 		}
 
+
+		planet.NewOrbit(p.Speed, p.Distance)
 		starSystem.AddChildren(planet)
 	}
 

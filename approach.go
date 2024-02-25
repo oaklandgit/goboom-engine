@@ -9,6 +9,8 @@ import (
 
 type Approach struct {
 	GameObj *GameObj
+	Target *GameObj
+
 	OtherTags []string
 
 	SafeDistance float32
@@ -55,7 +57,7 @@ func WithSafeSpeed(speed float32) ApproachOption {
 
 func (a *Approach) IsMovingTowards(o *GameObj) bool {
 
-	dir := rl.Vector2Subtract(o.Position, a.GameObj.Position)
+	dir := rl.Vector2Subtract(o.PosGlobal(), a.GameObj.PosGlobal())
 	dir = rl.Vector2Normalize(dir)
 	dot := rl.Vector2DotProduct(
 		a.GameObj.Components["motion"].(*Motion).Velocity, dir)
@@ -71,7 +73,7 @@ func (a *Approach) IsPointingToward(o *GameObj) bool {
 	headingY := float32(math.Sin(rads))
 	headingVector := rl.NewVector2(headingX, headingY)
 
-	dir := rl.Vector2Subtract(o.Position, a.GameObj.Position)
+	dir := rl.Vector2Subtract(o.PosGlobal(), a.GameObj.PosGlobal())
 	dir = rl.Vector2Normalize(dir)
 	dot := rl.Vector2DotProduct(headingVector, dir)
 
@@ -81,7 +83,7 @@ func (a *Approach) IsPointingToward(o *GameObj) bool {
 func (a *Approach) IsClose(target *GameObj) bool {
 
 	// Vector from the ship to planet
-	planetVec := rl.Vector2Subtract(target.Position, a.GameObj.Position)
+	planetVec := rl.Vector2Subtract(target.PosGlobal(), a.GameObj.PosGlobal())
 	planetRadius := target.Width() / 2
 
 	close := rl.Vector2Length(planetVec) <= a.SafeDistance + planetRadius
@@ -98,6 +100,7 @@ func (a *Approach) IsSafeSpeed() bool {
 func (a *Approach) Update() {
 
 	a.Message = ""
+	a.Target = nil
 
 	if a.GameObj.Components["dock"].(*Dock).DockedWith != nil {
 		return
@@ -110,6 +113,7 @@ func (a *Approach) Update() {
 			if a.IsClose(obj) && a.IsMovingTowards(obj) {
 
 				a.Message = fmt.Sprintf("Approaching %s", obj.Name)
+				a.Target = obj
 
 				if a.IsPointingToward(obj) {
 					a.Message = "Turn to dock!"
@@ -129,9 +133,45 @@ func (a *Approach) Update() {
 
 func (a *Approach) Draw() {
 	// DrawText(a.Message, screenW/2, screenH - 14, 14, 2, rl.White, Center)
+
+	if a.Target == nil {
+		return
+	}
+
 	DrawText(
 		a.Message,
 		int32(a.GameObj.PosGlobal().X),
 		int32(a.GameObj.PosGlobal().Y) + 16,
-		14, 2, rl.Gray, Center)
+		14, 2, rl.Green, Center)
+
+	arcRadius := calculateRadius(
+		a.Target.PosGlobal(),
+		a.Target.Parent.PosGlobal())
+
+	targetAngle := calculateAngle(
+		a.Target.PosGlobal(),
+		a.Target.Parent.PosGlobal())
+	startAngle := targetAngle - 40
+	endAngle := targetAngle + 40
+
+	rl.DrawRingLines(
+		a.Target.Parent.PosGlobal(),
+		arcRadius,
+		arcRadius,
+		startAngle,
+		endAngle,
+		12,
+		rl.Green)
+}
+
+func calculateRadius(targetPos, parentPos rl.Vector2) float32 {
+    dx := targetPos.X - parentPos.X
+    dy := targetPos.Y - parentPos.Y
+    return float32(math.Sqrt(float64(dx*dx + dy*dy)))
+}
+
+func calculateAngle(targetPos, parentPos rl.Vector2) float32 {
+    dx := targetPos.X - parentPos.X
+    dy := targetPos.Y - parentPos.Y
+    return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
 }

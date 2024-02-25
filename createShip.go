@@ -12,7 +12,7 @@ const (
 	MAX_SPEED = 2
 	LIVES = 3
 	WARNING_DISTANCE = 120
-	SAFE_LANDING_SPEED = 0.5
+	SAFE_LANDING_SPEED = 1
 	SHIP_RADIUS = 8
 	SHIP_DRAG = 0.999
 	SHIP_WRAP_PADDING = 16
@@ -43,9 +43,8 @@ func createShip(x, y float32) *GameObj {
 		rl.StopSound(thrustSound)
 	}
 
-	dockWith := func(g *GameObj, thePlanet *GameObj, landingPosition rl.Vector2) {
-		// landingPosition is the angle of where on the edge it landed
-		g.Components["dock"].(*Dock).DockWith(thePlanet, landingPosition)
+	dockWith := func(g *GameObj, theObject *GameObj, landingPosition rl.Vector2) {
+		g.Components["dock"].(*Dock).DockWith(theObject, landingPosition)
 	}
 
 	// SHIP
@@ -124,19 +123,19 @@ func createShip(x, y float32) *GameObj {
 
 	ship.Components["area"].(*Area).AddCollisionHandler(
 			"deadly",
-			func(you, thePlanet *GameObj) {
+			func(you, theObject *GameObj) {
 
-				// don't crash if docked with this planet
+				// // don't crash if docked with this planet
 				if you.Components["dock"].(*Dock).DockedWith != nil &&
-					you.Components["dock"].(*Dock).DockedWith == thePlanet { 
+					you.Components["dock"].(*Dock).DockedWith == theObject { 
 						return
 				}
 
-				// land if good speed and angle
+				// // land if good speed and angle
 				if you.Components["approach"].(*Approach).IsSafeSpeed() &&
-					!you.Components["approach"].(*Approach).IsPointingToward(thePlanet) {
+					!you.Components["approach"].(*Approach).IsPointingToward(theObject) {
 						
-					dockWith(you, thePlanet, rl.Vector2{})
+					dockWith(you, theObject, rl.Vector2{})
 					return
 				}
 

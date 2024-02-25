@@ -42,7 +42,7 @@ func (g *Game) SetScene(name string) {
 }
 
 func (g *Game) Reset() {
-	g.AddScene("level1", createLevel(game, tomlData))
+	g.AddScene("level1", createStarSystem(game, tomlData))
 }
 
 func (g *Game) Run() {
@@ -88,6 +88,7 @@ func (g *Game) Stop() {
 
 func CheckForCollisions(scope *GameObj) {
 	objs := scope.FindChildrenByComponent(true, "area")
+	printObjs(objs)
 
 	// RESET
 	for _, a := range objs {
@@ -112,12 +113,14 @@ func CheckForCollisions(scope *GameObj) {
 				for tag, handler := range thisArea.CollisionHandlers {
 					if that.HasTag(tag) {
 						handler(this, that)
+						// cooldown here?
 					}
 				}
 
 				for tag, handler := range thatArea.CollisionHandlers {
 					if this.HasTag(tag) {
 						handler(that, this)
+						// cooldown here?
 					}
 				}
 		  	}
