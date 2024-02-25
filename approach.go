@@ -7,6 +7,10 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+const (
+	ARC_SEGMENTS = 12
+)
+
 type Approach struct {
 	GameObj *GameObj
 	Target *GameObj
@@ -151,8 +155,14 @@ func (a *Approach) Draw() {
 	targetAngle := calculateAngle(
 		a.Target.PosGlobal(),
 		a.Target.Parent.PosGlobal())
-	startAngle := targetAngle - 40
-	endAngle := targetAngle + 40
+	startAngle := targetAngle - 45
+	endAngle := targetAngle + 45
+
+	rl.DrawCircleLines(
+		int32(a.Target.PosGlobal().X),
+		int32(a.Target.PosGlobal().Y),
+		a.Target.Width()/2 + (a.Target.Width()/2 * 1.1),
+		rl.Green)
 
 	rl.DrawRingLines(
 		a.Target.Parent.PosGlobal(),
@@ -160,7 +170,7 @@ func (a *Approach) Draw() {
 		arcRadius,
 		startAngle,
 		endAngle,
-		12,
+		ARC_SEGMENTS,
 		rl.Green)
 }
 
@@ -170,8 +180,8 @@ func calculateRadius(targetPos, parentPos rl.Vector2) float32 {
     return float32(math.Sqrt(float64(dx*dx + dy*dy)))
 }
 
-func calculateAngle(targetPos, parentPos rl.Vector2) float32 {
-    dx := targetPos.X - parentPos.X
-    dy := targetPos.Y - parentPos.Y
-    return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
-}
+// func calculateAngle(targetPos, parentPos rl.Vector2) float32 {
+//     dx := targetPos.X - parentPos.X
+//     dy := targetPos.Y - parentPos.Y
+//     return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
+// }

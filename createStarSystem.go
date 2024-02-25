@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	RING_TO_PLANET_SIZE_RATIO = 3.8
+	RING_TO_PLANET_SIZE_RATIO = 5.0
+	SHADOW_TO_PLANET_SIZE_RATIO = 0.015
 )
 
 type System struct {
@@ -72,14 +73,12 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 	starfield.NewStarfield(screenW, screenH, 60)
 
 	// STAR SYSTEM //////////////
-	starSystem := NewGameObject("Solar System", WithScale(0.5, 0.5))
+	starSystem := NewGameObject("Solar System", WithScale(2, 2))
 	starSystem.Size = rl.NewVector2(screenW, screenH)
-	starSystem.NewSprite(textures["assets/sun.png"],
-		WithColor(rl.Yellow),
-		WithOpacity(0.2))
+	starSystem.NewSprite(textures["assets/sun.png"])
 
 	// star is located at bottom center of screen
-	starSystem.Position = rl.NewVector2(screenW/2, screenH/2)
+	starSystem.Position = rl.NewVector2(screenW/2, screenH - 100)
 
 	for _, p := range system.Planets {
 
@@ -112,7 +111,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 			ringW := ringTex.Width
 			ringScale := p.Radius *
 				RING_TO_PLANET_SIZE_RATIO / float32(ringW)
-			ringAngle := rand.Float32() * 45
+			ringAngle := rand.Float32() * 30
 
 			rings := NewGameObject(
 				"Rings",
@@ -159,6 +158,17 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 			mine.AddResource(product.Name, product.Amount, product.Value)
 		}
 
+		// add shadow
+		shadow := NewGameObject("Shadow",
+			WithScale(
+				p.Radius * SHADOW_TO_PLANET_SIZE_RATIO,
+				p.Radius * SHADOW_TO_PLANET_SIZE_RATIO))
+
+		shadow.NewSprite(textures["assets/shadow.png"],
+			WithOpacity(0.8))
+
+		shadow.NewPointAt(starSystem)
+		planet.AddChildren(shadow)
 
 		planet.NewOrbit(p.Speed, p.Distance)
 		starSystem.AddChildren(planet)

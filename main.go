@@ -44,6 +44,7 @@ func main() {
 		"assets/ship.png",
 		"assets/rocky.png",
 		"assets/earthy.png",
+		"assets/gassy.png",
 		"assets/cratery.png",
 		"assets/rocky3.png",
 		"assets/shadow.png",
@@ -52,6 +53,7 @@ func main() {
 		"assets/gameover.png",
 		"assets/title.png",
 		"assets/sun.png",
+		"assets/icon-life.png",
 	)
 
 	sounds = LoadSounds(

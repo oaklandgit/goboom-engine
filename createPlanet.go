@@ -38,14 +38,9 @@ func createPlanet(
 	p.NewArea(CircleCollider{Radius: float32(texture.Width) * scale / 2},
 		WithCooldown(2 * time.Second),
 	)
-
-	// p.NewMotion(
-	// 	WithVelocity(speed, heading),
-	// 	WithWrap(true, false, float32(texture.Width) * scale / 2),
-	// )
-
-	// COMMENTING OUT TO SEE IF IT'S THE PROBLEM WITH HANGS
 	
+	// Not sure if gravity makes it more or less fun
+
 	p.NewAttract(
 		[]*GameObj{target},
 		gravity,
@@ -57,12 +52,20 @@ func createPlanet(
 	
 	p.NewMine()
 
-	shadow := NewGameObject("Shadow", WithScale(scale * 0.94, scale * 0.94))
-	shadow.NewSprite(
-		textures["assets/shadow.png"],
-		WithOpacity(0.8),
-	)
-	p.AddChildren(shadow)
+	// shadow := NewGameObject("Shadow",
+	// 	WithScale(scale * 0.94, scale * 0.94),
+	// )
+	
+	// shadow.NewRotate(-rotationSpeed)
+
+	// // it's parent is the sun
+	// // shadow.NewPointAt()
+
+	// shadow.NewSprite(
+	// 	textures["assets/shadow.png"],
+	// 	WithOpacity(0.8),
+	// )
+	// p.AddChildren(shadow)
 
 	return p
 

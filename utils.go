@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -23,6 +24,19 @@ func printObjs (objs []*GameObj) {
 		fmt.Println(o.Name)
 	}
 }
+
+func calculateAngle(obj1, obj2 rl.Vector2) float32 {
+    dx := obj1.X - obj2.X
+    dy := obj1.Y - obj2.Y
+	
+    return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
+}
+
+// func calculateAngle(targetPos, parentPos rl.Vector2) float32 {
+//     dx := targetPos.X - parentPos.X
+//     dy := targetPos.Y - parentPos.Y
+//     return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
+// }
 
 func DrawText(
 	text string,

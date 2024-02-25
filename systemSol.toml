@@ -30,7 +30,7 @@ texture = "cratery"
 radius = 8
 speed = 0.2
 rotation = 0.2
-distance = 60
+distance = 72
 color = [255, 255, 255] # white
 
 [planets.earth.products]
@@ -59,7 +59,7 @@ name = "Mars"
 texture = "rocky"
 radius = 30.0
 distance = 240
-speed = -0.2
+speed = 0.2
 rotation = -0.1
 color = [255, 150, 150] # sort of pinkish really
 gravity = 0.3
@@ -71,7 +71,7 @@ texture = "cratery"
 radius = 4
 speed = 0.6
 rotation = 0.2
-distance = 42
+distance = 50
 color = [255, 192, 203] # pink
 
 [planets.mars.satellites.deimos]
@@ -80,7 +80,7 @@ texture = "cratery"
 radius = 8
 speed = -0.3
 rotation = 0.2
-distance = 46
+distance = 60
 color = [255, 192, 203] # pink
 
 [planets.mars.products]
@@ -101,11 +101,11 @@ value = 200
 
 [planets.saturn]
 name = "Saturn"
-texture = "cratery"
-radius = 75.0
-distance = 440
-speed = 0.1
-rotation = -0.1
+texture = "gassy"
+radius = 45.0
+distance = 500
+speed = -0.1
+rotation = 0
 color = [255, 255, 0] # yellow
 gravity = 0.1
 hasrings = true

@@ -102,17 +102,7 @@ func (m *Mine) Draw() {
 			int32(r.Amount - r.Remaining),
 			int32(r.Amount),
 			text,
-		)
-
-		// 
-		// fontSize := int32(16)
-
-		// x := 	int32(m.GameObj.Position.X)
-		// y := 	int32(m.GameObj.Position.Y) -
-		// 		int32((2 + i) * int(fontSize + 6)) -
-		// 		int32(m.GameObj.Height()/2)
-
-		// DrawText(text, x, y, fontSize, 2, rl.White, Left)
+		)		
 		
 	}
 

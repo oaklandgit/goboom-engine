@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -114,7 +112,16 @@ func (l *Lives) Update() {
 
 func (l *Lives) Draw() {
 
-	text := fmt.Sprintf("Lives: %d of %d", l.Remaining, l.Total)
-	DrawText(text, 12, 12, 20, 2, rl.White, Left)
+	// text := fmt.Sprintf("Lives: %d of %d", l.Remaining, l.Total)
+	// DrawText(text, 12, 12, 20, 2, rl.White, Left)
+	for i := 0; i < l.Remaining; i++ {
+		rl.DrawTextureEx(
+			textures["assets/icon-life.png"],
+			rl.NewVector2(float32(22 + (i * 28)), 22),
+			0,
+			0.7,
+			rl.Green,
+		)
+	}
 	
 }
