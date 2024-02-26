@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -26,7 +25,6 @@ func createGameOverScene(g *Game) *GameObj {
 		SWITCH_TO_START,
 		func() {
 			game.SetScene("titlescene")
-			fmt.Println("Switching to title scene")
 		})
 
 	gameOver.NewInput(

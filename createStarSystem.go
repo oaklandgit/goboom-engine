@@ -78,7 +78,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 	starSystem.NewSprite(textures["assets/sun.png"])
 
 	// star is located at bottom center of screen
-	starSystem.Position = rl.NewVector2(screenW/2, screenH - 100)
+	starSystem.Position = rl.NewVector2(screenW/2, screenH - 128)
 
 	for _, p := range system.Planets {
 

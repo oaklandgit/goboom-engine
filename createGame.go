@@ -88,7 +88,7 @@ func (g *Game) Stop() {
 
 func CheckForCollisions(scope *GameObj) {
 	objs := scope.FindChildrenByComponent(true, "area")
-	printObjs(objs)
+	// printObjs(objs)
 
 	// RESET
 	for _, a := range objs {

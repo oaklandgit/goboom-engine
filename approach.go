@@ -101,36 +101,56 @@ func (a *Approach) IsSafeSpeed() bool {
 	return safe
 }
 
-func (a *Approach) Update() {
+func (a *Approach) FindNewTarget() {
+	// find the closest object with a tag
 
-	a.Message = ""
 	a.Target = nil
+	a.Message = ""
 
-	if a.GameObj.Components["dock"].(*Dock).DockedWith != nil {
-		return
-	}
-
-	// check distance of all objects with tags
 	for _, tag := range a.OtherTags {
 		objs := a.GameObj.Parent.FindChildrenByTags(true, tag)
 		for _, obj := range objs {
 			if a.IsClose(obj) && a.IsMovingTowards(obj) {
 
-				a.Message = fmt.Sprintf("Approaching %s", obj.Name)
-				a.Target = obj
+				dist := rl.Vector2Distance(a.GameObj.PosGlobal(), obj.PosGlobal())
 
-				if a.IsPointingToward(obj) {
-					a.Message = "Turn to dock!"
-					return
-				}
-
-				if !a.IsSafeSpeed() {
-					a.Message = "Adjust your speed!"
-					return
+				if a.Target == nil || dist < rl.Vector2Distance(a.GameObj.PosGlobal(), a.Target.PosGlobal()) {	
+					a.Target = obj
+					a.Message = fmt.Sprintf("Approaching %s", obj.Name)
 				}
 
 			}
 		}
+	}
+	
+}
+
+func (a *Approach) Update() {
+
+	a.Message = ""
+
+	if a.GameObj.Components["dock"].(*Dock).DockedWith != nil {
+		return
+	}
+
+	if a.Target == nil {
+		a.FindNewTarget()
+		return
+	}
+
+	if !a.IsClose(a.Target) {
+		a.FindNewTarget()
+		return
+	}
+
+	if a.IsPointingToward(a.Target) {
+		a.Message = "Don't land head on!"
+		return
+	}
+
+	if !a.IsSafeSpeed() {
+		a.Message = "Approaching too fast!"
+		return
 	}
 
 }
@@ -172,6 +192,15 @@ func (a *Approach) Draw() {
 		endAngle,
 		ARC_SEGMENTS,
 		rl.Green)
+
+	for i, r := range a.Target.Components["mine"].(*Mine).Resources {
+		DrawText(
+			fmt.Sprintf("%s: %d of %d",
+				r.Name, r.Remaining, r.Amount),
+			screenW - 160,
+			int32(screenH - 32 - (i * 22)),
+			14, 2, rl.Green, Left)
+	}
 }
 
 func calculateRadius(targetPos, parentPos rl.Vector2) float32 {
@@ -179,9 +208,3 @@ func calculateRadius(targetPos, parentPos rl.Vector2) float32 {
     dy := targetPos.Y - parentPos.Y
     return float32(math.Sqrt(float64(dx*dx + dy*dy)))
 }
-
-// func calculateAngle(targetPos, parentPos rl.Vector2) float32 {
-//     dx := targetPos.X - parentPos.X
-//     dy := targetPos.Y - parentPos.Y
-//     return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
-// }

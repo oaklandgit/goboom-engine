@@ -39,8 +39,6 @@ func createPlanet(
 		WithCooldown(2 * time.Second),
 	)
 	
-	// Not sure if gravity makes it more or less fun
-
 	p.NewAttract(
 		[]*GameObj{target},
 		gravity,
@@ -49,23 +47,7 @@ func createPlanet(
 	)
 
 	p.NewRotate(rotationSpeed)
-	
 	p.NewMine()
-
-	// shadow := NewGameObject("Shadow",
-	// 	WithScale(scale * 0.94, scale * 0.94),
-	// )
-	
-	// shadow.NewRotate(-rotationSpeed)
-
-	// // it's parent is the sun
-	// // shadow.NewPointAt()
-
-	// shadow.NewSprite(
-	// 	textures["assets/shadow.png"],
-	// 	WithOpacity(0.8),
-	// )
-	// p.AddChildren(shadow)
 
 	return p
 

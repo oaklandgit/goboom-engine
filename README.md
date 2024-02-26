@@ -2,15 +2,19 @@
 
 # TO DO
 
+- Don't switch target planets - only set when empty
+- Show resources on HUD when close to target planet
+- Ship should attach to planet at correct landing point
+- Fix ship being pulled back to planet on undocking
 - Collisions should not "cooldown" if collision is between two planets
   - in fact, collisions should be ignored between planets
-- Ship should attach to planet at correct landing point
 - Delay before respawn
 - embed textures in binary
 - embed sounds in binary
 - Test stand-alone binary
 - Buggy when docked and moving past left or right edge of screen
 - Leverage go time package for time-based events
+- Moons and planets should be combined into a single struct
 
 # JUICINESS
 

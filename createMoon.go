@@ -12,9 +12,7 @@ func createMoon(
 	color rl.Color,
 	opacity float32) *GameObj {
 
-	// tex := textures["assets/rocky.png"]
 	scale := (radius * 2) / float32(texture.Width)
-
 
 	m := NewGameObject(name,
 		WithTags("moon", "deadly"),
