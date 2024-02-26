@@ -1,10 +1,6 @@
 package main
 
-import (
-	"fmt"
-
-	rl "github.com/gen2brain/raylib-go/raylib"
-)
+import "fmt"
 
 type Mine struct {
 	GameObj *GameObj
@@ -80,34 +76,26 @@ func (m *Mine) Draw() {
 
 	if m.MinedBy == nil { return }
 	if len(m.Resources) == 0 { return }
-	
-	// TEXT ABOVE PLANET
-	for i, r := range m.Resources {
 
-		// draw progress bar
+	for i, r := range m.GameObj.Components["mine"].(*Mine).Resources {
 
-		text := fmt.Sprintf("%s: %d of %d", r.Name, r.Remaining, r.Amount)
-
-		itemSpacing := 42
-		progressBarWidth := 180
-		nudgeLeft := m.GameObj.Width() / 2 + 8
-		distFromPlanet := m.GameObj.Height() / 2 + 42
+		itemSpacing := 38
+		progressBarWidth := 160
+		text := fmt.Sprintf(
+			"%s: %d of %d @ $%d",
+			r.Name,
+			r.Remaining,
+			r.Amount,
+			r.Price)
 
 		DrawProgressBar(
-			int32(m.GameObj.PosGlobal().X - float32(nudgeLeft)),
-			int32(m.GameObj.PosGlobal().Y) -
-				int32(i * itemSpacing) -
-				int32(distFromPlanet),
+			22,
+			int32(80 + (i * itemSpacing)),
 			int32(progressBarWidth),
 			int32(r.Amount - r.Remaining),
 			int32(r.Amount),
 			text,
-		)		
-		
+		)	
 	}
-
-	// TEXT BELOW $SCORE
-	text2 := fmt.Sprintf("%s @ $%d/unit", m.Resources[0].Name, m.Resources[0].Price)
-	DrawText(text2, screenW/2, 62, 18, 8, rl.Green, Center)
 	
 }

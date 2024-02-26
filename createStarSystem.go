@@ -13,6 +13,8 @@ import (
 const (
 	RING_TO_PLANET_SIZE_RATIO = 5.0
 	SHADOW_TO_PLANET_SIZE_RATIO = 0.015
+	STARFIELD_DENSITY = 60
+	SUN_POS_Y_OFFSET = 260
 )
 
 type System struct {
@@ -70,7 +72,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 	
 	// STARS ///////////////////
 	starfield := NewGameObject("Starfield")
-	starfield.NewStarfield(screenW, screenH, 60)
+	starfield.NewStarfield(screenW, screenH, STARFIELD_DENSITY)
 
 	// STAR SYSTEM //////////////
 	starSystem := NewGameObject("Solar System", WithScale(2, 2))
@@ -78,7 +80,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 	starSystem.NewSprite(textures["assets/sun.png"])
 
 	// star is located at bottom center of screen
-	starSystem.Position = rl.NewVector2(screenW/2, screenH - 128)
+	starSystem.Position = rl.NewVector2(screenW/2, screenH - SUN_POS_Y_OFFSET)
 
 	for _, p := range system.Planets {
 

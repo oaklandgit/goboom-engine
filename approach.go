@@ -101,8 +101,7 @@ func (a *Approach) IsSafeSpeed() bool {
 	return safe
 }
 
-func (a *Approach) FindNewTarget() {
-	// find the closest object with a tag
+func (a *Approach) FindClosestTarget() {
 
 	a.Target = nil
 	a.Message = ""
@@ -133,15 +132,13 @@ func (a *Approach) Update() {
 		return
 	}
 
+	a.FindClosestTarget()
+
 	if a.Target == nil {
-		a.FindNewTarget()
 		return
 	}
 
-	if !a.IsClose(a.Target) {
-		a.FindNewTarget()
-		return
-	}
+	a.Message = fmt.Sprintf("Looking good to land on %s!", a.Target.Name)
 
 	if a.IsPointingToward(a.Target) {
 		a.Message = "Don't land head on!"
@@ -156,7 +153,6 @@ func (a *Approach) Update() {
 }
 
 func (a *Approach) Draw() {
-	// DrawText(a.Message, screenW/2, screenH - 14, 14, 2, rl.White, Center)
 
 	if a.Target == nil {
 		return
@@ -193,14 +189,26 @@ func (a *Approach) Draw() {
 		ARC_SEGMENTS,
 		rl.Green)
 
-	for i, r := range a.Target.Components["mine"].(*Mine).Resources {
-		DrawText(
-			fmt.Sprintf("%s: %d of %d",
-				r.Name, r.Remaining, r.Amount),
-			screenW - 160,
-			int32(screenH - 32 - (i * 22)),
-			14, 2, rl.Green, Left)
-	}
+	// for i, r := range a.Target.Components["mine"].(*Mine).Resources {
+
+	// 	itemSpacing := 38
+	// 	progressBarWidth := 160
+	// 	text := fmt.Sprintf(
+	// 		"%s: %d of %d @ $%d",
+	// 		r.Name,
+	// 		r.Remaining,
+	// 		r.Amount,
+	// 		r.Price)
+
+	// 	DrawProgressBar(
+	// 		22,
+	// 		int32(80 + (i * itemSpacing)),
+	// 		int32(progressBarWidth),
+	// 		int32(r.Amount - r.Remaining),
+	// 		int32(r.Amount),
+	// 		text,
+	// 	)	
+	// }
 }
 
 func calculateRadius(targetPos, parentPos rl.Vector2) float32 {

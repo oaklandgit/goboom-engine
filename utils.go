@@ -70,12 +70,12 @@ func DrawProgressBar(
 	text string) {
 
 	lineW := int32(float32(w) * (float32(completed) / float32(total)))
-	height := int32(6)
-	fontSize := int32(13)
+	height := int32(2)
+	fontSize := int32(12)
 
-	rl.DrawRectangle(x, y, w, height, rl.White)
+	rl.DrawRectangle(x, y, w, height, rl.Fade(rl.Green, 0.25))
 	rl.DrawRectangle(x, y, lineW, height, rl.Green)
-	DrawText(text, x, y + fontSize, fontSize, 4, rl.White, Left)
+	DrawText(text, x, y + fontSize, fontSize, 4, rl.Green, Left)
 	
 	
 }

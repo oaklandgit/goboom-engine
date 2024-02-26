@@ -1,9 +1,11 @@
 # IN PROGRESS
 
+- Show resources on HUD when close to target planet
+
 # TO DO
 
-- Don't switch target planets - only set when empty
-- Show resources on HUD when close to target planet
+- Generalized pulse behavior (e.g. when losing life icon or respawning ship)
+- Sometimes crashes (the program, not the ship) after crash landing
 - Ship should attach to planet at correct landing point
 - Fix ship being pulled back to planet on undocking
 - Collisions should not "cooldown" if collision is between two planets
@@ -35,6 +37,7 @@
 
 # DONE
 
+- Don't switch target planets - only set when empty
 - Play again
 - Reset all variables on game start
 - embed toml in binary
