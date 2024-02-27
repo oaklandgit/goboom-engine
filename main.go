@@ -36,9 +36,8 @@ func main() {
 	rl.InitWindow(screenW, screenH, title)
 	rl.SetTargetFPS(60)
 	rl.InitAudioDevice()
-
-	defer rl.CloseAudioDevice()
-	defer rl.CloseWindow()
+	// defer rl.CloseAudioDevice()
+	// defer rl.CloseWindow()
 
 	textures = LoadTextures(
 		"assets/ship.png",
@@ -57,16 +56,23 @@ func main() {
 	)
 
 	sounds = LoadSounds(
+		"sounds/music.wav",
 		"sounds/thrust.wav",
+		"sounds/dock.wav",
+		"sounds/collected.wav",
+		"sounds/undock.wav",
 		"sounds/explosion1.wav",
 		"sounds/explosion2.wav",
 		"sounds/explosion3.wav",
+		"sounds/explosion4.wav",
+		"sounds/explosion5.wav",
+		"sounds/explosion6.wav",
+		"sounds/explosion7.wav",
 		"sounds/gameover.wav",
 	)
 
 	game.AddScene("titlescene", createTitleScene(game))
 	game.Reset()
-	// game.AddScene("level1", createLevel(game, tomlData))
 	game.AddScene("gameover", createGameOverScene(game))
 
 	// RUN!	

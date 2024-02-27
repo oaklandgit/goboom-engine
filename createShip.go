@@ -22,7 +22,7 @@ func createShip(x, y float32) *GameObj {
 
 	// SOUNDS
 	thrustSound := sounds["sounds/thrust.wav"]
-	rl.SetSoundVolume(thrustSound, 0.1);
+	rl.SetSoundVolume(thrustSound, 0.3);
 
 	// SHIP METHODS
 	thrust := func(g *GameObj, speed float32) {

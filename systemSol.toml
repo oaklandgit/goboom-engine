@@ -12,6 +12,7 @@ speed = 0.3
 rotation = -0.1
 color = [200, 75, 0] # brown
 gravity = 0.1
+initialAngle = 45
 
 [planets.earth]
 name = "Earth"
@@ -22,6 +23,7 @@ speed = 0.2
 rotation = -0.1
 color = [0, 120, 255] # blue
 gravity = 0.2
+initialAngle = 180
 
 [planets.earth.satellites]
 [planets.earth.satellites.moon]
@@ -63,6 +65,7 @@ speed = 0.2
 rotation = -0.1
 color = [255, 150, 150] # sort of pinkish really
 gravity = 0.3
+initialAngle = 0
 
 [planets.mars.satellites]
 [planets.mars.satellites.phobos]
@@ -109,3 +112,4 @@ rotation = 0
 color = [255, 255, 0] # yellow
 gravity = 0.1
 hasrings = true
+initialAngle = 130

@@ -49,12 +49,12 @@ type Planet struct {
 	Radius float32
 	Speed float32
 	Rotation float32
-	OrbitPosition float32
 	Color []int
 	Gravity float32
 	Products map[string]Product
 	Satellites map[string]Satellite
 	HasRings bool
+	InitialAngle float32
 }
 
 func createStarSystem(g *Game, tomlStr string) *GameObj {
@@ -99,7 +99,6 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 			0, // temporary
 			0,
 			p.Speed,
-			p.OrbitPosition,
 			p.Rotation,
 			p.Radius,
 			planetColor,
@@ -172,7 +171,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 		shadow.NewPointAt(starSystem)
 		planet.AddChildren(shadow)
 
-		planet.NewOrbit(p.Speed, p.Distance)
+		planet.NewOrbit(p.Speed, p.Distance, WithOrbitAngle(p.InitialAngle))
 		starSystem.AddChildren(planet)
 	}
 

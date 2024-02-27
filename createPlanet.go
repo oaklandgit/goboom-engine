@@ -14,7 +14,6 @@ func createPlanet(
 	texture rl.Texture2D,
 	x, y float32,
 	speed float32,
-	orbitPosition float32,
 	rotationSpeed float32,
 	radius float32,
 	color rl.Color,
@@ -39,12 +38,12 @@ func createPlanet(
 		WithCooldown(2 * time.Second),
 	)
 	
-	p.NewAttract(
-		[]*GameObj{target},
-		gravity,
-		GRAVITY_THRESHOLD,
-		WithIgnored(IGNORE_WHEN),
-	)
+	// p.NewAttract(
+	// 	[]*GameObj{target},
+	// 	gravity,
+	// 	GRAVITY_THRESHOLD,
+	// 	WithIgnored(IGNORE_WHEN),
+	// )
 
 	p.NewRotate(rotationSpeed)
 	p.NewMine()

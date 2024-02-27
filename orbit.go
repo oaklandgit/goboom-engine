@@ -48,6 +48,12 @@ func (obj *GameObj) NewOrbit(
 	return orbit
 }
 
+func WithOrbitAngle(angle float32) OrbitOptions {
+	return func(orb *Orbit) {
+		orb.Angle = angle
+	}
+}
+
 func (orb *Orbit) Update() {
 
 	orb.Angle += orb.Speed

@@ -51,12 +51,14 @@ func adjustAngle(angle float32) float32 {
 }
 
 func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
+
+	sound := sounds["sounds/dock.wav"]
+	rl.PlaySound(sound)
+
 	d.DockedWith = other
 	other.Components["mine"].(*Mine).MinedBy = d.GameObj
 	d.GameObj.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
 
-	// calculate the degrees on the circle where the collision occurred
-	// d.AngleOffset = angleAtPosition(other.Angle, other.PosGlobal(), atPosition)
 	d.AngleOffset = angleAtPosition(other.Angle, other.PosGlobal(), d.GameObj.PosGlobal())
 
 }
@@ -83,6 +85,9 @@ func (d *Dock) Update() {
 func (d *Dock) Undock() {
 
 	if d.DockedWith == nil { return }
+
+	sound := sounds["sounds/undock.wav"]
+	rl.PlaySound(sound)
 
 	// move ship a bit to avoid immediate re-docking
 	displacement := displace(DOCK_HEIGHT, d.GameObj.Angle)

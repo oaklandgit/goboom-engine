@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 type Mine struct {
 	GameObj *GameObj
@@ -68,6 +72,10 @@ func (m *Mine) Update() {
 
 	// remove if depleted
 	if r.Remaining == 0 {
+
+		sound := sounds["sounds/collected.wav"]
+		rl.PlaySound(sound)
+
 		m.Resources = m.Resources[1:]
 	}
 }

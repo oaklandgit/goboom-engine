@@ -49,8 +49,17 @@ func (g *Game) Run() {
 	g.State = Running
 
 	scene := g.Scenes[g.CurrScene]
-	
+	soundtrack := rl.LoadMusicStream("sounds/music.wav")
+	rl.PlayMusicStream(soundtrack)
+	rl.SetMusicVolume(soundtrack, 0.4)
+
 	for !rl.WindowShouldClose() {
+
+		rl.UpdateMusicStream(soundtrack)
+		if !rl.IsMusicStreamPlaying(soundtrack) {
+			rl.PlayMusicStream(soundtrack)
+		}
+
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Color{10, 10, 20, 255})
 

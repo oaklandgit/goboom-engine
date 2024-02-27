@@ -1,7 +1,5 @@
 # IN PROGRESS
 
-- Ship should attach to planet at correct landing point
-
 # TO DO
 
 - Expand Tween capability
@@ -22,14 +20,12 @@
 
 # JUICINESS
 
+- Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
 - Game starts with instructions on objective and how to land
 - Each scene starts with an intro to its solar system
-- Planets orbit their star (as opposed to just gliing across the screen)
 - Mini map of the full solar system
-- Docking sound
 - Animate touching down tutorial
 - Artificial satellites
-- Different planet textures (e.g. Rocky, gaseous, watery, earthlike)
 - worm holes (teleportation)
 - more levels
 
@@ -39,6 +35,9 @@
 
 # DONE
 
+- Planets orbit their star (as opposed to just gliding across the screen)
+- Docking sound
+- Ship should attach to planet at correct landing point
 - Don't switch target planets - only set when empty
 - Play again
 - Reset all variables on game start

@@ -15,6 +15,10 @@ func createExplosion(x, y float32, texture string) *GameObj {
 			sounds["sounds/explosion1.wav"],
 			sounds["sounds/explosion2.wav"],
 			sounds["sounds/explosion3.wav"],
+			sounds["sounds/explosion4.wav"],
+			sounds["sounds/explosion5.wav"],
+			sounds["sounds/explosion6.wav"],
+			sounds["sounds/explosion7.wav"],
 		}[rand.Intn(3)]
 
 	rl.SetSoundVolume(sound, 0.2);
