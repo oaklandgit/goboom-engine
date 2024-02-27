@@ -37,19 +37,47 @@ func (obj *GameObj) NewDock(
 	return dock
 }
 
+func angleAtPosition(rotation float32, center, position rl.Vector2) float32 {
+    dx := position.X - center.X
+    dy := position.Y - center.Y
+    angle := float32(math.Atan2(float64(dy), float64(dx))) * rl.Rad2deg
+
+	return adjustAngle(angle - rotation)
+}
+
+func adjustAngle(angle float32) float32 {
+    // Use modulo to wrap around
+    return float32(int(angle+360) % 360)
+}
+
 func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
 	d.DockedWith = other
 	other.Components["mine"].(*Mine).MinedBy = d.GameObj
 	d.GameObj.Components["motion"].(*Motion).Velocity = rl.Vector2Zero()
+
+	// calculate the degrees on the circle where the collision occurred
+	// d.AngleOffset = angleAtPosition(other.Angle, other.PosGlobal(), atPosition)
+	d.AngleOffset = angleAtPosition(other.Angle, other.PosGlobal(), d.GameObj.PosGlobal())
+
 }
 
-func displace(distance float32, angle float32) rl.Vector2 {
-	rads := float64(angle * rl.Deg2rad)
-	displacement := rl.Vector2{
-    	X: distance * float32(math.Cos(rads)),
-    	Y: distance * float32(math.Sin(rads)),
-	}
-	return displacement
+func (d *Dock) Update() {	
+
+	if d.DockedWith == nil { return }
+
+	radius := d.DockedWith.Width() / 2 + DOCK_HEIGHT
+
+	// angleDeg := adjustAngle(float32(math.Abs(float64(d.DockedWith.Angle - d.AngleOffset))) - 90)
+	// angleDeg := adjustAngle(float32(math.Abs(float64(d.DockedWith.Angle - d.AngleOffset - 90))))
+	angleRads := float64(adjustAngle(d.AngleOffset + d.DockedWith.Angle)) * rl.Deg2rad
+
+	x := d.DockedWith.PosGlobal().X + (radius * float32(math.Cos(angleRads)))
+	y := d.DockedWith.PosGlobal().Y + (radius * float32(math.Sin(angleRads)))
+
+	d.GameObj.Position = rl.NewVector2(x, y)
+
+	d.GameObj.Angle = adjustAngle(d.AngleOffset + d.DockedWith.Angle)
+
 }
 
 func (d *Dock) Undock() {
@@ -63,24 +91,6 @@ func (d *Dock) Undock() {
 	// sever the connection
 	d.DockedWith.Components["mine"].(*Mine).MinedBy = nil
 	d.DockedWith = nil
-}
-
-func (d *Dock) Update() {
-
-	// testAngleOffset := 90
-
-	if d.DockedWith == nil { return }
-
-	radius := d.DockedWith.Width() / 2 + DOCK_HEIGHT
-	angle := float64(d.DockedWith.Angle * rl.Deg2rad)
-
-	x := d.DockedWith.PosGlobal().X + (radius * float32(math.Cos(angle)))
-	y := d.DockedWith.PosGlobal().Y + (radius * float32(math.Sin(angle)))
-
-	d.GameObj.Position = rl.NewVector2(x, y)
-
-	d.GameObj.Angle = d.DockedWith.Angle
-
 }
 
 func (d *Dock) Draw() {

@@ -1,10 +1,27 @@
 package main
 
+// a GameObj can have multiple tweens
+type Tweening struct {
+	GameObj *GameObj
+	Tweens []*Tween
+}
+
+type Easing struct {
+}
+
 type Tween struct {
 	GameObj *GameObj
+	Start float32
+	End float32
+	Duration float32 // in frames
+	Easing string
+	Yoyo bool
+	DelayBeforeRepeat float32 // between yoyos
+	//
+	Playing bool
 	Step float32
 	Count float32
-	Field func(*GameObj) *float32
+	Property func(*GameObj) *float32
 	Callback func()
 }
 
@@ -23,7 +40,7 @@ func (obj *GameObj) NewTween(
 	tween := &Tween{
 		GameObj: obj,
 		Step: 0.01,
-		Field: field,
+		Property: field,
 		Callback: callback,
 	}
 
@@ -36,12 +53,28 @@ func (obj *GameObj) NewTween(
 	return tween
 }
 
+func WithCallback(callback func()) TweenOption {
+	return func(t *Tween) {
+		t.Callback = callback
+	}
+}
+
+func (t *Tween) Play() {
+	t.Playing = true
+}
+
+func (t *Tween) Pause() {
+	t.Playing = false
+}
+
 func (t *Tween) Update() {
+
+	if !t.Playing { return }
 
 	t.Count += t.Step
 	
 	if t.Count < 1 {
-		*t.Field(t.GameObj) -= t.Step
+		*t.Property(t.GameObj) -= t.Step
 		return
 	}
 

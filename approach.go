@@ -138,7 +138,7 @@ func (a *Approach) Update() {
 		return
 	}
 
-	a.Message = fmt.Sprintf("Looking good to land on %s!", a.Target.Name)
+	a.Message = "Looking good!"
 
 	if a.IsPointingToward(a.Target) {
 		a.Message = "Don't land head on!"
@@ -162,6 +162,12 @@ func (a *Approach) Draw() {
 		a.Message,
 		int32(a.GameObj.PosGlobal().X),
 		int32(a.GameObj.PosGlobal().Y) + 16,
+		14, 2, rl.Green, Center)
+
+	DrawText(
+		a.Target.Name,
+		int32(a.Target.PosGlobal().X),
+		int32(a.Target.PosGlobal().Y - 6),
 		14, 2, rl.Green, Center)
 
 	arcRadius := calculateRadius(

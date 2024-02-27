@@ -77,7 +77,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 	// STAR SYSTEM //////////////
 	starSystem := NewGameObject("Solar System", WithScale(2, 2))
 	starSystem.Size = rl.NewVector2(screenW, screenH)
-	starSystem.NewSprite(textures["assets/sun.png"])
+	starSystem.NewSprite(textures["assets/sun.png"], WithOpacity(0.4))
 
 	// star is located at bottom center of screen
 	starSystem.Position = rl.NewVector2(screenW/2, screenH - SUN_POS_Y_OFFSET)
@@ -122,7 +122,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 			)
 			rings.NewSprite(
 				textures["assets/rings.png"],
-				WithOpacity(0.2),
+				WithOpacity(0.3),
 				WithColor(planetColor),
 			)
 			planet.AddChildren(rings)

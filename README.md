@@ -1,12 +1,14 @@
 # IN PROGRESS
 
-- Show resources on HUD when close to target planet
+- Ship should attach to planet at correct landing point
 
 # TO DO
 
-- Generalized pulse behavior (e.g. when losing life icon or respawning ship)
+- Expand Tween capability
+- Use tweens for pulse behavior (e.g. when losing life icon or respawning ship)
+- Somehow indicate what resources a planet has before docking
 - Sometimes crashes (the program, not the ship) after crash landing
-- Ship should attach to planet at correct landing point
+- Move any utility functions to a separate file
 - Fix ship being pulled back to planet on undocking
 - Collisions should not "cooldown" if collision is between two planets
   - in fact, collisions should be ignored between planets

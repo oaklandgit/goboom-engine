@@ -20,7 +20,7 @@ const (
 	screenW = 600
 	screenH = 800
 	title = "Space Miner!"
-	DEBUG = false
+	DEBUG = true
 )
 
 var game = NewGame(title, screenW, screenH)

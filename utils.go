@@ -25,6 +25,15 @@ func printObjs (objs []*GameObj) {
 	}
 }
 
+func displace(distance float32, angle float32) rl.Vector2 {
+	rads := float64(angle * rl.Deg2rad)
+	displacement := rl.Vector2{
+    	X: distance * float32(math.Cos(rads)),
+    	Y: distance * float32(math.Sin(rads)),
+	}
+	return displacement
+}
+
 func calculateAngle(obj1, obj2 rl.Vector2) float32 {
     dx := obj1.X - obj2.X
     dy := obj1.Y - obj2.Y
@@ -32,10 +41,9 @@ func calculateAngle(obj1, obj2 rl.Vector2) float32 {
     return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
 }
 
-// func calculateAngle(targetPos, parentPos rl.Vector2) float32 {
-//     dx := targetPos.X - parentPos.X
-//     dy := targetPos.Y - parentPos.Y
-//     return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
+// func adjustAngle(angle float32) float32 {
+//     // Use modulo to wrap around
+//     return float32(int(angle+360) % 360)
 // }
 
 func DrawText(
