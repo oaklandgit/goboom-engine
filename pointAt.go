@@ -9,7 +9,7 @@ func (*PointAt) Id() string {
 	return "pointat"
 }
 
-func (obj *GameObj) NewPointAt(target *GameObj) *PointAt {
+func (obj *GameObj) NewPointAt(target *GameObj) *GameObj {
 
 	pointAt := &PointAt{
 		GameObj: obj,
@@ -18,7 +18,7 @@ func (obj *GameObj) NewPointAt(target *GameObj) *PointAt {
 
 	obj.AddComponents(pointAt)
 
-	return pointAt
+	return obj
 }
 
 func (p *PointAt) Update() {

@@ -1,7 +1,20 @@
+Building an arcade-style game in Go, with the hopes of generalizing the engine for other games. A work in progress, learning as I… go. Using Raylib go bindings for graphics and input.
+
+<video width="300" height="600" controls>
+  <source src="demo/gameplay.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 # IN PROGRESS
+
+- Tweening for pulse behavior (e.g. when losing life icon or respawning ship)
 
 # TO DO
 
+- Sprite animations (separate component from sprite?) Use go routine / generator for sprite animations
+- For new components, return game object to allow chaining
+- Enemy ships try to take the resources and shoot at you
+- OK maybe some shooting would be good
 - Expand Tween capability
 - Use tweens for pulse behavior (e.g. when losing life icon or respawning ship)
 - Somehow indicate what resources a planet has before docking
@@ -28,10 +41,6 @@
 - Artificial satellites
 - worm holes (teleportation)
 - more levels
-
-# PROBABLY DON'T NEED
-
-- Generalized Animate function - Use for sprite frames or tweening eg “pulse” behavior. How would Van Dur Spey do it? Sprite animations (separate component from sprite)
 
 # DONE
 
@@ -61,15 +70,3 @@
 - collision detection
 - sprite frames: flame on thrust
 - rotation relative to parent // done for ship but not generalized
-
-# LIKELY IMPOSSIBLE
-
-- Give GameObject direct access to components
-
-```
-// can't do this at runtime
-// go is statically typed
-func (o *GameObj) Sprite() *Sprite (
-   return o.Components[“sprite”].(*Sprite)
-}
-```

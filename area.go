@@ -30,7 +30,7 @@ type AreaOptions func(*Area)
 
 func (obj *GameObj) NewArea(
 	shape CollisionShape,
-	opts ...AreaOptions) *Area {
+	opts ...AreaOptions) *GameObj {
 
 	area := &Area{
 		GameObj: obj,
@@ -44,7 +44,8 @@ func (obj *GameObj) NewArea(
 
 	obj.AddComponents(area)
 
-	return area
+	// return area
+	return obj
 }
 
 func WithCooldown(cooldown time.Duration) AreaOptions {

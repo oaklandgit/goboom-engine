@@ -175,6 +175,19 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 		starSystem.AddChildren(planet)
 	}
 
+	// enemies
+	// enemy :=	NewGameObject("Enemy1",
+	// 				WithTags("enemy"),
+	// 				WithScale(0.5, 0.5),
+	// 				WithPosition(400, 400)).
+	// 			NewMotion(
+	// 				WithVelocity(2, 0),
+	// 				WithWrap(true, true, 20)).
+	// 			NewSprite(textures["assets/enemy.png"]).
+	// 			NewArea(CircleCollider{Radius: 20}).
+	// 			NewPointAt(starSystem)
+		
+
 	scene1 := NewGameObject("Scene 1")
 	scene1.Size = rl.NewVector2(screenW, screenH)
 	scene1.AddChildren(starfield, starSystem, ship)

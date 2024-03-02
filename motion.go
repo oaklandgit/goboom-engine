@@ -27,7 +27,7 @@ func (m *Motion) Draw() {
 
 type MotionOption func(*Motion)
 
-func (o *GameObj) NewMotion(opts ...MotionOption) *Motion {
+func (o *GameObj) NewMotion(opts ...MotionOption) *GameObj {
 
 	motion := &Motion{
 		GameObj: o,
@@ -39,7 +39,7 @@ func (o *GameObj) NewMotion(opts ...MotionOption) *Motion {
 
 	o.AddComponents(motion)
 
-	return motion
+	return o
 }
 
 func (m *Motion) SetVelocity(speed float32, heading float32) {

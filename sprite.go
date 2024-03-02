@@ -54,7 +54,8 @@ func WithFlip(X bool, Y bool) SpriteOption {
 	}
 }
 
-func (o *GameObj) NewSprite(tex rl.Texture2D, opts ...SpriteOption) *Sprite {
+// try returning the game object so that we can chain the calls
+func (o *GameObj) NewSprite(tex rl.Texture2D, opts ...SpriteOption) *GameObj {
 
 	// default values that would otherwise be zero
 	sprite := &Sprite{
@@ -75,7 +76,8 @@ func (o *GameObj) NewSprite(tex rl.Texture2D, opts ...SpriteOption) *Sprite {
 
 	o.AddComponents(sprite)
 
-	return sprite
+	// return sprite
+	return o
 }
 
 func (s *Sprite) Center() rl.Vector2 {

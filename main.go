@@ -20,7 +20,7 @@ const (
 	screenW = 600
 	screenH = 800
 	title = "Space Miner!"
-	DEBUG = true
+	DEBUG = false
 )
 
 var game = NewGame(title, screenW, screenH)
@@ -36,15 +36,17 @@ func main() {
 	rl.InitWindow(screenW, screenH, title)
 	rl.SetTargetFPS(60)
 	rl.InitAudioDevice()
-	// defer rl.CloseAudioDevice()
-	// defer rl.CloseWindow()
+	defer rl.CloseAudioDevice()
+	defer rl.CloseWindow()
 
 	textures = LoadTextures(
 		"assets/ship.png",
+		"assets/enemy.png",
 		"assets/rocky.png",
 		"assets/earthy.png",
 		"assets/gassy.png",
 		"assets/cratery.png",
+		"assets/scarry.png",
 		"assets/rocky3.png",
 		"assets/shadow.png",
 		"assets/rings.png",

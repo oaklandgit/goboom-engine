@@ -58,7 +58,7 @@ value = 100
 
 [planets.mars]
 name = "Mars"
-texture = "rocky"
+texture = "scarry"
 radius = 30.0
 distance = 280
 speed = 0.2

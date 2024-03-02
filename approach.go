@@ -31,7 +31,7 @@ type ApproachOption func(*Approach)
 
 func (obj *GameObj) NewApproach(
 	others []string,
-	opts ...ApproachOption) *Approach {
+	opts ...ApproachOption) *GameObj {
 
 	approach := &Approach{
 		OtherTags: others,
@@ -44,7 +44,7 @@ func (obj *GameObj) NewApproach(
 
 	obj.AddComponents(approach)
 
-	return approach
+	return obj
 }
 
 func WithSafeDistance(distance float32) ApproachOption {
@@ -194,27 +194,6 @@ func (a *Approach) Draw() {
 		endAngle,
 		ARC_SEGMENTS,
 		rl.Green)
-
-	// for i, r := range a.Target.Components["mine"].(*Mine).Resources {
-
-	// 	itemSpacing := 38
-	// 	progressBarWidth := 160
-	// 	text := fmt.Sprintf(
-	// 		"%s: %d of %d @ $%d",
-	// 		r.Name,
-	// 		r.Remaining,
-	// 		r.Amount,
-	// 		r.Price)
-
-	// 	DrawProgressBar(
-	// 		22,
-	// 		int32(80 + (i * itemSpacing)),
-	// 		int32(progressBarWidth),
-	// 		int32(r.Amount - r.Remaining),
-	// 		int32(r.Amount),
-	// 		text,
-	// 	)	
-	// }
 }
 
 func calculateRadius(targetPos, parentPos rl.Vector2) float32 {
