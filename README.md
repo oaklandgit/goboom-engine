@@ -1,4 +1,4 @@
-Building an arcade-style game in Go, with the hopes of generalizing the engine for other games. A work in progress, learning as I… go. Using Raylib go bindings for graphics and input.
+Building an arcade-style game in Go, with the hopes of generalizing the engine for other games. A work in progress, learning as I… go 😉.  Using [Raylib go bindings](https://github.com/gen2brain/raylib-go) for graphics and input.
 
 https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-466ab46435b9
 
