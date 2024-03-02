@@ -1,9 +1,7 @@
 Building an arcade-style game in Go, with the hopes of generalizing the engine for other games. A work in progress, learning as I… go. Using Raylib go bindings for graphics and input.
 
-<video width="300" height="600" controls>
-  <source src="demo/gameplay.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-466ab46435b9
+
 
 # IN PROGRESS
 
