@@ -11,15 +11,10 @@ So far, the engine contains (all rudimentary):
 
 https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-466ab46435b9
 
-# IN PROGRESS
-
-- Tweening for pulse behavior (e.g. when losing life icon or respawning ship)
-
 # TO DO
 
 - Fix failure to register collision when another object overlaps
 - Enemy ships try to take the resources and shoot at you
-- OK maybe some shooting would be good
 - Expand Tween capability
 - Use tweens for pulse behavior (e.g. when losing life icon or respawning ship)
 - Somehow indicate what resources a planet has before docking
