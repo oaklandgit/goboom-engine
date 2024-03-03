@@ -13,7 +13,6 @@ https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-
 
 # TO DO
 
-- Better abstract game object
 - Fix failure to register collision when another object overlaps
 - Collisions should not "cooldown" if collision is between two planets
   - in fact, collisions should be ignored between planets
@@ -21,14 +20,12 @@ https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-
 - Expand Tween capability
 - Use tweens for pulse behavior (e.g. when losing life icon or respawning ship)
 - Somehow indicate what resources a planet has before docking
-- Sometimes crashes (the program, not the ship) after crash landing
 - Move any utility functions to a separate file
 - Fix ship being pulled back to planet on undocking
 - Delay before respawn
 - embed textures in binary
 - embed sounds in binary
 - Test stand-alone binary
-- Buggy when docked and moving past left or right edge of screen
 - Leverage go time package for time-based events
 - Moons and planets should be combined into a single struct
 
@@ -43,8 +40,11 @@ https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-
 - worm holes (teleportation)
 - more levels
 
-# DONE
+# DONE/FIXED
 
+- Buggy when docked and moving past left or right edge of screen
+- Sometimes crashes (the program, not the ship) after crash landing
+- Better abstract game object
 - For new components, return game object to allow chaining
 - Sprite animations using go routine / generator
 - Planets orbit their star (as opposed to just gliding across the screen)

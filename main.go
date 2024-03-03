@@ -11,7 +11,7 @@ const (
 	screenW = 600
 	screenH = 800
 	title = "Space Miner!"
-	DEBUG = false
+	DEBUG = true
 )
 
 var game = NewGame(title, screenW, screenH)
@@ -55,12 +55,13 @@ func init() {
 
 	game.AddScene("titlescene", createTitleScene(game))
 	game.AddScene("gameover", createGameOverScene(game))
-	
+
 	game.Reset = func() {
 		game.AddScene("level1", createStarSystem(game, tomlData))
 	}
 	
 	game.SetScene("titlescene")
+	game.Soundtrack = "sounds/music.wav"
 }
 
 func main() {

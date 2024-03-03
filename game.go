@@ -21,6 +21,7 @@ type Game struct {
 	State State
 	Textures map[string]rl.Texture2D
 	Sounds map[string]rl.Sound
+	Soundtrack string
 	Fonts map[string]rl.Font
 	Reset func()
 }
@@ -82,11 +83,11 @@ func (g *Game) SetScene(name string) {
 func (g *Game) Run() {
 
 	g.Reset()
-
 	g.State = Running
 
 	scene := g.Scenes[g.CurrScene]
-	soundtrack := rl.LoadMusicStream("sounds/music.wav")
+	soundtrack := rl.LoadMusicStream(g.Soundtrack)
+
 	rl.PlayMusicStream(soundtrack)
 	rl.SetMusicVolume(soundtrack, 0.4)
 
@@ -103,16 +104,6 @@ func (g *Game) Run() {
 		scene.Update()
 		CheckForCollisions(scene)
 		scene.Draw()
-
-		if DEBUG {
-			game.Scenes[g.CurrScene].Profile(
-				"ship",
-				"planet",
-				"moon",
-				"deadly",
-				"explosion",
-				"shard")
-		}
 		
 		rl.EndDrawing()
 
@@ -134,7 +125,6 @@ func (g *Game) Stop() {
 
 func CheckForCollisions(scope *GameObj) {
 	objs := scope.FindChildrenByComponent(true, "area")
-	// printObjs(objs)
 
 	// RESET
 	for _, a := range objs {
