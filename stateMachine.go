@@ -14,7 +14,7 @@ type StateMachineOption func(*StateMachine)
 
 func (obj *GameObj) NewStateMachine(
 	states map[string]State,
-	opts ...StateMachineOption) *StateMachine {
+	opts ...StateMachineOption) *GameObj {
 
 	sm := &StateMachine{
 		GameObj: obj,
@@ -27,7 +27,7 @@ func (obj *GameObj) NewStateMachine(
 
 	obj.AddComponents(sm)
 
-	return sm
+	return obj
 }
 
 func (sm *StateMachine) SetState(state string) {

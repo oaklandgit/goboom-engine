@@ -11,7 +11,7 @@ func (*Lifespan) Id() string {
 
 type LifespanOption func(*Lifespan)
 
-func (obj *GameObj) NewLifespan(total int, opts ...LifespanOption) *Lifespan {
+func (obj *GameObj) NewLifespan(total int, opts ...LifespanOption) *GameObj {
 
 	lifespan := &Lifespan{
 		GameObj: obj,
@@ -24,7 +24,7 @@ func (obj *GameObj) NewLifespan(total int, opts ...LifespanOption) *Lifespan {
 
 	obj.AddComponents(lifespan)
 
-	return lifespan
+	return obj
 }
 
 

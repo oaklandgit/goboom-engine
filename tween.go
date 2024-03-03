@@ -35,7 +35,7 @@ func (obj *GameObj) NewTween(
 	step float32,
 	field func(*GameObj) *float32,
 	callback func(),
-	opts ...TweenOption) *Tween {
+	opts ...TweenOption) *GameObj {
 
 	tween := &Tween{
 		GameObj: obj,
@@ -50,7 +50,7 @@ func (obj *GameObj) NewTween(
 
 	obj.AddComponents(tween)
 
-	return tween
+	return obj
 }
 
 func WithCallback(callback func()) TweenOption {

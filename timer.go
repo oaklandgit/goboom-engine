@@ -22,7 +22,7 @@ type TimerOption func(*Timer)
 func (obj *GameObj) NewTimer(
 	duration time.Duration,
 	callback func(),
-	opts ...TimerOption) *Timer {
+	opts ...TimerOption) *GameObj {
 
 	timer := &Timer{
 		GameObj: obj,
@@ -37,7 +37,7 @@ func (obj *GameObj) NewTimer(
 
 	obj.AddComponents(timer)
 
-	return timer
+	return obj
 }
 
 func (t *Timer) Start() {

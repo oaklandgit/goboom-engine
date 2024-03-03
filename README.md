@@ -17,8 +17,7 @@ https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-
 
 # TO DO
 
-- Sprite animations (separate component from sprite?) Use go routine / generator for sprite animations
-- For new components, return game object to allow chaining
+- Fix failure to register collision when another object overlaps
 - Enemy ships try to take the resources and shoot at you
 - OK maybe some shooting would be good
 - Expand Tween capability
@@ -50,6 +49,8 @@ https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-
 
 # DONE
 
+- For new components, return game object to allow chaining
+- Sprite animations using go routine / generator
 - Planets orbit their star (as opposed to just gliding across the screen)
 - Docking sound
 - Ship should attach to planet at correct landing point

@@ -59,7 +59,9 @@ func createExplosion(x, y float32, texture string) *GameObj {
 			func() {
 				c.Delete()
 			},
-		).Play()
+		)
+
+		c.Components["tween"].(*Tween).Play()
 
 		e.AddChildren(c)
 	}

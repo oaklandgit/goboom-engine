@@ -41,10 +41,10 @@ func (i *Input) Id() string {
 	return "input"
 }
 
-func (o *GameObj) NewInput(actions ...KeyHandler) *Input {
+func (obj *GameObj) NewInput(actions ...KeyHandler) *GameObj {
 
 	input := &Input{
-		GameObj: o,
+		GameObj: obj,
 		Handlers: make(map[KeyPress]Action),
 	}
 
@@ -52,8 +52,8 @@ func (o *GameObj) NewInput(actions ...KeyHandler) *Input {
 		input.Handlers[action.KeyPress] = action.Action
 	}
 
-	o.AddComponents(input)
-	return input
+	obj.AddComponents(input)
+	return obj
 }
 
 func AddAction(key int32, mode Press, action Action) (KeyPress, Action) {

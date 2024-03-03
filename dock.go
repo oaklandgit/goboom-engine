@@ -22,7 +22,7 @@ func (*Dock) Id() string {
 type DockOption func(*Dock)
 
 func (obj *GameObj) NewDock(
-	opts ...DockOption) *Dock {
+	opts ...DockOption) *GameObj {
 
 	dock := &Dock{
 		GameObj: obj,
@@ -34,7 +34,7 @@ func (obj *GameObj) NewDock(
 
 	obj.AddComponents(dock)
 
-	return dock
+	return obj
 }
 
 func angleAtPosition(rotation float32, center, position rl.Vector2) float32 {

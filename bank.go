@@ -19,7 +19,7 @@ func (*Bank) Id() string {
 type BankOption func(*Bank)
 
 func (obj *GameObj) NewBank(
-	opts ...BankOption) *Bank {
+	opts ...BankOption) *GameObj {
 
 	bank := &Bank{
 		GameObj: obj,
@@ -31,7 +31,7 @@ func (obj *GameObj) NewBank(
 
 	obj.AddComponents(bank)
 
-	return bank
+	return obj
 }
 
 func (b *Bank) Deposit(amount int) *Bank {

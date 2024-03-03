@@ -31,7 +31,7 @@ type OrbitOptions func(*Orbit)
 func (obj *GameObj) NewOrbit(
 	speed float32,
 	distance float32,
-	opts ...OrbitOptions) *Orbit {
+	opts ...OrbitOptions) *GameObj {
 
 	orbit := &Orbit{
 		GameObj: obj,
@@ -45,7 +45,7 @@ func (obj *GameObj) NewOrbit(
 
 	obj.AddComponents(orbit)
 
-	return orbit
+	return obj
 }
 
 func WithOrbitAngle(angle float32) OrbitOptions {

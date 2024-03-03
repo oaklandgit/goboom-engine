@@ -153,10 +153,12 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 
 		}
 
-		mine := planet.NewMine()
+		// mine := planet.NewMine()
+		planet.NewMine()
 
 		for _, product := range p.Products {
-			mine.AddResource(product.Name, product.Amount, product.Value)
+			planet.Components["mine"].(*Mine).
+				AddResource(product.Name, product.Amount, product.Value)
 		}
 
 		// add shadow

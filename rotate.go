@@ -18,10 +18,10 @@ func (*Rotate) Id() string {
 
 type RotateOption func(*Rotate)
 
-func (o *GameObj) NewRotate(speed float32, opts ...RotateOption) *Rotate {
+func (obj *GameObj) NewRotate(speed float32, opts ...RotateOption) *GameObj {
 
 	rotate := &Rotate{
-		GameObj: o,
+		GameObj: obj,
 		Speed: speed,
 	}
 
@@ -29,9 +29,9 @@ func (o *GameObj) NewRotate(speed float32, opts ...RotateOption) *Rotate {
 		opt(rotate)
 	}
 
-	o.AddComponents(rotate)
+	obj.AddComponents(rotate)
 
-	return rotate
+	return obj
 }
 
 func (r *Rotate) Update() {

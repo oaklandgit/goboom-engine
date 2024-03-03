@@ -18,7 +18,7 @@ func (*Lives) Id() string {
 
 type LivesOption func(*Lives)
 
-func (obj *GameObj) NewLives(total int, opts ...LivesOption) *Lives {
+func (obj *GameObj) NewLives(total int, opts ...LivesOption) *GameObj {
 
 	lives := &Lives{
 		GameObj: obj,
@@ -32,7 +32,7 @@ func (obj *GameObj) NewLives(total int, opts ...LivesOption) *Lives {
 
 	obj.AddComponents(lives)
 
-	return lives
+	return obj
 }
 
 func (l *Lives) AddLives(count int) *Lives {

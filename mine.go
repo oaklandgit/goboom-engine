@@ -26,7 +26,7 @@ func (*Mine) Id() string {
 type MineOption func(*Mine)
 
 func (obj *GameObj) NewMine(
-	opts ...MineOption) *Mine {
+	opts ...MineOption) *GameObj {
 
 	mine := &Mine{
 		GameObj: obj,
@@ -38,7 +38,7 @@ func (obj *GameObj) NewMine(
 
 	obj.AddComponents(mine)
 
-	return mine
+	return obj
 }
 
 func (m *Mine) AddResource(name string, amount int, price int) *Mine {
