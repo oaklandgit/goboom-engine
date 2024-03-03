@@ -176,21 +176,25 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 	}
 
 	// enemies
-	// enemy :=	NewGameObject("Enemy1",
-	// 				WithTags("enemy"),
-	// 				WithScale(0.5, 0.5),
-	// 				WithPosition(400, 400)).
-	// 			NewMotion(
-	// 				WithVelocity(2, 0),
-	// 				WithWrap(true, true, 20)).
-	// 			NewSprite(textures["assets/enemy.png"]).
-	// 			NewArea(CircleCollider{Radius: 20}).
-	// 			NewPointAt(starSystem)
+	enemy :=	NewGameObject("Enemy1",
+					WithTags("enemy"),
+					WithScale(0.5, 0.5),
+					WithPosition(400, 400)).
+				NewMotion(
+					WithVelocity(2, 0),
+					WithWrap(true, true, 20)).
+				NewSprite(textures["assets/ufo.png"],
+					WithFrames(1, 5, 4)).
+				NewArea(CircleCollider{Radius: 20}).
+				NewPointAt(starSystem)
+
+	enemy.Components["sprite"].(*Sprite).NewAnimation("open", 0, 4, 8, true)
+	enemy.Components["sprite"].(*Sprite).Play("open")
 		
 
 	scene1 := NewGameObject("Scene 1")
 	scene1.Size = rl.NewVector2(screenW, screenH)
-	scene1.AddChildren(starfield, starSystem, ship)
+	scene1.AddChildren(starfield, starSystem, enemy, ship)
 
 	return scene1
 }

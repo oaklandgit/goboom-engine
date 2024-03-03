@@ -1,13 +1,26 @@
 package main
 
 import (
+	"fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
+
+type Animation struct {
+	Name string
+	StartFrame int
+	EndFrame int
+	FrameDuration float32
+	Generator <-chan int
+	Loop bool
+}
 
 type Sprite struct {
 	GameObj *GameObj
 	Texture rl.Texture2D
 	Frames []rl.Rectangle
+	Animations map[string]Animation
+	CurrAnim Animation
 	CurrFrame int
 	Opacity float32
 	Color rl.Color
@@ -54,6 +67,57 @@ func WithFlip(X bool, Y bool) SpriteOption {
 	}
 }
 
+func (s *Sprite) NewAnimation(name string, start, end int, duration float32, loop bool) {
+	s.Animations[name] = Animation{
+		Name: name,
+		StartFrame: start,
+		EndFrame: end,
+		FrameDuration: duration,
+		Generator: nil,
+		Loop: loop,
+	}
+	
+}
+
+func FrameGenerator(startFrame, endFrame, frameSpeed int, loop bool) <-chan int {
+	ch := make(chan int)
+	go func() {
+		frame := startFrame
+		counter := 0
+		for {
+			ch <- frame
+			counter++ // timer
+			if counter > frameSpeed {
+				frame++
+				counter = 0
+			}
+			
+
+			if frame == endFrame {
+				
+				if !loop {
+					frame = endFrame - 1 // keep generating the end frame
+				} else {
+					frame = startFrame // loop
+				}
+				
+			}
+
+		}
+	}()
+	return ch
+}
+
+func (s *Sprite) Play(name string) {
+	anim := s.Animations[name]
+	anim.Generator = FrameGenerator(
+		anim.StartFrame,
+		anim.EndFrame,
+		int(anim.FrameDuration),
+		anim.Loop) 
+	s.CurrAnim = anim
+}
+
 // try returning the game object so that we can chain the calls
 func (o *GameObj) NewSprite(tex rl.Texture2D, opts ...SpriteOption) *GameObj {
 
@@ -62,6 +126,7 @@ func (o *GameObj) NewSprite(tex rl.Texture2D, opts ...SpriteOption) *GameObj {
 		GameObj: o,
 		Texture: tex,
 		Opacity: 1.0,
+		Animations: make(map[string]Animation),
 		Color: rl.White,
 	}
 
@@ -92,7 +157,11 @@ func (s *Sprite) AnchorPoint(w, h float32) rl.Vector2 {
 }
 
 func (s *Sprite) Update() {
-	// no op
+	if s.CurrAnim.Generator == nil {
+		return
+	}
+	s.CurrFrame = <-s.CurrAnim.Generator
+	fmt.Println(s.CurrFrame)
 }
 
 func (s *Sprite) GetSpriteRect() (rl.Rectangle, rl.Rectangle) {

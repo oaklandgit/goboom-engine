@@ -42,6 +42,7 @@ func main() {
 	textures = LoadTextures(
 		"assets/ship.png",
 		"assets/enemy.png",
+		"assets/ufo.png",
 		"assets/rocky.png",
 		"assets/earthy.png",
 		"assets/gassy.png",
