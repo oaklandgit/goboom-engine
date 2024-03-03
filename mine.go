@@ -73,7 +73,7 @@ func (m *Mine) Update() {
 	// remove if depleted
 	if r.Remaining == 0 {
 
-		sound := sounds["sounds/collected.wav"]
+		sound := game.Sounds["sounds/collected.wav"]
 		rl.PlaySound(sound)
 
 		m.Resources = m.Resources[1:]

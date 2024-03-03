@@ -13,7 +13,10 @@ https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-
 
 # TO DO
 
+- Better abstract game object
 - Fix failure to register collision when another object overlaps
+- Collisions should not "cooldown" if collision is between two planets
+  - in fact, collisions should be ignored between planets
 - Enemy ships try to take the resources and shoot at you
 - Expand Tween capability
 - Use tweens for pulse behavior (e.g. when losing life icon or respawning ship)
@@ -21,8 +24,6 @@ https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-
 - Sometimes crashes (the program, not the ship) after crash landing
 - Move any utility functions to a separate file
 - Fix ship being pulled back to planet on undocking
-- Collisions should not "cooldown" if collision is between two planets
-  - in fact, collisions should be ignored between planets
 - Delay before respawn
 - embed textures in binary
 - embed sounds in binary

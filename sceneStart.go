@@ -12,7 +12,7 @@ func createTitleScene(game *Game) *GameObj {
 		WithScale(2, 2))
 	titleScene.Size = rl.NewVector2(screenW, screenH)
 	titleScene.NewSprite(
-		textures["assets/title.png"],
+		game.Textures["assets/title.png"],
 		)
 	titleScene.NewInput(
 		KeyHandler{

@@ -96,7 +96,7 @@ func (l *Lives) RemoveLife() {
 		game.Scenes["gameover"].Components["timer"].(*Timer).Start()
 
 		// should move this to the gameover scene:
-		music := sounds["sounds/gameover.wav"]
+		music := game.Sounds["sounds/gameover.wav"]
 		rl.SetSoundVolume(music, 0.2);
 		rl.PlaySound(music);
 	} else {
@@ -114,7 +114,7 @@ func (l *Lives) Draw() {
 
 	for i := 0; i < l.Remaining; i++ {
 		rl.DrawTextureEx(
-			textures["assets/icon-life.png"],
+			game.Textures["assets/icon-life.png"],
 			rl.NewVector2(float32(screenW - 52 - (i * 28)), 22),
 			0,
 			0.6,

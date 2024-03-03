@@ -17,7 +17,7 @@ func createGameOverScene(g *Game) *GameObj {
 		WithScale(2, 2))
 	gameOver.Size = rl.NewVector2(screenW, screenH)
 	gameOver.NewSprite(
-		textures["assets/gameover.png"],
+		game.Textures["assets/gameover.png"],
 		WithColor(rl.Red),
 	)
 

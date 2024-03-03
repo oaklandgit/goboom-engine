@@ -12,13 +12,13 @@ func createExplosion(x, y float32, texture string) *GameObj {
 
 	sound := 
 		[]rl.Sound{
-			sounds["sounds/explosion1.wav"],
-			sounds["sounds/explosion2.wav"],
-			sounds["sounds/explosion3.wav"],
-			sounds["sounds/explosion4.wav"],
-			sounds["sounds/explosion5.wav"],
-			sounds["sounds/explosion6.wav"],
-			sounds["sounds/explosion7.wav"],
+			game.Sounds["sounds/explosion1.wav"],
+			game.Sounds["sounds/explosion2.wav"],
+			game.Sounds["sounds/explosion3.wav"],
+			game.Sounds["sounds/explosion4.wav"],
+			game.Sounds["sounds/explosion5.wav"],
+			game.Sounds["sounds/explosion6.wav"],
+			game.Sounds["sounds/explosion7.wav"],
 		}[rand.Intn(3)]
 
 	rl.SetSoundVolume(sound, 0.2);
@@ -49,7 +49,7 @@ func createExplosion(x, y float32, texture string) *GameObj {
 				rand.Float32() * 1,
 				float32(rand.Intn(361))))
 
-		c.NewSprite(textures[texture])
+		c.NewSprite(game.Textures[texture])
 		c.NewRotate(float32(rand.Intn(7) - 3)) // -3 to 3
 		c.NewTween(
 			rand.Float32() * 0.05,

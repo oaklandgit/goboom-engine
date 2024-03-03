@@ -77,7 +77,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 	// STAR SYSTEM //////////////
 	starSystem := NewGameObject("Solar System", WithScale(2, 2))
 	starSystem.Size = rl.NewVector2(screenW, screenH)
-	starSystem.NewSprite(textures["assets/sun.png"], WithOpacity(0.4))
+	starSystem.NewSprite(game.Textures["assets/sun.png"], WithOpacity(0.4))
 
 	// star is located at bottom center of screen
 	starSystem.Position = rl.NewVector2(screenW/2, screenH - SUN_POS_Y_OFFSET)
@@ -91,7 +91,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 			255,
 		)
 
-		planetTex := textures[fmt.Sprintf("assets/%s.png", p.Texture)]
+		planetTex := game.Textures[fmt.Sprintf("assets/%s.png", p.Texture)]
 
 		planet := createPlanet(
 			p.Name,
@@ -108,7 +108,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 
 		if p.HasRings {
 
-			ringTex := textures["assets/rings.png"]
+			ringTex := game.Textures["assets/rings.png"]
 			ringW := ringTex.Width
 			ringScale := p.Radius *
 				RING_TO_PLANET_SIZE_RATIO / float32(ringW)
@@ -120,7 +120,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 				WithScale(ringScale, ringScale),
 			)
 			rings.NewSprite(
-				textures["assets/rings.png"],
+				game.Textures["assets/rings.png"],
 				WithOpacity(0.3),
 				WithColor(planetColor),
 			)
@@ -136,7 +136,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 				255,
 			)
 
-			moonTex := textures[fmt.Sprintf("assets/%s.png", s.Texture)]
+			moonTex := game.Textures[fmt.Sprintf("assets/%s.png", s.Texture)]
 
 			planet.AddChildren(
 				createMoon(
@@ -167,7 +167,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 				p.Radius * SHADOW_TO_PLANET_SIZE_RATIO,
 				p.Radius * SHADOW_TO_PLANET_SIZE_RATIO))
 
-		shadow.NewSprite(textures["assets/shadow.png"],
+		shadow.NewSprite(game.Textures["assets/shadow.png"],
 			WithOpacity(0.8))
 
 		shadow.NewPointAt(starSystem)
@@ -185,7 +185,7 @@ func createStarSystem(g *Game, tomlStr string) *GameObj {
 				NewMotion(
 					WithVelocity(2, 0),
 					WithWrap(true, true, 20)).
-				NewSprite(textures["assets/ufo.png"],
+				NewSprite(game.Textures["assets/ufo.png"],
 					WithFrames(1, 5, 4)).
 				NewArea(CircleCollider{Radius: 20}).
 				NewPointAt(starSystem)

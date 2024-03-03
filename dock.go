@@ -52,7 +52,7 @@ func adjustAngle(angle float32) float32 {
 
 func (d *Dock) DockWith(other *GameObj, atPosition rl.Vector2) {
 
-	sound := sounds["sounds/dock.wav"]
+	sound := game.Sounds["sounds/dock.wav"]
 	rl.PlaySound(sound)
 
 	d.DockedWith = other
@@ -86,7 +86,7 @@ func (d *Dock) Undock() {
 
 	if d.DockedWith == nil { return }
 
-	sound := sounds["sounds/undock.wav"]
+	sound := game.Sounds["sounds/undock.wav"]
 	rl.PlaySound(sound)
 
 	// move ship a bit to avoid immediate re-docking

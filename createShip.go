@@ -21,7 +21,7 @@ const (
 func createShip(x, y float32) *GameObj {
 
 	// SOUNDS
-	thrustSound := sounds["sounds/thrust.wav"]
+	thrustSound := game.Sounds["sounds/thrust.wav"]
 	rl.SetSoundVolume(thrustSound, 0.3);
 
 	// SHIP METHODS
@@ -55,7 +55,7 @@ func createShip(x, y float32) *GameObj {
 	)
 
 	ship.NewSprite(
-		textures["assets/ship.png"],
+		game.Textures["assets/ship.png"],
 		WithFrames(1, 2, 2),
 	)
 

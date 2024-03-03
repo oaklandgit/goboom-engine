@@ -19,6 +19,10 @@ type Game struct {
 	Scenes map[string]*GameObj
 	CurrScene string
 	State State
+	Textures map[string]rl.Texture2D
+	Sounds map[string]rl.Sound
+	Fonts map[string]rl.Font
+	Reset func()
 }
 
 func NewGame(title string, w, h int32) *Game {
@@ -30,7 +34,41 @@ func NewGame(title string, w, h int32) *Game {
 		Scenes: make(map[string]*GameObj),
 	}
 
+	rl.InitWindow(screenW, screenH, title)
+	rl.SetTargetFPS(60)
+	rl.InitAudioDevice()
+
 	return game
+}
+
+func (g *Game) LoadTextures(paths ...string) {
+	textureMap := make(map[string]rl.Texture2D)
+
+	for _, path := range paths {
+		textureMap[path] = rl.LoadTexture(path)
+	}
+
+	g.Textures = textureMap
+}
+
+func (g *Game) LoadSounds(paths ...string) {
+	soundMap := make(map[string]rl.Sound)
+
+	for _, path := range paths {
+		soundMap[path] = rl.LoadSound(path)
+	}
+
+	g.Sounds = soundMap
+}
+
+func (g *Game) LoadFonts(paths ...string) {
+	fontMap := make(map[string]rl.Font)
+
+	for _, path := range paths {
+		fontMap[path] = rl.LoadFont(path)
+	}
+
+	g.Fonts = fontMap
 }
 
 func (g *Game) AddScene(name string, scene *GameObj) {
@@ -41,11 +79,10 @@ func (g *Game) SetScene(name string) {
 	g.CurrScene = name
 }
 
-func (g *Game) Reset() {
-	g.AddScene("level1", createStarSystem(game, tomlData))
-}
-
 func (g *Game) Run() {
+
+	g.Reset()
+
 	g.State = Running
 
 	scene := g.Scenes[g.CurrScene]

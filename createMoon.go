@@ -32,7 +32,7 @@ func createMoon(
 
 	shadow := NewGameObject("Shadow", WithScale(scale * 0.9, scale * 0.9))
 	shadow.NewSprite(
-		textures["assets/shadow.png"],
+		game.Textures["assets/shadow.png"],
 		WithOpacity(0.9),
 	)
 	m.AddChildren(shadow)

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -161,7 +159,6 @@ func (s *Sprite) Update() {
 		return
 	}
 	s.CurrFrame = <-s.CurrAnim.Generator
-	fmt.Println(s.CurrFrame)
 }
 
 func (s *Sprite) GetSpriteRect() (rl.Rectangle, rl.Rectangle) {
