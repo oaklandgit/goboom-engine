@@ -6,7 +6,6 @@ import (
 	"golang.org/x/text/message"
 )
 
-// could also repel if force is negative
 type Bank struct {
 	GameObj *GameObj
 	Balance int
