@@ -34,7 +34,7 @@ func createExplosion(x, y float32, texture string) *GameObj {
 
 	e.NewLifespan(MAX_LIFESPAN)
 
-	// SMOKE CLOUDS
+	// SHRAPNEL
 	for i := 0; i < 12; i++ {
 
 		c := NewGameObject(
