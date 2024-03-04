@@ -16,6 +16,12 @@ const (
 	SHIP_RADIUS = 8
 	SHIP_DRAG = 0.999
 	SHIP_WRAP_PADDING = 16
+
+	FLYING = 2
+	FLYING_THRUST = 3
+
+	LANDING = 0
+	LANDING_THRUST = 1
 )
 
 func createShip(x, y float32) *GameObj {
@@ -30,7 +36,7 @@ func createShip(x, y float32) *GameObj {
 			g.Components["dock"].(*Dock).Undock()
 		}
 		g.Components["motion"].(*Motion).SetVelocity(speed, g.Angle)
-		g.Components["sprite"].(*Sprite).CurrFrame = 1
+		g.Components["sprite"].(*Sprite).CurrFrame = FLYING_THRUST
 
 		if !rl.IsSoundPlaying(thrustSound) {
 			rl.PlaySound(thrustSound)
@@ -39,7 +45,7 @@ func createShip(x, y float32) *GameObj {
 	}
 
 	stopThrust := func(g *GameObj) {
-		g.Components["sprite"].(*Sprite).CurrFrame = 0
+		g.Components["sprite"].(*Sprite).CurrFrame = FLYING
 		rl.StopSound(thrustSound)
 	}
 
@@ -50,14 +56,17 @@ func createShip(x, y float32) *GameObj {
 	// SHIP
 	ship := NewGameObject("Spaceship",
 		WithPosition(x, y),
-		WithOrigin(0.6, 0.5),
+		WithOrigin(0.7, 0.5),
 		WithTags("ship"),
+		WithScale(0.4, 0.4),
 	)
 
 	ship.NewSprite(
-		game.Textures["assets/ship.png"],
-		WithFrames(1, 2, 2),
+		game.Textures["assets/lander.png"],
+		WithFrames(2, 2, 4),
 	)
+
+	ship.Components["sprite"].(*Sprite).CurrFrame = 2
 
 	ship.NewDock()
 	ship.NewBank()

@@ -6,8 +6,8 @@ suns = 1
 [planets.mercury]
 name = "Mercury"
 texture = "rocky"
-radius = 12.0
-distance = 50
+radius = 14.0
+distance = 70
 speed = 0.3
 rotation = -0.1
 color = [200, 75, 0] # brown
@@ -17,8 +17,8 @@ initialAngle = 45
 [planets.earth]
 name = "Earth"
 texture = "earthy"
-radius = 40.0
-distance = 160
+radius = 60.0
+distance = 220
 speed = 0.2
 rotation = -0.1
 color = [0, 120, 255] # blue
@@ -32,7 +32,7 @@ texture = "cratery"
 radius = 8
 speed = 0.2
 rotation = 0.2
-distance = 72
+distance = 90
 color = [255, 255, 255] # white
 
 [planets.earth.products]

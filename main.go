@@ -11,7 +11,7 @@ const (
 	screenW = 600
 	screenH = 800
 	title = "Space Miner!"
-	DEBUG = true
+	DEBUG = false
 )
 
 var game = NewGame(title, screenW, screenH)
@@ -20,6 +20,7 @@ func init() {
 
 	game.LoadTextures(
 		"assets/ship.png",
+		"assets/lander.png",
 		"assets/enemy.png",
 		"assets/ufo.png",
 		"assets/rocky.png",
