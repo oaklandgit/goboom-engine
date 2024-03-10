@@ -73,16 +73,16 @@ func createStarSystem(g *boom.Game, tomlStr string) *boom.GameObj {
 	ship := createShip(200, 200)
 	
 	// STARS ///////////////////
-	starfield := boom.NewGameObject("Starfield")
-	NewStarfield(starfield, screenW, screenH, STARFIELD_DENSITY)
+	starfield := game.NewGameObject("Starfield")
+	NewStarfield(starfield, int(game.Width), int(game.Height), STARFIELD_DENSITY)
 
 	// STAR SYSTEM //////////////
-	starSystem := boom.NewGameObject("Solar System", boom.WithScale(2, 2))
-	starSystem.Size = rl.NewVector2(screenW, screenH)
+	starSystem := game.NewGameObject("Solar System", boom.WithScale(2, 2))
+	starSystem.Size = rl.NewVector2(float32(game.Width), float32(game.Height))
 	starSystem.NewSprite(game.Textures["assets/sun.png"], boom.WithOpacity(0.4))
 
 	// star is located at bottom center of screen
-	starSystem.Position = rl.NewVector2(screenW/2, screenH - SUN_POS_Y_OFFSET)
+	starSystem.Position = rl.NewVector2(game.Width/2, game.Height - SUN_POS_Y_OFFSET)
 
 	for _, p := range system.Planets {
 
@@ -116,7 +116,7 @@ func createStarSystem(g *boom.Game, tomlStr string) *boom.GameObj {
 				RING_TO_PLANET_SIZE_RATIO / float32(ringW)
 			ringAngle := rand.Float32() * 30
 
-			rings := boom.NewGameObject(
+			rings := game.NewGameObject(
 				"Rings",
 				boom.WithAngle(ringAngle),
 				boom.WithScale(ringScale, ringScale),
@@ -164,7 +164,7 @@ func createStarSystem(g *boom.Game, tomlStr string) *boom.GameObj {
 		}
 
 		// add shadow
-		shadow := boom.NewGameObject("Shadow",
+		shadow := game.NewGameObject("Shadow",
 			boom.WithScale(
 				p.Radius * SHADOW_TO_PLANET_SIZE_RATIO,
 				p.Radius * SHADOW_TO_PLANET_SIZE_RATIO))
@@ -180,7 +180,7 @@ func createStarSystem(g *boom.Game, tomlStr string) *boom.GameObj {
 	}
 
 	// enemies
-	enemy :=	boom.NewGameObject("Enemy1",
+	enemy :=	game.NewGameObject("Enemy1",
 					boom.WithTags("enemy"),
 					boom.WithScale(0.5, 0.5),
 					boom.WithPosition(400, 400)).
@@ -196,8 +196,8 @@ func createStarSystem(g *boom.Game, tomlStr string) *boom.GameObj {
 	enemy.Components["sprite"].(*boom.Sprite).Play("open")
 		
 
-	scene1 := boom.NewGameObject("Scene 1")
-	scene1.Size = rl.NewVector2(screenW, screenH)
+	scene1 := game.NewGameObject("Scene 1")
+	scene1.Size = rl.NewVector2(game.Width, game.Height)
 	scene1.AddChildren(starfield, starSystem, enemy, ship)
 
 	return scene1

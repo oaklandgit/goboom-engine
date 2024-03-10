@@ -52,8 +52,8 @@ func (l *Lives) Respawn() *Lives {
 	l.GameObj.Components["dock"].(*Dock).Undock()
 
 	randomSpot := func() rl.Vector2 {
-		x := float32(rl.GetRandomValue(20, screenW - 20))
-		y := float32(rl.GetRandomValue(20, screenH - 20))
+		x := float32(rl.GetRandomValue(0, int32(game.Width)))
+		y := float32(rl.GetRandomValue(0, int32(game.Width)))
 		return rl.NewVector2(x, y)
 	}
 
@@ -119,7 +119,7 @@ func (l *Lives) Draw() {
 	for i := 0; i < l.Remaining; i++ {
 		rl.DrawTextureEx(
 			game.Textures["assets/icon-life.png"],
-			rl.NewVector2(float32(screenW - 52 - (i * 28)), 22),
+			rl.NewVector2(game.Width - 52.0 - (float32(i) * 28.0), 22),
 			0,
 			0.6,
 			rl.Green,

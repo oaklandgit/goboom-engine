@@ -28,7 +28,7 @@ func createExplosion(x, y float32, texture string) *boom.GameObj {
 	rl.PlaySound(sound)
 
 	// EXPLOSION
-	e := boom.NewGameObject(
+	e := game.NewGameObject(
 		"explosion",
 		boom.WithOrigin(0.5, 0.5),
 		boom.WithPosition(x, y),
@@ -39,7 +39,7 @@ func createExplosion(x, y float32, texture string) *boom.GameObj {
 	// SHRAPNEL
 	for i := 0; i < 12; i++ {
 
-		c := boom.NewGameObject(
+		c := game.NewGameObject(
 			"shard",
 			boom.WithScale(
 				rand.Float32()*0.5,

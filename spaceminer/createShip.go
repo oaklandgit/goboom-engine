@@ -56,7 +56,7 @@ func createShip(x, y float32) *boom.GameObj {
 	}
 
 	// SHIP
-	ship := boom.NewGameObject("Spaceship",
+	ship := game.NewGameObject("Spaceship",
 		boom.WithPosition(x, y),
 		boom.WithOrigin(0.7, 0.5),
 		boom.WithTags("ship"),

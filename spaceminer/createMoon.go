@@ -18,7 +18,7 @@ func createMoon(
 
 	scale := (radius * 2) / float32(texture.Width)
 
-	m := boom.NewGameObject(name,
+	m := game.NewGameObject(name,
 		boom.WithTags("moon", "deadly"),
 		boom.WithOrigin(0.5, 0.5),
 		boom.WithScale(scale, scale),
@@ -34,7 +34,7 @@ func createMoon(
 	m.NewOrbit(speed, distance)
 	m.NewArea(boom.CircleCollider{Radius: radius})
 
-	shadow := boom.NewGameObject("Shadow", boom.WithScale(scale * 0.9, scale * 0.9))
+	shadow := game.NewGameObject("Shadow", boom.WithScale(scale * 0.9, scale * 0.9))
 	shadow.NewSprite(
 		game.Textures["assets/shadow.png"],
 		boom.WithOpacity(0.9),

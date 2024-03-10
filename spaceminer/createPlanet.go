@@ -24,7 +24,7 @@ func createPlanet(
 
 	scale := (radius * 2) / float32(texture.Width)
 
-	p := boom.NewGameObject(name,
+	p := game.NewGameObject(name,
 		boom.WithTags("planet", "deadly"),
 		boom.WithOrigin(0.5, 0.5),
 		boom.WithPosition(x, y),

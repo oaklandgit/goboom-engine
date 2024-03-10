@@ -2,21 +2,19 @@ package main
 
 import (
 	_ "embed"
-
-	boom "goboom"
+	gb "goboom"
 )
 
 //go:embed levels/sol.toml
 var tomlData string
 
-const (
-	screenW = 600
-	screenH = 800
-	title = "Space Miner!"
-	DEBUG = false
+var game = gb.NewGame(
+	"Space Miner!",
+	600,
+	800,
+	false,
 )
 
-var game = boom.NewGame(title, screenW, screenH)
 
 func init() {
 

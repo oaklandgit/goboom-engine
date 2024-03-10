@@ -12,12 +12,12 @@ const SWITCH_TO_START = 6 * time.Second
 
 func createGameOverScene(g *boom.Game) *boom.GameObj {
 
-	gameOver := boom.NewGameObject(
+	gameOver := game.NewGameObject(
 		"Game Over",
-		boom.WithPosition(screenW/2, screenH/2),
+		boom.WithPosition(game.Width/2, game.Height/2),
 		boom.WithOrigin(0.5, 0.5),
 		boom.WithScale(2, 2))
-	gameOver.Size = rl.NewVector2(screenW, screenH)
+	gameOver.Size = rl.NewVector2(game.Width/2, game.Height/2)
 	gameOver.NewSprite(
 		game.Textures["assets/gameover.png"],
 		boom.WithColor(rl.Red),

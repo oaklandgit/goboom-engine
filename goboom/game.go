@@ -14,11 +14,12 @@ const (
 
 type Game struct {
 	Title string
-	Width int32
-	Height int32
+	Width float32
+	Height float32
 	Scenes map[string]*GameObj
 	CurrScene string
 	State State
+	Debug bool
 	Textures map[string]rl.Texture2D
 	Sounds map[string]rl.Sound
 	Soundtrack string
@@ -26,16 +27,17 @@ type Game struct {
 	Reset func()
 }
 
-func NewGame(title string, w, h int32) *Game {
+func NewGame(title string, w, h float32, debug bool) *Game {
 	game := &Game{
 		Title: title,
 		Width: w,
 		Height: h,
 		State: Stopped,
 		Scenes: make(map[string]*GameObj),
+		Debug: debug,
 	}
 
-	rl.InitWindow(w, h, title)
+	rl.InitWindow(int32(game.Width), int32(game.Height), title)
 	rl.SetTargetFPS(60)
 	rl.InitAudioDevice()
 

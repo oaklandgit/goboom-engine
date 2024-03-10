@@ -146,10 +146,11 @@ func WithAngle(angle float32) GameObjOption {
 	}
 }
 
-func NewGameObject(name string, opts ...GameObjOption) *GameObj {
+func (game *Game) NewGameObject(name string, opts ...GameObjOption) *GameObj {
 
 	obj := &GameObj{
 		Name: name,
+		Game: game,
 		Scale: rl.Vector2{X: 1, Y: 1},
 		Origin: rl.Vector2{X: 0.5, Y: 0.5},
 		Components: make(map[string]Component),

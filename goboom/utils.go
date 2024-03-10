@@ -41,11 +41,6 @@ func CalculateAngle(obj1, obj2 rl.Vector2) float32 {
     return float32(math.Atan2(float64(dy), float64(dx))) * 180 / math.Pi
 }
 
-// func adjustAngle(angle float32) float32 {
-//     // Use modulo to wrap around
-//     return float32(int(angle+360) % 360)
-// }
-
 func DrawText(
 	text string,
 	x int32,
