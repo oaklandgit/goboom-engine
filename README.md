@@ -18,11 +18,11 @@ var game = gb.NewGame(
 
 func init() {
 
-	game.Reset = func() {}
+	game.Reset = func() {} // define any special reset logic
 	game.LoadTextures("assets/ship.png")
 
 	ship := game.	NewGameObject("ship", gb.WithPosition(300, 400)).
-					NewSprite(game.Textures["assets/ship.png"])
+                        NewSprite(game.Textures["assets/ship.png"])
 
 	game.AddScene("myscene", ship)
 	game.SetScene("myscene")
