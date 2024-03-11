@@ -13,7 +13,7 @@ var game = gb.NewGame(
 	"Hello World",
 	600,
 	800,
-	true,
+	true, // debug mode
 )
 
 func init() {
