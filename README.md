@@ -1,12 +1,34 @@
-Building an arcade-style game in Go, with the goal of generalizing the engine for other games.
+A simple composition-based game engine in Go and [Raylib](https://github.com/gen2brain/raylib-go). Roughly inspired by the amazing [Kaboom!](https://kaboomjs.com/) engine for javascript.
 
-This is a work in progress, learning as I… go 😉. Using [Raylib go bindings](https://github.com/gen2brain/raylib-go) for graphics and input.
+## Example
 
-Roughly inspired by the amazing [Kaboom!](https://kaboomjs.com/) engine for javascript.
+```go
+package main
 
-So far, the engine contains (all rudimentary):
+import (
+	gb "goboom"
+)
 
-- a scene graph (parent/child relationships between game objects)
-- a component system for adding behaviors to game objects (e.g. input handling, collision handling, movement, sprites, and custom components etc.)
+var game = gb.NewGame(
+	"Hello World",
+	600,
+	800,
+	true,
+)
 
-https://github.com/oaklandgit/SpaceMiner2/assets/421615/18bf24ba-b01a-49b5-9117-466ab46435b9
+func init() {
+
+	game.Reset = func() {}
+	game.LoadTextures("assets/ship.png")
+
+	ship := game.	NewGameObject("ship", gb.WithPosition(300, 400)).
+					NewSprite(game.Textures["assets/ship.png"])
+
+	game.AddScene("myscene", ship)
+	game.SetScene("myscene")
+}
+
+func main() {
+	game.Run()
+}
+```
