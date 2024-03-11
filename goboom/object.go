@@ -146,25 +146,6 @@ func WithAngle(angle float32) GameObjOption {
 	}
 }
 
-func (game *Game) NewGameObject(name string, opts ...GameObjOption) *GameObj {
-
-	obj := &GameObj{
-		Name: name,
-		Game: game,
-		Scale: rl.Vector2{X: 1, Y: 1},
-		Origin: rl.Vector2{X: 0.5, Y: 0.5},
-		Components: make(map[string]Component),
-		Tags: make(map[string]struct{}),
-		Deleted: false,
-	}
-
-	for _, opt := range opts {
-		opt(obj)
-	}
-
-	return obj
-}
-
 func (o *GameObj) AddChildren(children ...*GameObj) {
 	for _, c := range children {
 		c.Parent = o

@@ -48,9 +48,9 @@ func (r *Rotate) Update() {
 
 func (r *Rotate) Draw() {
 
-	// if !DEBUG {
-	// 	return
-	// }
+	if !r.GameObj.Game.Debug {
+		return
+	}
 
 	p1 := r.GameObj.PosGlobal()
 	radius := r.GameObj.Width() / 2

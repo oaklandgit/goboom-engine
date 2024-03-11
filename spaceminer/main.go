@@ -12,7 +12,7 @@ var game = gb.NewGame(
 	"Space Miner!",
 	600,
 	800,
-	false,
+	true,
 )
 
 
@@ -66,7 +66,5 @@ func init() {
 }
 
 func main() {
-
 	game.Run()
-
 }
