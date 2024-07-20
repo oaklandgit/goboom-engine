@@ -17,10 +17,13 @@ func init() {
 
 	game.Reset = func() {}
 
-	message := game.NewGameObject("message", gb.WithPosition(10, 10)).
-		NewVecText("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6, 16, rl.Yellow)
+	// letters := game.NewGameObject("letters", gb.WithPosition(10, 10)).
+	// 	NewVecText("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6, 16, rl.Yellow)
 
-	game.AddScene("myscene", message)
+	numbers := game.NewGameObject("numbers", gb.WithPosition(10, 50)).
+		NewVecText("ABCDEFG 0123456789", 6, 16, rl.Red)
+
+	game.AddScene("myscene", numbers)
 	game.SetScene("myscene")
 }
 
