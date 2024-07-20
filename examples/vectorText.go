@@ -18,7 +18,7 @@ func init() {
 	game.Reset = func() {}
 
 	message := game.NewGameObject("message", gb.WithPosition(10, 10)).
-		NewVecText("AAAA", 14, 32, rl.Yellow)
+		NewVecText("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6, 16, rl.Yellow)
 
 	game.AddScene("myscene", message)
 	game.SetScene("myscene")
