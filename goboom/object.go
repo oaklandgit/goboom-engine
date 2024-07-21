@@ -11,16 +11,16 @@ type GameObj struct {
 	Name string
 	Tags map[string]struct{}
 	//
-	Game *Game
-	Parent *GameObj
+	Game     *Game
+	Parent   *GameObj
 	Children []*GameObj
 	//
 	Position rl.Vector2
-	Size rl.Vector2
-	Layer int // TO DO
-	Origin rl.Vector2
-	Angle float32
-	Scale	rl.Vector2
+	Size     rl.Vector2
+	Layer    int // TO DO
+	Origin   rl.Vector2
+	Angle    float32
+	Scale    rl.Vector2
 	//
 	Components map[string]Component
 	//
@@ -29,14 +29,14 @@ type GameObj struct {
 
 func (o *GameObj) PosGlobal() rl.Vector2 {
 	if o.Parent != nil {
-	
+
 		rads := float64(o.Parent.Angle * rl.Deg2rad)
-        rotatedPosition := rl.Vector2{
-            X: o.Position.X*float32(math.Cos(rads)) - o.Position.Y*float32(math.Sin(rads)),
-            Y: o.Position.X*float32(math.Sin(rads)) + o.Position.Y*float32(math.Cos(rads)),
-        }
-        return rl.Vector2Add(rotatedPosition, o.Parent.PosGlobal())
-		
+		rotatedPosition := rl.Vector2{
+			X: o.Position.X*float32(math.Cos(rads)) - o.Position.Y*float32(math.Sin(rads)),
+			Y: o.Position.X*float32(math.Sin(rads)) + o.Position.Y*float32(math.Cos(rads)),
+		}
+		return rl.Vector2Add(rotatedPosition, o.Parent.PosGlobal())
+
 	}
 
 	if o.Position != rl.Vector2Zero() {
@@ -76,7 +76,7 @@ func (o *GameObj) HasTag(tag string) bool {
 	return exists
 }
 
-func (o *GameObj) Profile(tags... string) {
+func (o *GameObj) Profile(tags ...string) {
 	// fmt.Printf("====== %v ======\n", time.Now())
 	fmt.Println("================")
 	for _, t := range tags {
@@ -84,7 +84,19 @@ func (o *GameObj) Profile(tags... string) {
 	}
 }
 
-func (o *GameObj) FindChildrenByTags(recurse bool, tags... string) []*GameObj {
+func (o *GameObj) FindChildByName(recurse bool, name string) *GameObj {
+	for _, c := range o.Children {
+		if c.Name == name {
+			return c
+		}
+		if recurse && len(c.Children) > 0 {
+			c.FindChildByName(recurse, name)
+		}
+	}
+	return nil
+}
+
+func (o *GameObj) FindChildrenByTags(recurse bool, tags ...string) []*GameObj {
 	var objs []*GameObj
 	for _, c := range o.Children {
 		for _, t := range tags {

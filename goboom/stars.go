@@ -1,13 +1,11 @@
-package main
+package goboom
 
 import (
-	boom "goboom"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 type Starfield struct {
-	GameObj *boom.GameObj
+	GameObj *GameObj
 	Texture rl.Texture2D
 }
 
@@ -38,7 +36,7 @@ func createStarfieldTexture(w, h, density int) rl.Texture2D {
 }
 
 func NewStarfield(
-	obj *boom.GameObj,
+	obj *GameObj,
 	w, h int, density int) {
 
 	starfield := &Starfield{
@@ -53,9 +51,8 @@ func NewStarfield(
 }
 
 func (s *Starfield) Update() {
-
 }
 
 func (s *Starfield) Draw() {
-	rl.DrawTexture(s.Texture, 0, 0, rl.White)
+	rl.DrawTexture(s.Texture, int32(s.GameObj.PosGlobal().X), int32(s.GameObj.PosGlobal().Y), rl.White)
 }

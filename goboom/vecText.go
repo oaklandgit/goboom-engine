@@ -53,7 +53,27 @@ func (*VecText) Id() string {
 }
 
 func (vt *VecText) Update() {
-	// no op
+	// frameCounter++
+	// if frameCounter >= colorChangeThreshold {
+	// 	frameCounter = 0
+	// }
+
+}
+
+// rainbow effect
+
+// var colors = []rl.Color{rl.Red, rl.Green, rl.Blue, rl.Yellow, rl.Purple}
+// var currentColorIndex int
+// var frameCounter int
+
+// const colorChangeThreshold = 60 // Change color every 30 frames
+
+// func cycleColor() rl.Color {
+// 	currentColorIndex = (currentColorIndex + 1) % len(colors)
+// 	return colors[currentColorIndex]
+
+func (vt *VecText) ChangeColor(c rl.Color) {
+	vt.Color = c
 }
 
 func (vt *VecText) Draw() {

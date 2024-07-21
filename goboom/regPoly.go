@@ -33,6 +33,10 @@ func (o *GameObj) NewRegPoly(s int32, r float32, c rl.Color) *GameObj {
 	return o
 }
 
+func (p *RegPoly) ChangeColor(c rl.Color) {
+	p.FillColor = c
+}
+
 func (*RegPoly) Id() string {
 	return "regularPolygon"
 }
