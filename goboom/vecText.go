@@ -4,31 +4,24 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+const STROKE_WEIGHT_ADJUST = 0.02
+
 type VecText struct {
 	GameObj *GameObj
 	Text    string
-	Size    float32
+	Weight  float32
 	Gap     float32
 	Color   rl.Color
-	Align   TextAlignment
 }
 
-type TextAlignment int
-
-const (
-	TextLeft TextAlignment = iota
-	TextRight
-	TextCenter
-)
-
-func (o *GameObj) NewVecText(str string, gap float32, c rl.Color, opts ...VecTextOption) *GameObj {
+func (o *GameObj) NewVecText(str string, weight float32, gap float32, c rl.Color, opts ...VecTextOption) *GameObj {
 
 	vecText := &VecText{
 		GameObj: o,
 		Text:    str,
+		Weight:  weight,
 		Gap:     gap,
 		Color:   c,
-		Align:   TextLeft,
 	}
 
 	for _, opt := range opts {
@@ -42,35 +35,13 @@ func (o *GameObj) NewVecText(str string, gap float32, c rl.Color, opts ...VecTex
 
 type VecTextOption func(*VecText)
 
-func WithAlignment(a TextAlignment) VecTextOption {
-	return func(vt *VecText) {
-		vt.Align = a
-	}
-}
-
 func (*VecText) Id() string {
 	return "vecText"
 }
 
 func (vt *VecText) Update() {
-	// frameCounter++
-	// if frameCounter >= colorChangeThreshold {
-	// 	frameCounter = 0
-	// }
-
+	// no op
 }
-
-// rainbow effect
-
-// var colors = []rl.Color{rl.Red, rl.Green, rl.Blue, rl.Yellow, rl.Purple}
-// var currentColorIndex int
-// var frameCounter int
-
-// const colorChangeThreshold = 60 // Change color every 30 frames
-
-// func cycleColor() rl.Color {
-// 	currentColorIndex = (currentColorIndex + 1) % len(colors)
-// 	return colors[currentColorIndex]
 
 func (vt *VecText) ChangeColor(c rl.Color) {
 	vt.Color = c
@@ -78,194 +49,64 @@ func (vt *VecText) ChangeColor(c rl.Color) {
 
 func (vt *VecText) Draw() {
 
-	startX := float32(vt.GameObj.Position.X)
-
-	numChars := len(vt.Text)
-	totalWidth := float32(numChars) * (2 + vt.Gap) * vt.GameObj.Scale.X
-
-	switch vt.Align {
-	case TextLeft:
-		// no op
-	case TextRight:
-		startX -= totalWidth
-	case TextCenter:
-		startX -= (totalWidth / 2)
-	}
+	rl.PushMatrix()
+	rl.Translatef(vt.GameObj.PosGlobal().X, vt.GameObj.PosGlobal().Y, 0)
+	rl.Scalef(vt.GameObj.Scale.X, vt.GameObj.Scale.Y, 1)
 
 	for i, char := range vt.Text {
 
-		offsetX := startX + float32(i)*(2+vt.Gap)*vt.GameObj.Scale.X // 2 is the standard width of a character before scaling
+		offsetX := float32(i) * (2 + vt.Gap)
 
-		// each char
-		drawChar(
-			string(char),
-			int32(vt.GameObj.Scale.X),
-			rl.NewVector2(offsetX, vt.GameObj.Position.Y),
-			vt.Color,
-		)
+		scaleAvg := (vt.GameObj.Scale.X + vt.GameObj.Scale.Y) / 2
+		weight := vt.Weight / scaleAvg
+
+		rl.PushMatrix()
+		rl.Translatef(offsetX, 0, 0)
+		DrawSVGPath(letterForms[string(char)], weight, vt.Color)
+		rl.PopMatrix()
+
 	}
 
+	rl.PopMatrix()
+
 }
 
-func drawChar(char string, size int32, pos rl.Vector2, color rl.Color) {
-	lines, ok := letterShapes[char]
-	if !ok {
-		return
-	}
-
-	for _, line := range lines {
-		for i := 0; i < len(line.P)-1; i++ {
-			start := rl.Vector2{X: line.P[i].X, Y: line.P[i].Y}
-			end := rl.Vector2{X: line.P[i+1].X, Y: line.P[i+1].Y}
-
-			start = rl.Vector2Multiply(start, rl.Vector2{X: float32(size), Y: float32(size)})
-			end = rl.Vector2Multiply(end, rl.Vector2{X: float32(size), Y: float32(size)})
-
-			// add position to each point
-			start = rl.Vector2Add(start, pos)
-			end = rl.Vector2Add(end, pos)
-
-			// rl.DrawLineV(start, end, color)
-			rl.DrawLineEx(start, end, 1.5, color)
-		}
-	}
-}
-
-type Point struct {
-	X, Y float32
-}
-
-type Line struct {
-	P []Point
-}
-
-var letterShapes = map[string][]Line{
-	"A": {
-		{P: []Point{{0, 2}, {0, 1}, {1, 0}, {2, 1}, {2, 2}}},
-		{P: []Point{{0, 1}, {2, 1}}},
-	},
-	"B": {
-		{P: []Point{{0, 2}, {0, 0}, {1, 0}, {1, 1}, {2, 1}, {2, 2}, {0, 2}}},
-		{P: []Point{{0, 1}, {2, 1}}},
-	},
-	"C": {
-		{P: []Point{{2, 2}, {0, 2}, {0, 0}, {2, 0}}},
-	},
-	"D": {
-		{P: []Point{{0, 2}, {0, 0}, {1, 0}, {2, 1}, {2, 2}, {0, 2}}},
-	},
-	"E": {
-		{P: []Point{{2, 2}, {0, 2}, {0, 0}, {2, 0}}},
-		{P: []Point{{0, 1}, {1, 1}}},
-	},
-	"F": {
-		{P: []Point{{0, 2}, {0, 0}, {2, 0}}},
-		{P: []Point{{0, 1}, {1, 1}}},
-	},
-	"G": {
-		{P: []Point{{2, 0}, {0, 0}, {0, 2}, {2, 2}, {2, 1}, {1, 1}}},
-	},
-	"H": {
-		{P: []Point{{0, 0}, {0, 2}}},
-		{P: []Point{{2, 0}, {2, 2}}},
-		{P: []Point{{0, 1}, {2, 1}}},
-	},
-	"I": {
-		{P: []Point{{1, 0}, {1, 2}}},
-		{P: []Point{{0, 0}, {2, 0}}},
-		{P: []Point{{0, 2}, {2, 2}}},
-	},
-	"J": {
-		{P: []Point{{2, 0}, {2, 2}, {0, 2}, {0, 1}}},
-	},
-	"K": {
-		{P: []Point{{0, 0}, {0, 2}}},
-		{P: []Point{{2, 0}, {0, 1}, {2, 2}}},
-	},
-	"L": {
-		{P: []Point{{0, 0}, {0, 2}, {2, 2}}},
-	},
-	"M": {
-		{P: []Point{{0, 2}, {0, 0}, {1, 1}, {2, 0}, {2, 2}}},
-	},
-	"N": {
-		{P: []Point{{0, 2}, {0, 0}, {2, 2}, {2, 0}}},
-	},
-	"O": {
-		{P: []Point{{0, 0}, {0, 2}, {2, 2}, {2, 0}, {0, 0}}},
-	},
-	"P": {
-		{P: []Point{{0, 2}, {0, 0}, {2, 0}, {2, 1}, {0, 1}}},
-	},
-	"Q": {
-		{P: []Point{{0, 0}, {0, 2}, {2, 2}, {2, 0}, {0, 0}}},
-		{P: []Point{{1, 1}, {2.5, 2.5}}},
-	},
-	"R": {
-		{P: []Point{{0, 2}, {0, 0}, {2, 0}, {2, 1}, {0, 1}}},
-		{P: []Point{{1, 1}, {2, 2}}},
-	},
-	"S": {
-		{P: []Point{{2, 0}, {0, 0}, {0, 1}, {2, 1}, {2, 2}, {0, 2}}},
-	},
-	"T": {
-		{P: []Point{{0, 0}, {2, 0}}},
-		{P: []Point{{1, 0}, {1, 2}}},
-	},
-	"U": {
-		{P: []Point{{0, 0}, {0, 2}, {2, 2}, {2, 0}}},
-	},
-	"V": {
-		{P: []Point{{0, 0}, {1, 2}, {2, 0}}},
-	},
-	"W": {
-		{P: []Point{{0, 0}, {0, 2}, {1, 1}, {2, 2}, {2, 0}}},
-	},
-	"X": {
-		{P: []Point{{0, 0}, {2, 2}}},
-		{P: []Point{{2, 0}, {0, 2}}},
-	},
-	"Y": {
-		{P: []Point{{0, 0}, {1, 1}, {2, 0}}},
-		{P: []Point{{1, 1}, {1, 2}}},
-	},
-	"Z": {
-		{P: []Point{{0, 0}, {2, 0}, {0, 2}, {2, 2}}},
-	},
-	"0": {
-		{P: []Point{{0, 0}, {0, 2}, {2, 2}, {2, 0}, {0, 0}}},
-		{P: []Point{{0, 2}, {2, 0}}},
-	},
-	"1": {
-		{P: []Point{{0, 0}, {1, 0}, {1, 2}}},
-		{P: []Point{{0, 2}, {2, 2}}},
-	},
-	"2": {
-		{P: []Point{{0, 0}, {2, 0}, {2, 1}, {0, 1}, {0, 2}, {2, 2}}},
-	},
-	"3": {
-		{P: []Point{{0, 0}, {2, 0}, {0, 1}, {2, 1}, {2, 2}, {0, 2}}},
-	},
-	"4": {
-		{P: []Point{{0, 0}, {0, 1}, {2, 1}}},
-		{P: []Point{{2, 0}, {2, 2}}},
-		{P: []Point{{0, 1}, {2, 1}}},
-	},
-	"5": {
-		{P: []Point{{2, 0}, {0, 0}, {0, 1}, {2, 1}, {2, 2}, {0, 2}}},
-	},
-	"6": {
-		{P: []Point{{2, 0}, {0, 0}, {0, 2}, {2, 2}, {2, 1}, {0, 1}}},
-	},
-	"7": {
-		{P: []Point{{0, 0}, {2, 0}, {0, 2}}},
-	},
-	"8": {
-		{P: []Point{{0, 0}, {0, 2}, {2, 2}, {2, 0}, {0, 0}}},
-		{P: []Point{{0, 1}, {2, 1}}},
-	},
-	"9": {
-		{P: []Point{{0, 2}, {2, 2}, {2, 0}, {0, 0}, {0, 1}, {2, 1}}},
-	},
-	" ": {},
+var letterForms = map[string]string{
+	"A": "M0,2 L0,1 L1,0 L2,1 L2,2 M0,1 L2,1",
+	"B": "M0,2 L0,0 L1,0 L1,1 L2,1 L2,2 L0,2 M0,1 L2,1",
+	"C": "M2,2 L0,2 L0,0 L2,0",
+	"D": "M0,2 L0,0 L1,0 L2,1 L2,2 L0,2",
+	"E": "M2,2 L0,2 L0,0 L2,0 M0,1 L1,1",
+	"F": "M0,2 L0,0 L2,0 M0,1 L1,1",
+	"G": "M2,0 L0,0 L0,2 L2,2 L2,1 L1,1",
+	"H": "M0,0 L0,2 M2,0 L2,2 M0,1 L2,1",
+	"I": "M1,0 L1,2 M0,0 L2,0 M0,2 L2,2",
+	"J": "M2,0 L2,2 L0,2 L0,1",
+	"K": "M0,0 L0,2 M2,0 L0,1 L2,2",
+	"L": "M0,0 L0,2 L2,2",
+	"M": "M0,2 L0,0 L1,1 L2,0 L2,2",
+	"N": "M0,2 L0,0 L2,2 L2,0",
+	"O": "M0,0 L0,2 L2,2 L2,0 L0,0",
+	"P": "M0,2 L0,0 L2,0 L2,1 L0,1",
+	"Q": "M0,0 L0,2 L2,2 L2,0 L0,0 M1,1 L2.5,2.5",
+	"R": "M0,2 L0,0 L2,0 L2,1 L0,1 M1,1 L2,2",
+	"S": "M2,0 L0,0 L0,1 L2,1 L2,2 L0,2",
+	"T": "M0,0 L2,0 M1,0 L1,2",
+	"U": "M0,0 L0,2 L2,2 L2,0",
+	"V": "M0,0 L1,2 L2,0",
+	"W": "M0,0 L0,2 L1,1 L2,2 L2,0",
+	"X": "M0,0 L2,2 M2,0 L0,2",
+	"Y": "M0,0 L1,1 L2,0 M1,1 L1,2",
+	"Z": "M0,0 L2,0 L0,2 L2,2",
+	"0": "M0,0 L0,2 L2,2 L2,0 L0,0 M0,2 L2,0",
+	"1": "M0,0 L1,0 L1,2 M0,2 L2,2",
+	"2": "M0,0 L2,0 L2,1 L0,1 L0,2 L2,2",
+	"3": "M0,0 L2,0 L0,1 L2,1 L2,2 L0,2",
+	"4": "M0,0 L0,1 L2,1 M2,0 L2,2 M0,1 L2,1",
+	"5": "M2,0 L0,0 L0,1 L2,1 L2,2 L0,2",
+	"6": "M2,0 L0,0 L0,2 L2,2 L2,1 L0,1",
+	"7": "M0,0 L2,0 L0,2",
+	"8": "M0,0 L0,2 L2,2 L2,0 L0,0 M0,1 L2,1",
+	"9": "M0,2 L2,2 L2,0 L0,0 L0,1 L2,1",
+	" ": "",
 }
