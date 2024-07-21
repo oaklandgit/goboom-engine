@@ -33,5 +33,9 @@ func (o *GameObj) NewSvgPath(str string, w float32, c rl.Color) *GameObj {
 func (p *SvgPath) Update() {}
 
 func (p *SvgPath) Draw() {
+	rl.PushMatrix()
+	rl.Translatef(p.GameObj.PosGlobal().X, p.GameObj.PosGlobal().Y, 0)
 	DrawSVGPath(p.Path, p.StrokeWidth, p.Color)
+	rl.PopMatrix()
+
 }
