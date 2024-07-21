@@ -6,10 +6,13 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+const WIDTH = 800
+const HEIGHT = 600
+
 var game = gb.NewGame(
 	"Vector Text",
-	600,
-	800,
+	WIDTH,
+	HEIGHT,
 	true,
 )
 
@@ -17,11 +20,8 @@ func init() {
 
 	game.Reset = func() {}
 
-	// letters := game.NewGameObject("letters", gb.WithPosition(10, 10)).
-	// 	NewVecText("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6, 16, rl.Yellow)
-
-	numbers := game.NewGameObject("numbers", gb.WithPosition(10, 50)).
-		NewVecText("ABCDEFG 0123456789", 6, 16, rl.Red)
+	numbers := game.NewGameObject("numbers", gb.WithPosition(WIDTH/2, 60), gb.WithScale(8, 8)).
+		NewVecText("ABCDEFG 0123456789", 1, rl.Red, gb.WithAlignment(gb.TextCenter))
 
 	game.AddScene("myscene", numbers)
 	game.SetScene("myscene")

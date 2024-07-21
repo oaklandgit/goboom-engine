@@ -8,18 +8,31 @@ type VecText struct {
 	GameObj *GameObj
 	Text    string
 	Size    float32
-	Leading float32
+	Gap     float32
 	Color   rl.Color
+	Align   TextAlignment
 }
 
-func (o *GameObj) NewVecText(str string, s float32, lead float32, c rl.Color) *GameObj {
+type TextAlignment int
+
+const (
+	TextLeft TextAlignment = iota
+	TextRight
+	TextCenter
+)
+
+func (o *GameObj) NewVecText(str string, gap float32, c rl.Color, opts ...VecTextOption) *GameObj {
 
 	vecText := &VecText{
 		GameObj: o,
 		Text:    str,
-		Size:    s,
-		Leading: lead,
+		Gap:     gap,
 		Color:   c,
+		Align:   TextLeft,
+	}
+
+	for _, opt := range opts {
+		opt(vecText)
 	}
 
 	o.AddComponents(vecText)
@@ -27,25 +40,48 @@ func (o *GameObj) NewVecText(str string, s float32, lead float32, c rl.Color) *G
 	return o
 }
 
+type VecTextOption func(*VecText)
+
+func WithAlignment(a TextAlignment) VecTextOption {
+	return func(vt *VecText) {
+		vt.Align = a
+	}
+}
+
 func (*VecText) Id() string {
 	return "vecText"
 }
 
-func (p *VecText) Update() {
+func (vt *VecText) Update() {
 	// no op
 }
 
-func (p *VecText) Draw() {
+func (vt *VecText) Draw() {
 
-	for i, char := range p.Text {
+	startX := float32(vt.GameObj.Position.X)
 
-		offsetX := float32(i) * (2 + p.Leading) // 2 is the standard width of a character before scaling
+	numChars := len(vt.Text)
+	totalWidth := float32(numChars) * (2 + vt.Gap) * vt.GameObj.Scale.X
 
+	switch vt.Align {
+	case TextLeft:
+		// no op
+	case TextRight:
+		startX -= totalWidth
+	case TextCenter:
+		startX -= (totalWidth / 2)
+	}
+
+	for i, char := range vt.Text {
+
+		offsetX := startX + float32(i)*(2+vt.Gap)*vt.GameObj.Scale.X // 2 is the standard width of a character before scaling
+
+		// each char
 		drawChar(
 			string(char),
-			int32(p.Size),
-			rl.NewVector2(p.GameObj.Position.X+offsetX, p.GameObj.Position.Y),
-			p.Color,
+			int32(vt.GameObj.Scale.X),
+			rl.NewVector2(offsetX, vt.GameObj.Position.Y),
+			vt.Color,
 		)
 	}
 
