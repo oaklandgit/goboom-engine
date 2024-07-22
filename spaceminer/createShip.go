@@ -9,20 +9,20 @@ import (
 )
 
 const (
-	ROTATE_SPEED = 5
-	THRUST_SPEED = 0.04
-	MAX_SPEED = 2
-	LIVES = 3
-	WARNING_DISTANCE = 120
+	ROTATE_SPEED       = 5
+	THRUST_SPEED       = 0.04
+	MAX_SPEED          = 2
+	LIVES              = 3
+	WARNING_DISTANCE   = 120
 	SAFE_LANDING_SPEED = 1
-	SHIP_RADIUS = 8
-	SHIP_DRAG = 0.999
-	SHIP_WRAP_PADDING = 16
+	SHIP_RADIUS        = 8
+	SHIP_DRAG          = 0.999
+	SHIP_WRAP_PADDING  = 16
 
-	FLYING = 2
+	FLYING        = 2
 	FLYING_THRUST = 3
 
-	LANDING = 0
+	LANDING        = 0
 	LANDING_THRUST = 1
 )
 
@@ -30,7 +30,7 @@ func createShip(x, y float32) *boom.GameObj {
 
 	// SOUNDS
 	thrustSound := game.Sounds["sounds/thrust.wav"]
-	rl.SetSoundVolume(thrustSound, 0.3);
+	rl.SetSoundVolume(thrustSound, 0.3)
 
 	// SHIP METHODS
 	thrust := func(g *boom.GameObj, speed float32) {
@@ -43,7 +43,7 @@ func createShip(x, y float32) *boom.GameObj {
 		if !rl.IsSoundPlaying(thrustSound) {
 			rl.PlaySound(thrustSound)
 		}
-		
+
 	}
 
 	stopThrust := func(g *boom.GameObj) {
@@ -89,7 +89,7 @@ func createShip(x, y float32) *boom.GameObj {
 	}
 
 	ship.NewArea(boom.CircleCollider{Radius: SHIP_RADIUS},
-		boom.WithCooldown(2 * time.Second),
+		boom.WithCooldown(2*time.Second),
 	)
 
 	ship.NewMotion(
@@ -102,64 +102,63 @@ func createShip(x, y float32) *boom.GameObj {
 		ship,
 		[]string{"planet"},
 		WithSafeDistance(WARNING_DISTANCE),
-		WithSafeSpeed(SAFE_LANDING_SPEED ),
+		WithSafeSpeed(SAFE_LANDING_SPEED),
 	)
 
 	ship.NewInput(
 		boom.KeyHandler{
-			boom.KeyPress{rl.KeyLeft, boom.KEY_REPEAT},
-			func() {
+			KeyPress: boom.KeyPress{Key: rl.KeyLeft, Mode: boom.KEY_REPEAT},
+			Action: func() {
 				rotateCCW(ship)
 			},
 		},
 		boom.KeyHandler{
-			boom.KeyPress{rl.KeyRight, boom.KEY_REPEAT},
-			func() {
+			KeyPress: boom.KeyPress{Key: rl.KeyRight, Mode: boom.KEY_REPEAT},
+			Action: func() {
 				rotateCW(ship)
 			},
 		},
 		boom.KeyHandler{
-			boom.KeyPress{rl.KeyUp, boom.KEY_REPEAT},
-			func() {
+			KeyPress: boom.KeyPress{Key: rl.KeyUp, Mode: boom.KEY_REPEAT},
+			Action: func() {
 				thrust(ship, THRUST_SPEED)
 			},
 		},
 		boom.KeyHandler{
-			boom.KeyPress{rl.KeyUp, boom.KEY_UP},
-			func() {
+			KeyPress: boom.KeyPress{Key: rl.KeyUp, Mode: boom.KEY_UP},
+			Action: func() {
 				stopThrust(ship)
 			},
 		},
-		
 	)
 
 	ship.Components["area"].(*boom.Area).AddCollisionHandler(
-			"deadly",
-			func(you, theObject *boom.GameObj) {
+		"deadly",
+		func(you, theObject *boom.GameObj) {
 
-				// // don't crash if docked with this planet
-				if you.Components["dock"].(*Dock).DockedWith != nil &&
-					you.Components["dock"].(*Dock).DockedWith == theObject { 
-						return
-				}
+			// // don't crash if docked with this planet
+			if you.Components["dock"].(*Dock).DockedWith != nil &&
+				you.Components["dock"].(*Dock).DockedWith == theObject {
+				return
+			}
 
-				// // land if good speed and angle
-				if you.Components["approach"].(*Approach).IsSafeSpeed() &&
-					!you.Components["approach"].(*Approach).IsPointingToward(theObject) {
-						
-					dockWith(you, theObject, rl.Vector2{})
-					return
-				}
+			// // land if good speed and angle
+			if you.Components["approach"].(*Approach).IsSafeSpeed() &&
+				!you.Components["approach"].(*Approach).IsPointingToward(theObject) {
 
-				// otherwise, crash
-				you.Parent.AddChildren(
-					createExplosion(
-						you.PosGlobal().X,
-						you.PosGlobal().Y,
-						"assets/shard.png",
-						))
-				you.Components["lives"].(*Lives).RemoveLife()
-			})
+				dockWith(you, theObject, rl.Vector2{})
+				return
+			}
+
+			// otherwise, crash
+			you.Parent.AddChildren(
+				createExplosion(
+					you.PosGlobal().X,
+					you.PosGlobal().Y,
+					"assets/shard.png",
+				))
+			you.Components["lives"].(*Lives).RemoveLife()
+		})
 
 	return ship
 

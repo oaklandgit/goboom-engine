@@ -34,8 +34,9 @@ func (p *SvgPath) Update() {}
 
 func (p *SvgPath) Draw() {
 	rl.PushMatrix()
+
+	rl.Scalef(p.GameObj.Scale.X, p.GameObj.Scale.Y, 1)
 	rl.Translatef(p.GameObj.PosGlobal().X, p.GameObj.PosGlobal().Y, 0)
 	DrawSVGPath(p.Path, p.StrokeWidth, p.Color)
 	rl.PopMatrix()
-
 }

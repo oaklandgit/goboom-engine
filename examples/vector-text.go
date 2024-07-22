@@ -7,14 +7,10 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const WIDTH = 800
-const HEIGHT = 600
-const STARFIELD_DENSITY = 100
-
 var game = gb.NewGame(
 	"Vector Text",
-	WIDTH,
-	HEIGHT,
+	800,
+	600,
 	true,
 )
 

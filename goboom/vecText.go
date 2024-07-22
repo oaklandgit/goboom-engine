@@ -69,44 +69,56 @@ func (vt *VecText) Draw() {
 
 	rl.PopMatrix()
 
+	if vt.GameObj.Game.Debug {
+
+		width := float32(len(vt.Text)) * (2 + vt.Gap) * vt.GameObj.Scale.X
+		height := 2 * vt.GameObj.Scale.Y
+		centerX := vt.GameObj.PosGlobal().X + width/2
+		centerY := vt.GameObj.PosGlobal().Y + height/2
+
+		// bounding box
+		rl.DrawRectangleLines(int32(vt.GameObj.PosGlobal().X), int32(vt.GameObj.PosGlobal().Y), int32(width), int32(height), rl.Red)
+		// center point
+		rl.DrawCircleLines(int32(centerX), int32(centerY), 3, rl.Yellow)
+	}
 }
 
 var letterForms = map[string]string{
-	"A": "M0,2 L0,1 L1,0 L2,1 L2,2 M0,1 L2,1",
-	"B": "M0,2 L0,0 L1,0 L1,1 L2,1 L2,2 L0,2 M0,1 L2,1",
-	"C": "M2,2 L0,2 L0,0 L2,0",
-	"D": "M0,2 L0,0 L1,0 L2,1 L2,2 L0,2",
-	"E": "M2,2 L0,2 L0,0 L2,0 M0,1 L1,1",
-	"F": "M0,2 L0,0 L2,0 M0,1 L1,1",
-	"G": "M2,0 L0,0 L0,2 L2,2 L2,1 L1,1",
-	"H": "M0,0 L0,2 M2,0 L2,2 M0,1 L2,1",
-	"I": "M1,0 L1,2 M0,0 L2,0 M0,2 L2,2",
-	"J": "M2,0 L2,2 L0,2 L0,1",
-	"K": "M0,0 L0,2 M2,0 L0,1 L2,2",
-	"L": "M0,0 L0,2 L2,2",
-	"M": "M0,2 L0,0 L1,1 L2,0 L2,2",
-	"N": "M0,2 L0,0 L2,2 L2,0",
-	"O": "M0,0 L0,2 L2,2 L2,0 L0,0",
-	"P": "M0,2 L0,0 L2,0 L2,1 L0,1",
-	"Q": "M0,0 L0,2 L2,2 L2,0 L0,0 M1,1 L2.5,2.5",
-	"R": "M0,2 L0,0 L2,0 L2,1 L0,1 M1,1 L2,2",
-	"S": "M2,0 L0,0 L0,1 L2,1 L2,2 L0,2",
-	"T": "M0,0 L2,0 M1,0 L1,2",
-	"U": "M0,0 L0,2 L2,2 L2,0",
-	"V": "M0,0 L1,2 L2,0",
-	"W": "M0,0 L0,2 L1,1 L2,2 L2,0",
-	"X": "M0,0 L2,2 M2,0 L0,2",
-	"Y": "M0,0 L1,1 L2,0 M1,1 L1,2",
-	"Z": "M0,0 L2,0 L0,2 L2,2",
-	"0": "M0,0 L0,2 L2,2 L2,0 L0,0 M0,2 L2,0",
-	"1": "M0,0 L1,0 L1,2 M0,2 L2,2",
-	"2": "M0,0 L2,0 L2,1 L0,1 L0,2 L2,2",
-	"3": "M0,0 L2,0 L0,1 L2,1 L2,2 L0,2",
-	"4": "M0,0 L0,1 L2,1 M2,0 L2,2 M0,1 L2,1",
-	"5": "M2,0 L0,0 L0,1 L2,1 L2,2 L0,2",
-	"6": "M2,0 L0,0 L0,2 L2,2 L2,1 L0,1",
-	"7": "M0,0 L2,0 L0,2",
-	"8": "M0,0 L0,2 L2,2 L2,0 L0,0 M0,1 L2,1",
-	"9": "M0,2 L2,2 L2,0 L0,0 L0,1 L2,1",
+	"A": "M0 2 L0 1 L1 0 L2 1 L2 2 M0 1 L2 1",
+	"B": "M0 2 L0 0 L1 0 L1 1 L2 1 L2 2 L0 2 M0 1 L2 1",
+	"C": "M2 2 L0 2 L0 0 L2 0",
+	"D": "M0 2 L0 0 L1 0 L2 1 L2 2 L0 2",
+	"E": "M2 2 L0 2 L0 0 L2 0 M0 1 L1 1",
+	"F": "M0 2 L0 0 L2 0 M0 1 L1 1",
+	"G": "M2 0 L0 0 L0 2 L2 2 L2 1 L1 1",
+	"H": "M0 0 L0 2 M2 0 L2 2 M0 1 L2 1",
+	"I": "M1 0 L1 2 M0 0 L2 0 M0 2 L2 2",
+	"J": "M2 0 L2 2 L0 2 L0 1",
+	"K": "M0 0 L0 2 M2 0 L0 1 L2 2",
+	"L": "M0 0 L0 2 L2 2",
+	"M": "M0 2 L0 0 L1 1 L2 0 L2 2",
+	"N": "M0 2 L0 0 L2 2 L2 0",
+	"O": "M0 0 L0 2 L2 2 L2 0 L0 0",
+	"P": "M0 2 L0 0 L2 0 L2 1 L0 1",
+	"Q": "M0 0 L0 2 L2 2 L2 0 L0 0 M1 1 L2.5 2.5", // q is a little different
+	"R": "M0 2 L0 0 L2 0 L2 1 L0 1 M1 1 L2 2",
+	"S": "M2 0 L0 0 L0 1 L2 1 L2 2 L0 2",
+	"T": "M0 0 L2 0 M1 0 L1 2",
+	"U": "M0 0 L0 2 L2 2 L2 0",
+	"V": "M0 0 L1 2 L2 0",
+	"W": "M0 0 L0 2 L1 1 L2 2 L2 0",
+	"X": "M0 0 L2 2 M2 0 L0 2",
+	"Y": "M0 0 L1 1 L2 0 M1 1 L1 2",
+	"Z": "M0 0 L2 0 L0 2 L2 2",
+	"0": "M0 0 L0 2 L2 2 L2 0 L0 0 M0 2 L2 0",
+	"1": "M0 0 L1 0 L1 2 M0 2 L2 2",
+	"2": "M0 0 L2 0 L2 1 L0 1 L0 2 L2 2",
+	"3": "M0 0 L2 0 L0 1 L2 1 L2 2 L0 2",
+	"4": "M0 0 L0 1 L2 1 M2 0 L2 2 M0 1 L2,1",
+	"5": "M2 0 L0 0 L0 1 L2 1 L2 2 L0 2",
+	"6": "M2 0 L0 0 L0 2 L2 2 L2 1 L0 1",
+	"7": "M0 0 L2 0 L0 2",
+	"8": "M0 0 L0 2 L2 2 L2 0 L0 0 M0 1 L2 1",
+	"9": "M0 2 L2 2 L2 0 L0 0 L0 1 L2 1",
 	" ": "",
 }
