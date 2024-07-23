@@ -7,13 +7,13 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const WIDTH = 800
-const HEIGHT = 600
+// const WIDTH = 800
+// const HEIGHT = 600
 
 var game = gb.NewGame(
 	"Vector Text",
-	WIDTH,
-	HEIGHT,
+	600,
+	400,
 	true,
 )
 
@@ -22,10 +22,10 @@ func init() {
 	game.Reset = func() {}
 
 	// create text objects
-	greeting := game.NewGameObject("greeting", gb.WithPosition(WIDTH/2, 60), gb.WithScale(8, 8), gb.WithTags("colorme")).
-		NewVecText("HELLO WORLD", 1, rl.Yellow, gb.WithAlignment(gb.TextCenter))
+	greeting := game.NewGameObject("greeting", gb.WithPosition(game.Width/2, 60), gb.WithScale(8, 8), gb.WithTags("colorme")).
+		NewVecText("HELLO WORLD", 1, 2, rl.Yellow)
 
-	shape := game.NewGameObject("shape", gb.WithPosition(WIDTH/2, 160), gb.WithTags("colorme")).
+	shape := game.NewGameObject("shape", gb.WithPosition(game.Width/2, 160), gb.WithTags("colorme")).
 		NewRegPoly(11, 40, rl.Red)
 
 	// add text objects to scene

@@ -35,8 +35,25 @@ func (p *SvgPath) Update() {}
 func (p *SvgPath) Draw() {
 	rl.PushMatrix()
 
+	// Translate to the parent's position
+	rl.Translatef(p.GameObj.Position.X, p.GameObj.Position.Y, 0)
+
+	// Scale (including negative values for flipping) <-- negative doesn't work for some reason
 	rl.Scalef(p.GameObj.Scale.X, p.GameObj.Scale.Y, 1)
-	rl.Translatef(p.GameObj.PosGlobal().X, p.GameObj.PosGlobal().Y, 0)
+
+	// Rotate around the center of the shape
+	rl.Rotatef(p.GameObj.Angle, 0, 0, 1) // rotate on the z axis only
+
+	// DRAW A BLANK TO CALCULATE THE SIZE
+	transparent := rl.Color{R: 0, G: 0, B: 0, A: 0}
+	shapeW, shapeH := DrawSVGPath(p.Path, p.StrokeWidth, transparent)
+
+	// Shift the shape to the center
+	rl.Translatef(-shapeW/2, -shapeH/2, 0)
+
+	// Draw the shape with the actual color
 	DrawSVGPath(p.Path, p.StrokeWidth, p.Color)
+
+	// Restore the drawing context (pop matrix)
 	rl.PopMatrix()
 }

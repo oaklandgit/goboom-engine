@@ -50,37 +50,58 @@ func (vt *VecText) ChangeColor(c rl.Color) {
 func (vt *VecText) Draw() {
 
 	rl.PushMatrix()
-	rl.Translatef(vt.GameObj.PosGlobal().X, vt.GameObj.PosGlobal().Y, 0)
+
+	// translate to center of screen
+	rl.Translatef(float32(rl.GetScreenWidth())/2, float32(rl.GetScreenHeight())/2, 0)
+	// rl.Translatef(vt.GameObj.PosGlobal().X, vt.GameObj.PosGlobal().Y, 0)
+
 	rl.Scalef(vt.GameObj.Scale.X, vt.GameObj.Scale.Y, 1)
 
-	for i, char := range vt.Text {
+	var shapeW, shapeH float32
 
-		offsetX := float32(i) * (2 + vt.Gap)
+	for _, char := range vt.Text {
+
+		// letterOffsetX := float32(i) * (2 + vt.Gap)
+		// fullWidth += int(letterOffsetX)
 
 		scaleAvg := (vt.GameObj.Scale.X + vt.GameObj.Scale.Y) / 2
 		weight := vt.Weight / scaleAvg
 
 		rl.PushMatrix()
-		rl.Translatef(offsetX, 0, 0)
+
+		// rl.Translatef(letterOffsetX, 0, 0)
+
+		// FIRST, CALCULATE THE SIZE OF THE LETTER
+		// AND ADD IT TO THE TOTAL WIDTH
+		transparent := rl.Color{R: 0, G: 0, B: 0, A: 0}
+		w, h := DrawSVGPath(letterForms[string(char)], weight, transparent)
+		shapeW += w + vt.Gap
+		shapeH = h // tho all letters are the same height
+
+		// Shift the shape to the center
+		rl.Translatef(-shapeW/2, -shapeH/2, 0)
+
+		// Draw the shape with the actual color
 		DrawSVGPath(letterForms[string(char)], weight, vt.Color)
 		rl.PopMatrix()
 
 	}
 
+	// rl.Translatef(-float32(fullWidth), 0, 0)
 	rl.PopMatrix()
 
-	if vt.GameObj.Game.Debug {
+	// if vt.GameObj.Game.Debug {
 
-		width := float32(len(vt.Text)) * (2 + vt.Gap) * vt.GameObj.Scale.X
-		height := 2 * vt.GameObj.Scale.Y
-		centerX := vt.GameObj.PosGlobal().X + width/2
-		centerY := vt.GameObj.PosGlobal().Y + height/2
+	// 	width := float32(len(vt.Text)) * (2 + vt.Gap) * vt.GameObj.Scale.X
+	// 	height := 2 * vt.GameObj.Scale.Y
+	// 	centerX := vt.GameObj.PosGlobal().X + width/2
+	// 	centerY := vt.GameObj.PosGlobal().Y + height/2
 
-		// bounding box
-		rl.DrawRectangleLines(int32(vt.GameObj.PosGlobal().X), int32(vt.GameObj.PosGlobal().Y), int32(width), int32(height), rl.Red)
-		// center point
-		rl.DrawCircleLines(int32(centerX), int32(centerY), 3, rl.Yellow)
-	}
+	// 	// bounding box
+	// 	rl.DrawRectangleLines(int32(vt.GameObj.PosGlobal().X), int32(vt.GameObj.PosGlobal().Y), int32(width), int32(height), rl.Red)
+	// 	// center point
+	// 	rl.DrawCircleLines(int32(centerX), int32(centerY), 3, rl.Yellow)
+	// }
 }
 
 var letterForms = map[string]string{
