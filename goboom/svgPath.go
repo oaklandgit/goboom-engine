@@ -33,23 +33,32 @@ func (o *GameObj) NewSvgPath(str string, w float32, c rl.Color) *GameObj {
 func (p *SvgPath) Update() {}
 
 func (p *SvgPath) Draw() {
+
+	// const myPivot = "center"
+
+	// type Pivot rl.Vector2
+
+	// pivots := map[string]Pivot{
+	// 	"top-left":     {0, 0},
+	// 	"top-right":    {1, 0},
+	// 	"bottom-left":  {0, 1},
+	// 	"bottom-right": {1, 1},
+	// 	"center":       {0.5, 0.5},
+	// }
+
 	rl.PushMatrix()
 
-	// Translate to the parent's position
+	// adjust to parent
 	rl.Translatef(p.GameObj.Position.X, p.GameObj.Position.Y, 0)
-
-	// Scale (including negative values for flipping) <-- negative doesn't work for some reason
+	rl.Rotatef(p.GameObj.Angle, 0, 0, 1) // rotate on the z axis only
 	rl.Scalef(p.GameObj.Scale.X, p.GameObj.Scale.Y, 1)
 
-	// Rotate around the center of the shape
-	rl.Rotatef(p.GameObj.Angle, 0, 0, 1) // rotate on the z axis only
-
-	// DRAW A BLANK TO CALCULATE THE SIZE
+	// calculate size by drawing the shape with a transparent color
 	transparent := rl.Color{R: 0, G: 0, B: 0, A: 0}
 	shapeW, shapeH := DrawSVGPath(p.Path, p.StrokeWidth, transparent)
 
-	// Shift the shape to the center
-	rl.Translatef(-shapeW/2, -shapeH/2, 0)
+	// Shift the shape to the pivot point
+	rl.Translatef((-shapeW * p.GameObj.Origin.X), (-shapeH * p.GameObj.Origin.Y), 0)
 
 	// Draw the shape with the actual color
 	DrawSVGPath(p.Path, p.StrokeWidth, p.Color)
