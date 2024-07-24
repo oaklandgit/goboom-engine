@@ -7,9 +7,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-// const WIDTH = 800
-// const HEIGHT = 600
-
 var game = gb.NewGame(
 	"Vector Text",
 	600,
