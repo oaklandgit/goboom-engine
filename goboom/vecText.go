@@ -49,59 +49,46 @@ func (vt *VecText) ChangeColor(c rl.Color) {
 
 func (vt *VecText) Draw() {
 
-	rl.PushMatrix()
+	// CALCULATE LINE WEIGHT
+	scaleAvg := (vt.GameObj.Scale.X + vt.GameObj.Scale.Y) / 2
+	calculatedWeight := vt.Weight / scaleAvg
 
-	// translate to center of screen
-	rl.Translatef(float32(rl.GetScreenWidth())/2, float32(rl.GetScreenHeight())/2, 0)
-	// rl.Translatef(vt.GameObj.PosGlobal().X, vt.GameObj.PosGlobal().Y, 0)
-
-	rl.Scalef(vt.GameObj.Scale.X, vt.GameObj.Scale.Y, 1)
-
-	var shapeW, shapeH float32
-
+	// CALCULATE SIZE
+	transparent := rl.Color{R: 0, G: 0, B: 0, A: 0}
+	var totalW, totalH float32
 	for _, char := range vt.Text {
-
-		// letterOffsetX := float32(i) * (2 + vt.Gap)
-		// fullWidth += int(letterOffsetX)
-
-		scaleAvg := (vt.GameObj.Scale.X + vt.GameObj.Scale.Y) / 2
-		weight := vt.Weight / scaleAvg
-
-		rl.PushMatrix()
-
-		// rl.Translatef(letterOffsetX, 0, 0)
-
-		// FIRST, CALCULATE THE SIZE OF THE LETTER
-		// AND ADD IT TO THE TOTAL WIDTH
-		transparent := rl.Color{R: 0, G: 0, B: 0, A: 0}
-		w, h := DrawSVGPath(letterForms[string(char)], weight, transparent)
-		shapeW += w + vt.Gap
-		shapeH = h // tho all letters are the same height
-
-		// Shift the shape to the center
-		rl.Translatef(-shapeW/2, -shapeH/2, 0)
-
-		// Draw the shape with the actual color
-		DrawSVGPath(letterForms[string(char)], weight, vt.Color)
-		rl.PopMatrix()
-
+		shapeW, shapeH := DrawSVGPath(letterForms[string(char)], calculatedWeight, transparent)
+		totalW += shapeW + vt.Gap
+		totalH = shapeH
 	}
 
-	// rl.Translatef(-float32(fullWidth), 0, 0)
+	// NOW DRAW
+	rl.PushMatrix()
+
+	// adjust to parent
+	rl.Translatef(vt.GameObj.Position.X, vt.GameObj.Position.Y, 0)
+	rl.Rotatef(vt.GameObj.Angle, 0, 0, 1) // rotate on the z axis only
+	rl.Scalef(vt.GameObj.Scale.X, vt.GameObj.Scale.Y, 1)
+
+	/////// END INNER LOOP
+
+	// Shift the shape to the pivot point
+	rl.Translatef((-totalW * vt.GameObj.Origin.X), (-totalH * vt.GameObj.Origin.Y), 0)
+
+	// Draw all the letters again with the actual color
+	for i, char := range vt.Text {
+		letterOffsetX := float32(i) * (2 + vt.Gap) // 2 is the base width of the letter
+		rl.PushMatrix()
+		rl.Translatef(letterOffsetX, 0, 0)
+		DrawSVGPath(letterForms[string(char)], calculatedWeight, vt.Color)
+		rl.PopMatrix()
+	}
+
+	////////
+
+	// Restore the drawing context (pop matrix)
 	rl.PopMatrix()
 
-	// if vt.GameObj.Game.Debug {
-
-	// 	width := float32(len(vt.Text)) * (2 + vt.Gap) * vt.GameObj.Scale.X
-	// 	height := 2 * vt.GameObj.Scale.Y
-	// 	centerX := vt.GameObj.PosGlobal().X + width/2
-	// 	centerY := vt.GameObj.PosGlobal().Y + height/2
-
-	// 	// bounding box
-	// 	rl.DrawRectangleLines(int32(vt.GameObj.PosGlobal().X), int32(vt.GameObj.PosGlobal().Y), int32(width), int32(height), rl.Red)
-	// 	// center point
-	// 	rl.DrawCircleLines(int32(centerX), int32(centerY), 3, rl.Yellow)
-	// }
 }
 
 var letterForms = map[string]string{

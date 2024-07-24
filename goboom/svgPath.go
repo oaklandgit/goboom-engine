@@ -34,18 +34,6 @@ func (p *SvgPath) Update() {}
 
 func (p *SvgPath) Draw() {
 
-	// const myPivot = "center"
-
-	// type Pivot rl.Vector2
-
-	// pivots := map[string]Pivot{
-	// 	"top-left":     {0, 0},
-	// 	"top-right":    {1, 0},
-	// 	"bottom-left":  {0, 1},
-	// 	"bottom-right": {1, 1},
-	// 	"center":       {0.5, 0.5},
-	// }
-
 	rl.PushMatrix()
 
 	// adjust to parent
