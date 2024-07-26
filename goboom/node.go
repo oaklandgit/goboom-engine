@@ -36,9 +36,11 @@ func drawRoot() {
 
 func CreateRootNode() *Node {
 	node := &Node{
+		Origin:  rl.Vector2{X: 0, Y: 0},
 		Visible: true,
 		Alpha:   1,
-		Scale:   rl.Vector2{X: 1, Y: 1},
+		// Position: rl.Vector2{X: -getRootSize().X / 2, Y: -getRootSize().Y / 2},
+		Scale: rl.Vector2{X: 1, Y: 1},
 		DrawFunc: Drawable{
 			Draw:    drawRoot,
 			GetSize: getRootSize,
@@ -95,17 +97,17 @@ func (n *Node) SetLayer(l int) {
 	}
 }
 
-func (n *Node) RenderRoot() {
+// func (n *Node) RenderRoot() {
 
-	if n.DrawFunc.Draw != nil {
-		n.DrawFunc.Draw()
-	}
+// 	if n.DrawFunc.Draw != nil {
+// 		n.DrawFunc.Draw()
+// 	}
 
-	for _, c := range n.Children {
-		c.Render()
-	}
+// 	for _, c := range n.Children {
+// 		c.Render()
+// 	}
 
-}
+// }
 
 func (n *Node) Render() {
 	if !n.Visible {
@@ -114,23 +116,40 @@ func (n *Node) Render() {
 
 	width := n.DrawFunc.GetSize().X
 	height := n.DrawFunc.GetSize().Y
+	origin := rl.Vector2{X: width * n.Origin.X, Y: height * n.Origin.X}
+	// width := getRootSize().X
+	// height := getRootSize().Y
+
+	// Apply parent's global position
+	if n.Parent != nil {
+		rl.PushMatrix()
+		parentPos := n.Parent.GetPosGlobal()
+		rl.Translatef(parentPos.X+n.Position.X, parentPos.Y+n.Position.Y, 0)
+	}
 
 	rl.PushMatrix()
+	rl.Translatef(-origin.X, -origin.Y, 0)
 
-	rl.Translatef(width/2, height/2, 0)
-	rl.Translatef(n.Parent.Position.X, n.Position.Y, 0)
 	rl.Rotatef(n.Rotation, 0, 0, 1)
 	rl.Scalef(n.Scale.X, n.Scale.Y, 1)
 
 	if n.DrawFunc.Draw != nil {
 		n.DrawFunc.Draw()
+		rl.DrawCircle(int32(origin.X), int32(origin.Y), 2, rl.Black) // should be the centerpoint
 	}
 
+	// Render children
 	for _, c := range n.Children {
 		c.Render()
 	}
 
-	rl.Translatef(-width/2, -height/2, 0)
+	// Reset
+	if n.Parent != nil {
+		rl.Translatef(origin.X, origin.Y, 0)
+		rl.PopMatrix()
+	}
+
+	// rl.Translatef(-300, -200, 0)
 
 	rl.PopMatrix()
 }
