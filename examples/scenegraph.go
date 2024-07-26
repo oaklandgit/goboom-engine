@@ -9,18 +9,19 @@ import (
 const ()
 
 func draw() {
-	rl.DrawCircleV(rl.Vector2{X: 100, Y: 100}, 20, rl.Red)
+	rl.DrawCircleV(rl.Vector2{X: 0, Y: 0}, 20, rl.Red)
 }
 
 func getSize() rl.Vector2 {
-	return rl.Vector2{X: 500, Y: 500}
+	return rl.Vector2{X: 20, Y: 20}
 }
 
-func createThingNode() *gb.Node {
+func createThing() *gb.Node {
 	return &gb.Node{
-		Visible: true,
-		Scale:   rl.Vector2{X: 1, Y: 1},
-		Alpha:   1,
+		Visible:  true,
+		Scale:    rl.Vector2{X: 1, Y: 1},
+		Position: rl.Vector2{X: 100, Y: 100},
+		Alpha:    1,
 		DrawFunc: gb.Drawable{
 			Draw:    draw,
 			GetSize: getSize,
@@ -33,13 +34,16 @@ func main() {
 	rl.SetTargetFPS(60)
 
 	root := gb.CreateRootNode()
-	root.AddChildren(createThingNode())
+	thing1 := createThing()
+	thing2 := createThing()
+	thing1.AddChildren(thing2)
+	root.AddChildren(thing1)
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.RayWhite)
 
-		root.Render()
+		root.RenderRoot()
 
 		rl.EndDrawing()
 	}

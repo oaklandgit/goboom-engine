@@ -95,20 +95,7 @@ func (n *Node) SetLayer(l int) {
 	}
 }
 
-func (n *Node) Render() {
-	if !n.Visible {
-		return
-	}
-
-	rl.PushMatrix()
-
-	width := n.DrawFunc.GetSize().X
-	height := n.DrawFunc.GetSize().Y
-
-	rl.Translatef(width/2, height/2, 0)
-	rl.Rotatef(n.Rotation, 0, 0, 1)
-	rl.Scalef(n.Scale.X, n.Scale.Y, 1)
-	rl.Translatef(-width/2, -height/2, 0)
+func (n *Node) RenderRoot() {
 
 	if n.DrawFunc.Draw != nil {
 		n.DrawFunc.Draw()
@@ -117,6 +104,33 @@ func (n *Node) Render() {
 	for _, c := range n.Children {
 		c.Render()
 	}
+
+}
+
+func (n *Node) Render() {
+	if !n.Visible {
+		return
+	}
+
+	width := n.DrawFunc.GetSize().X
+	height := n.DrawFunc.GetSize().Y
+
+	rl.PushMatrix()
+
+	rl.Translatef(width/2, height/2, 0)
+	rl.Translatef(n.Parent.Position.X, n.Position.Y, 0)
+	rl.Rotatef(n.Rotation, 0, 0, 1)
+	rl.Scalef(n.Scale.X, n.Scale.Y, 1)
+
+	if n.DrawFunc.Draw != nil {
+		n.DrawFunc.Draw()
+	}
+
+	for _, c := range n.Children {
+		c.Render()
+	}
+
+	rl.Translatef(-width/2, -height/2, 0)
 
 	rl.PopMatrix()
 }
