@@ -18,34 +18,24 @@ type Node struct {
 	Parent   *Node
 	Layer    int
 	Origin   rl.Vector2
-	DrawFunc Drawable
+	Update   func(*Node)
+	Draw     func(*Node)
+	Bounds   func(*Node) rl.Rectangle
 }
 
-type Drawable struct {
-	Draw    func()
-	GetSize func() rl.Vector2
-}
+func CreateRootNode(w, h float32) *Node {
 
-func getRootSize() rl.Vector2 {
-	return rl.Vector2{X: 600, Y: 400}
-}
-
-func drawRoot() {
-	rl.DrawRectangle(0, 0, int32(getRootSize().X), int32(getRootSize().Y), rl.Blue)
-}
-
-func CreateRootNode() *Node {
 	node := &Node{
 		Origin:  rl.Vector2{X: 0, Y: 0},
 		Visible: true,
 		Alpha:   1,
-		// Position: rl.Vector2{X: -getRootSize().X / 2, Y: -getRootSize().Y / 2},
-		Scale: rl.Vector2{X: 1, Y: 1},
-		DrawFunc: Drawable{
-			Draw:    drawRoot,
-			GetSize: getRootSize,
+		Scale:   rl.Vector2{X: 1, Y: 1},
+		Draw: func(n *Node) {
+			rl.DrawRectangle(0, 0, int32(w), int32(h), rl.Blue)
 		},
-		// all other defaults are zero
+		Bounds: func(n *Node) rl.Rectangle {
+			return rl.Rectangle{X: n.Position.X, Y: n.Position.Y, Width: w, Height: h}
+		},
 	}
 
 	return node
@@ -97,28 +87,14 @@ func (n *Node) SetLayer(l int) {
 	}
 }
 
-// func (n *Node) RenderRoot() {
-
-// 	if n.DrawFunc.Draw != nil {
-// 		n.DrawFunc.Draw()
-// 	}
-
-// 	for _, c := range n.Children {
-// 		c.Render()
-// 	}
-
-// }
-
 func (n *Node) Render() {
 	if !n.Visible {
 		return
 	}
 
-	width := n.DrawFunc.GetSize().X
-	height := n.DrawFunc.GetSize().Y
+	width := n.Bounds(n).Width
+	height := n.Bounds(n).Height
 	origin := rl.Vector2{X: width * n.Origin.X, Y: height * n.Origin.X}
-	// width := getRootSize().X
-	// height := getRootSize().Y
 
 	// Apply parent's global position
 	if n.Parent != nil {
@@ -133,8 +109,8 @@ func (n *Node) Render() {
 	rl.Rotatef(n.Rotation, 0, 0, 1)
 	rl.Scalef(n.Scale.X, n.Scale.Y, 1)
 
-	if n.DrawFunc.Draw != nil {
-		n.DrawFunc.Draw()
+	if n.Draw != nil {
+		n.Draw(n)
 		rl.DrawCircle(int32(origin.X), int32(origin.Y), 2, rl.Black) // should be the centerpoint
 	}
 
@@ -148,8 +124,6 @@ func (n *Node) Render() {
 		rl.Translatef(origin.X, origin.Y, 0)
 		rl.PopMatrix()
 	}
-
-	// rl.Translatef(-300, -200, 0)
 
 	rl.PopMatrix()
 }

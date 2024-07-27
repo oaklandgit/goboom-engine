@@ -6,23 +6,25 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func createThing() *gb.Node {
+func createThing(x, y float32) *gb.Node {
+
+	const (
+		w float32 = 50
+		h float32 = 25
+	)
+
 	return &gb.Node{
 		Visible:  true,
 		Origin:   rl.Vector2{X: 0, Y: 0},
 		Scale:    rl.Vector2{X: 1, Y: 1},
-		Position: rl.Vector2{X: 0, Y: 0},
+		Position: rl.Vector2{X: x, Y: y},
 		Rotation: 0,
 		Alpha:    1,
-		DrawFunc: gb.Drawable{
-			Draw: func() {
-				// rl.DrawCircleV(rl.Vector2{X: 0, Y: 0}, 20, rl.Red)
-				rl.DrawRectangleV(rl.Vector2{X: 0, Y: 0}, rl.Vector2{X: 50, Y: 25}, rl.Green)
-
-			},
-			GetSize: func() rl.Vector2 {
-				return rl.Vector2{X: 50, Y: 25}
-			},
+		Draw: func(n *gb.Node) {
+			rl.DrawRectangleV(rl.Vector2{X: 0, Y: 0}, rl.Vector2{X: w, Y: h}, rl.Green)
+		},
+		Bounds: func(n *gb.Node) rl.Rectangle {
+			return rl.Rectangle{X: n.Position.X, Y: n.Position.Y, Width: w, Height: h}
 		},
 	}
 }
@@ -76,10 +78,9 @@ func main() {
 	rl.InitWindow(600, 400, "SCENE GRAPH")
 	rl.SetTargetFPS(60)
 
-	root := gb.CreateRootNode()
-	// blockade := createBlockade()
-	// block := createBarrier(rl.Vector2{X: 0, Y: 0}, 0)
-	thing := createThing()
+	root := gb.CreateRootNode(600, 400)
+	thing := createThing(300, 200)
+	thing.Origin = rl.Vector2{X: 0.5, Y: 0.5}
 	root.AddChildren(thing)
 
 	for !rl.WindowShouldClose() {
