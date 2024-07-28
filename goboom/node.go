@@ -13,6 +13,7 @@ type Node struct {
 	Position rl.Vector2
 	Scale    rl.Vector2
 	Origin   rl.Vector2
+	Debug    bool
 	Rotation float32
 	Alpha    float32
 	Children []*Node
@@ -70,9 +71,9 @@ func (n *Node) RemoveChild(child *Node) {
 	}
 }
 
-func (n *Node) GetGlobaPositionl() rl.Vector2 {
+func (n *Node) GetGlobalPosition() rl.Vector2 {
 	if n.Parent != nil {
-		return rl.Vector2Add(n.Position, n.Parent.GetGlobaPositionl())
+		return rl.Vector2Add(n.Position, n.Parent.GetGlobalPosition())
 	}
 	return n.Position
 }
@@ -121,7 +122,7 @@ func (n *Node) Render() {
 
 	rl.PushMatrix()
 
-	rl.Translatef(n.GetGlobaPositionl().X, n.GetGlobaPositionl().Y, 0)
+	rl.Translatef(n.GetGlobalPosition().X, n.GetGlobalPosition().Y, 0)
 	rl.Scalef(n.GetGlobalScale().X, n.GetGlobalScale().Y, 1)
 	rl.Rotatef(n.GetGlobalRotation(), 0, 0, 1)
 
@@ -130,7 +131,14 @@ func (n *Node) Render() {
 		rl.Translatef(-originOffset.X, -originOffset.Y, 0)
 		n.OnDraw(n)
 		// draw centerpoint for debugging
-		rl.DrawCircle(int32(originOffset.X), int32(originOffset.Y), 2, rl.Black)
+		if n.Debug {
+			// center point crosshairs
+			rl.DrawLine(int32(originOffset.X-2), int32(originOffset.Y), int32(originOffset.X+2), int32(originOffset.Y), rl.Black)
+			rl.DrawLine(int32(originOffset.X), int32(originOffset.Y-2), int32(originOffset.X), int32(originOffset.Y+2), rl.Black)
+
+			// bounding box
+			rl.DrawRectangleLines(int32(n.GetBounds(n).X), int32(n.GetBounds(n).Y), int32(n.GetBounds(n).Width), int32(n.GetBounds(n).Height), rl.Black)
+		}
 	}
 
 	rl.PopMatrix()

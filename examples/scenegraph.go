@@ -73,6 +73,42 @@ func createSatellites(num int, dist float32, speed float32) *gb.Node {
 
 }
 
+func createWord(x, y float32, text string, c rl.Color) *gb.Node {
+
+	var totalW float32
+	var totalH float32
+
+	return &gb.Node{
+		Visible:  true,
+		Origin:   rl.Vector2{X: 0, Y: 0},
+		Scale:    rl.Vector2{X: 12, Y: 12},
+		Debug:    true,
+		Position: rl.Vector2{X: x, Y: y},
+		OnUpdate: func(n *gb.Node) {
+			n.Rotation += 10 * rl.GetFrameTime()
+		},
+		OnDraw: func(*gb.Node) {
+			rl.PushMatrix()
+			for _, char := range text {
+				w, h := gb.DrawSVGPath(gb.LetterForms[string(char)], 0.1, c)
+				totalW += w
+				totalH = h                 // assume all letters have the same height
+				rl.Translatef(w+0.5, 0, 0) // only move horizontally
+			}
+			rl.PopMatrix()
+
+		},
+		GetBounds: func(n *gb.Node) rl.Rectangle {
+			return rl.Rectangle{
+				X:      n.Position.X,
+				Y:      n.Position.Y,
+				Width:  totalW,
+				Height: totalH,
+			}
+		},
+	}
+}
+
 func Update(n *gb.Node) {
 
 	for _, c := range n.Children {
@@ -92,8 +128,9 @@ func main() {
 
 	planet1 := createPlanet(300, 200, 50, rl.Red).AddChildren(createSatellites(8, 10, 100))
 	planet2 := createPlanet(75, 75, 16, rl.Green).AddChildren(createSatellites(12, 3, 30))
+	text := createWord(300, 200, string("HELLO THERE"), rl.White)
 
-	root.AddChildren(planet1, planet2)
+	root.AddChildren(planet1, planet2, text)
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()

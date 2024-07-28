@@ -57,7 +57,7 @@ func (vt *VecText) Draw() {
 	transparent := rl.Color{R: 0, G: 0, B: 0, A: 0}
 	var totalW, totalH float32
 	for _, char := range vt.Text {
-		shapeW, shapeH := DrawSVGPath(letterForms[string(char)], calculatedWeight, transparent)
+		shapeW, shapeH := DrawSVGPath(LetterForms[string(char)], calculatedWeight, transparent)
 		totalW += shapeW + vt.Gap
 		totalH = shapeH
 	}
@@ -80,7 +80,7 @@ func (vt *VecText) Draw() {
 		letterOffsetX := float32(i) * (2 + vt.Gap) // 2 is the base width of the letter
 		rl.PushMatrix()
 		rl.Translatef(letterOffsetX, 0, 0)
-		DrawSVGPath(letterForms[string(char)], calculatedWeight, vt.Color)
+		DrawSVGPath(LetterForms[string(char)], calculatedWeight, vt.Color)
 		rl.PopMatrix()
 	}
 
@@ -91,7 +91,7 @@ func (vt *VecText) Draw() {
 
 }
 
-var letterForms = map[string]string{
+var LetterForms = map[string]string{
 	"A": "M0 2 L0 1 L1 0 L2 1 L2 2 M0 1 L2 1",
 	"B": "M0 2 L0 0 L1 0 L1 1 L2 1 L2 2 L0 2 M0 1 L2 1",
 	"C": "M2 2 L0 2 L0 0 L2 0",
