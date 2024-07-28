@@ -6,82 +6,76 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func createThing(x, y float32) *gb.Node {
+func createPlanet(x, y, r float32) *gb.Node {
 
+	// raylib circles are drawn from the center
+	// so we'll keep the origin at 0, 0
 	const (
-		w float32 = 50
-		h float32 = 25
+		originX = 0
+		originY = 0
 	)
 
 	return &gb.Node{
 		Visible:  true,
-		Origin:   rl.Vector2{X: 0, Y: 0},
+		Origin:   rl.Vector2{X: originX, Y: originY},
 		Scale:    rl.Vector2{X: 1, Y: 1},
 		Position: rl.Vector2{X: x, Y: y},
 		Rotation: 0,
 		Alpha:    1,
-		Draw: func(n *gb.Node) {
-			rl.DrawRectangleV(rl.Vector2{X: 0, Y: 0}, rl.Vector2{X: w, Y: h}, rl.Green)
+		OnDraw: func(n *gb.Node) {
+			rl.DrawCircleLines(0, 0, r, rl.Red)
 		},
-		Bounds: func(n *gb.Node) rl.Rectangle {
-			return rl.Rectangle{X: n.Position.X, Y: n.Position.Y, Width: w, Height: h}
+		GetBounds: func(n *gb.Node) rl.Rectangle {
+			return rl.Rectangle{X: n.Position.X, Y: n.Position.Y, Width: r * 2, Height: r * 2}
 		},
 	}
 }
 
-// func createBarrier(p rl.Vector2, r float32) *gb.Node {
-// 	return &gb.Node{
-// 		Visible:  true,
-// 		Scale:    rl.Vector2{X: 1, Y: 1},
-// 		Position: p,
-// 		Alpha:    1,
-// 		Rotation: r,
-// 		DrawFunc: gb.Drawable{
-// 			Draw: func() {
-// 				rl.DrawRectangleV(rl.Vector2{X: 0, Y: 0}, rl.Vector2{X: 12, Y: 50}, rl.White)
-// 			},
-// 			GetSize: func() rl.Vector2 {
-// 				return rl.Vector2{X: 12, Y: 50}
-// 			},
-// 		},
-// 	}
-// }
+func createSatellite(x, y float32) *gb.Node {
 
-// func createBlockade() *gb.Node {
-// 	blockade := &gb.Node{
-// 		Visible:  true,
-// 		Scale:    rl.Vector2{X: 1, Y: 1},
-// 		Position: rl.Vector2{X: 300, Y: 200},
-// 		Alpha:    1,
-// 		DrawFunc: gb.Drawable{
-// 			Draw:    func() {},
-// 			GetSize: func() rl.Vector2 { return rl.Vector2{X: 0, Y: 0} },
-// 		},
-// 	}
+	const (
+		w       float32 = 22
+		h       float32 = 12
+		originX         = 0.5
+		originY         = 8
+	)
 
-// 	fudgeAngle := float32(14) // this is a hack
-// 	numChildren := 10
-// 	radius := 100.0 // Adjust the radius as needed
-// 	angleIncrement := 2 * math.Pi / float64(numChildren)
-
-// 	for i := 0; i < numChildren; i++ {
-// 		angle := float64(i) * angleIncrement
-// 		x := radius * math.Cos(angle)
-// 		y := radius * math.Sin(angle)
-// 		blockade.AddChildren(createBarrier(rl.Vector2{X: float32(x), Y: float32(y)}, float32(angle*180/math.Pi)+fudgeAngle))
-// 	}
-
-// 	return blockade
-// }
+	return &gb.Node{
+		Visible:  true,
+		Origin:   rl.Vector2{X: originX, Y: originY},
+		Scale:    rl.Vector2{X: 1, Y: 1},
+		Position: rl.Vector2{X: x, Y: y},
+		Rotation: 0,
+		Alpha:    1,
+		OnDraw: func(n *gb.Node) {
+			// rl.DrawRectangleV(rl.Vector2{X: 0, Y: 0}, rl.Vector2{X: w, Y: h}, rl.Green)
+			rl.DrawRectangleLines(0, 0, int32(w), int32(h), rl.White)
+		},
+		GetBounds: func(n *gb.Node) rl.Rectangle {
+			return rl.Rectangle{X: n.Position.X, Y: n.Position.Y, Width: w, Height: h}
+		},
+	}
+}
 
 func main() {
 	rl.InitWindow(600, 400, "SCENE GRAPH")
 	rl.SetTargetFPS(60)
 
 	root := gb.CreateRootNode(600, 400)
-	thing := createThing(300, 200)
-	thing.Origin = rl.Vector2{X: 0.5, Y: 0.5}
-	root.AddChildren(thing)
+
+	planet := createPlanet(300, 200, 20)
+	satellites := []*gb.Node{}
+
+	for i := 0; i < 12; i += 1 {
+		s := createSatellite(0, 0)
+		s.Rotation = float32(i) * 30
+		satellites = append(satellites, s)
+	}
+
+	planet.AddChildren(satellites...)
+
+	// root.AddChildren(satellites...)
+	root.AddChildren(planet)
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()

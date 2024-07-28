@@ -11,16 +11,17 @@ type Node struct {
 	Tags     []string
 	Velocity rl.Vector2
 	Position rl.Vector2
-	Rotation float32
 	Scale    rl.Vector2
+	Origin   rl.Vector2
+	Rotation float32
 	Alpha    float32
 	Children []*Node
 	Parent   *Node
 	Layer    int
-	Origin   rl.Vector2
-	Update   func(*Node)
-	Draw     func(*Node)
-	Bounds   func(*Node) rl.Rectangle
+
+	OnUpdate  func(*Node)
+	OnDraw    func(*Node)
+	GetBounds func(*Node) rl.Rectangle
 }
 
 func CreateRootNode(w, h float32) *Node {
@@ -30,10 +31,10 @@ func CreateRootNode(w, h float32) *Node {
 		Visible: true,
 		Alpha:   1,
 		Scale:   rl.Vector2{X: 1, Y: 1},
-		Draw: func(n *Node) {
+		OnDraw: func(n *Node) {
 			rl.DrawRectangle(0, 0, int32(w), int32(h), rl.Blue)
 		},
-		Bounds: func(n *Node) rl.Rectangle {
+		GetBounds: func(n *Node) rl.Rectangle {
 			return rl.Rectangle{X: n.Position.X, Y: n.Position.Y, Width: w, Height: h}
 		},
 	}
@@ -92,38 +93,28 @@ func (n *Node) Render() {
 		return
 	}
 
-	width := n.Bounds(n).Width
-	height := n.Bounds(n).Height
-	origin := rl.Vector2{X: width * n.Origin.X, Y: height * n.Origin.X}
-
-	// Apply parent's global position
-	if n.Parent != nil {
-		rl.PushMatrix()
-		parentPos := n.Parent.GetPosGlobal()
-		rl.Translatef(parentPos.X+n.Position.X, parentPos.Y+n.Position.Y, 0)
-	}
-
 	rl.PushMatrix()
-	rl.Translatef(-origin.X, -origin.Y, 0)
 
-	rl.Rotatef(n.Rotation, 0, 0, 1)
-	rl.Scalef(n.Scale.X, n.Scale.Y, 1)
+	globalPos := n.GetPosGlobal()
+	rl.Translatef(globalPos.X, globalPos.Y, 0)
 
-	if n.Draw != nil {
-		n.Draw(n)
-		rl.DrawCircle(int32(origin.X), int32(origin.Y), 2, rl.Black) // should be the centerpoint
-	}
-
-	// Render children
-	for _, c := range n.Children {
-		c.Render()
-	}
-
-	// Reset
 	if n.Parent != nil {
-		rl.Translatef(origin.X, origin.Y, 0)
-		rl.PopMatrix()
+		rl.Rotatef(n.Rotation, 0, 0, 1)
+		rl.Scalef(n.Scale.X, n.Scale.Y, 1)
+	}
+
+	if n.OnDraw != nil {
+		originOffset := rl.Vector2{X: n.GetBounds(n).Width * n.Origin.X, Y: n.GetBounds(n).Height * n.Origin.Y}
+		rl.Translatef(-originOffset.X, -originOffset.Y, 0)
+		n.OnDraw(n)
+		// draw centerpoint for debugging
+		rl.DrawCircle(int32(originOffset.X), int32(originOffset.Y), 2, rl.Black)
 	}
 
 	rl.PopMatrix()
+
+	for _, child := range n.Children {
+		child.Render()
+	}
+
 }
